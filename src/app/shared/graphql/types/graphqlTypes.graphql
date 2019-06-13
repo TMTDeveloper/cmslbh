@@ -1,31 +1,111 @@
-query getMtVocabs(
-  $where: MtVocabWhereInput
-  $orderBy: MtVocabOrderByInput
-  $skip: Int
-  $after: String
-  $before: String
-  $first: Int
-  $last: Int
-) {
-  mtVocabs(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
-    KODE
-    kode_induk
-    level
-    sembunyikan
-    teks
-    urutan
+# mutation
+
+mutation createClient($data: ClientCreateInput!) {
+  createClient(data: $data) {
+    id
+    alamatLokasi
+    applicationId {
+      id
+    }
+    asetGedung
+    asetKios
+    asetLahanGarapan
+    asetLapak
+    asetMobil
+    asetMotor
+    asetRumah
+    asetTanah
+    asetToko
+    asetWarung
+    createdAt
+    createdBy
+    pendapatan
+    personId {
+      id
+    }
+    sktm
+    sktmUpload
+    stmKeterangan
+    tanggunganAnak
+    tanggunganFamili
+    tanggunganLain
+    tanggunganPasangan
+    updatedAt
+    updatedBy
+    usiaSaatKlien
+    caseid {
+      id
+    }
   }
 }
-query allPerson(
-  $where: PersonWhereInput
-  $orderBy: PersonOrderByInput
-  $skip: Int
-  $after: String
-  $before: String
-  $first: Int
-  $last: Int
-) {
-  persons(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+
+mutation createApplication($data: ApplicationCreateInput!) {
+  createApplication(data: $data) {
+    id
+    createdAt
+    createdBy
+    dudukPerara
+    infoLbh
+    jumlahPenerimaManfaat
+    konfirmasiData
+    noReg
+    pernahKlien
+    pernahPpLain
+    ppLain
+    regDate
+    relasiWakilClient
+    setujuAdvokasi
+    statusPerwakilan
+    updatedAt
+    updatedBy
+    wakilId {
+      id
+      namaLengkap
+    }
+    waktuPernahKlien
+    whyLbh
+    case {
+      id
+    }
+    clients {
+      id
+      alamatLokasi
+      asetGedung
+      asetKios
+      asetLahanGarapan
+      asetLapak
+      asetMobil
+      asetMotor
+      asetRumah
+      asetTanah
+      asetToko
+      asetWarung
+      createdAt
+      createdBy
+      pendapatan
+      personId {
+        id
+        namaLengkap
+      }
+      sktm
+      sktmUpload
+      stmKeterangan
+      tanggunganAnak
+      tanggunganFamili
+      tanggunganLain
+      tanggunganPasangan
+      updatedAt
+      updatedBy
+      usiaSaatKlien
+      caseid {
+        id
+      }
+    }
+  }
+}
+
+mutation updatePerson($data: PersonUpdateInput!, $where: PersonWhereUniqueInput!) {
+  updatePerson(data: $data, where: $where) {
     id
     agama
     alamatDomisili
@@ -78,8 +158,217 @@ query allPerson(
   }
 }
 
-query allPersonnnn {
-  persons {
+mutation createPerson($data: PersonCreateInput!) {
+  createPerson(data: $data) {
+    id
+    agama
+    alamatDomisili
+    alamatId
+    alatBantu
+    alias
+    createdAt
+    createdBy
+    disabilitas
+    distrikDomisili
+    distrikId
+    domisiliSama
+    email
+    golDarah
+    jenisDisabilitas
+    jenisDomisili
+    jenisId
+    jenisKelamin
+    jmlAnggota
+    namaLengkap
+    nomorId
+    pekerjaan
+    pendidikan
+    statusPernikahan
+    telepon
+    tglLahir
+    tmpLahir
+    unitSatuan
+    updatedAt
+    updatedBy
+    wargaNegara
+    applications {
+      id
+      noReg
+      createdAt
+    }
+    clients {
+      id
+      applicationId {
+        id
+        noReg
+        createdAt
+      }
+    }
+    documents {
+      id
+      title
+      file
+    }
+  }
+}
+
+# query
+query getClient(
+  $where: ClientWhereInput
+  $orderBy: ClientOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  clients {
+    id
+    alamatLokasi
+    applicationId {
+      id
+    }
+    asetGedung
+    asetKios
+    asetLahanGarapan
+    asetLapak
+    asetMobil
+    asetMotor
+    asetRumah
+    asetTanah
+    asetToko
+    asetWarung
+    createdAt
+    createdBy
+    pendapatan
+    personId {
+      id
+    }
+    sktm
+    sktmUpload
+    stmKeterangan
+    tanggunganAnak
+    tanggunganFamili
+    tanggunganLain
+    tanggunganPasangan
+    updatedAt
+    updatedBy
+    usiaSaatKlien
+    caseid {
+      id
+    }
+  }
+}
+
+query getApplications(
+  $where: ApplicationWhereInput
+  $orderBy: ApplicationOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  applications(
+    where: $where
+    orderBy: $orderBy
+    skip: $skip
+    after: $after
+    before: $before
+    first: $first
+    last: $last
+  ) {
+    id
+    createdAt
+    createdBy
+    dudukPerara
+    infoLbh
+    jumlahPenerimaManfaat
+    konfirmasiData
+    noReg
+    pernahKlien
+    pernahPpLain
+    ppLain
+    regDate
+    relasiWakilClient
+    setujuAdvokasi
+    statusPerwakilan
+    updatedAt
+    updatedBy
+    wakilId {
+      id
+      namaLengkap
+    }
+    waktuPernahKlien
+    whyLbh
+    case {
+      id
+    }
+    clients {
+      id
+      alamatLokasi
+      asetGedung
+      asetKios
+      asetLahanGarapan
+      asetLapak
+      asetMobil
+      asetMotor
+      asetRumah
+      asetTanah
+      asetToko
+      asetWarung
+      createdAt
+      createdBy
+      pendapatan
+      personId {
+        id
+        namaLengkap
+      }
+      sktm
+      sktmUpload
+      stmKeterangan
+      tanggunganAnak
+      tanggunganFamili
+      tanggunganLain
+      tanggunganPasangan
+      updatedAt
+      updatedBy
+      usiaSaatKlien
+      caseid {
+        id
+      }
+    }
+  }
+}
+
+query getMtVocabs(
+  $where: MtVocabWhereInput
+  $orderBy: MtVocabOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  mtVocabs(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    KODE
+    kode_induk
+    level
+    sembunyikan
+    teks
+    urutan
+  }
+}
+query allPerson(
+  $where: PersonWhereInput
+  $orderBy: PersonOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  persons(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     id
     agama
     alamatDomisili

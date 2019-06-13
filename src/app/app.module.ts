@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // 参考：https://ng-alain.com/docs/i18n
 import { default as ngLangID } from '@angular/common/locales/id';
 import { NZ_I18N, en_US as zorroLang, NZ_DATE_LOCALE } from 'ng-zorro-antd';
-import ngId from '@angular/common/locales/id';
 import { DELON_LOCALE, en_US as delonLang } from '@delon/theme';
 const LANG = {
   abbr: 'en',
@@ -21,7 +20,6 @@ const LANG_PROVIDES = [
   { provide: LOCALE_ID, useValue: ngLangID },
   { provide: NZ_I18N, useValue: ngLangID },
   { provide: DELON_LOCALE, useValue: ngLangID },
-  { provide: NZ_DATE_LOCALE, useValue: ngId },
 ];
 // #endregion
 

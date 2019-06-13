@@ -13420,6 +13420,317 @@ export type UserWhereInput = {
 export type UserWhereUniqueInput = {
   id: Maybe<number>;
 };
+export type CreateClientMutationVariables = {
+  data: ClientCreateInput;
+};
+
+export type CreateClientMutation = {
+  createClient: Pick<
+    Client,
+    | 'id'
+    | 'alamatLokasi'
+    | 'asetGedung'
+    | 'asetKios'
+    | 'asetLahanGarapan'
+    | 'asetLapak'
+    | 'asetMobil'
+    | 'asetMotor'
+    | 'asetRumah'
+    | 'asetTanah'
+    | 'asetToko'
+    | 'asetWarung'
+    | 'createdAt'
+    | 'createdBy'
+    | 'pendapatan'
+    | 'sktm'
+    | 'sktmUpload'
+    | 'stmKeterangan'
+    | 'tanggunganAnak'
+    | 'tanggunganFamili'
+    | 'tanggunganLain'
+    | 'tanggunganPasangan'
+    | 'updatedAt'
+    | 'updatedBy'
+    | 'usiaSaatKlien'
+  > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'>; caseid: Pick<Case, 'id'> };
+};
+
+export type CreateApplicationMutationVariables = {
+  data: ApplicationCreateInput;
+};
+
+export type CreateApplicationMutation = {
+  createApplication: Pick<
+    Application,
+    | 'id'
+    | 'createdAt'
+    | 'createdBy'
+    | 'dudukPerara'
+    | 'infoLbh'
+    | 'jumlahPenerimaManfaat'
+    | 'konfirmasiData'
+    | 'noReg'
+    | 'pernahKlien'
+    | 'pernahPpLain'
+    | 'ppLain'
+    | 'regDate'
+    | 'relasiWakilClient'
+    | 'setujuAdvokasi'
+    | 'statusPerwakilan'
+    | 'updatedAt'
+    | 'updatedBy'
+    | 'waktuPernahKlien'
+    | 'whyLbh'
+  > & {
+    wakilId: Pick<Person, 'id' | 'namaLengkap'>;
+    case: Pick<Case, 'id'>;
+    clients: Maybe<
+      Array<
+        Pick<
+          Client,
+          | 'id'
+          | 'alamatLokasi'
+          | 'asetGedung'
+          | 'asetKios'
+          | 'asetLahanGarapan'
+          | 'asetLapak'
+          | 'asetMobil'
+          | 'asetMotor'
+          | 'asetRumah'
+          | 'asetTanah'
+          | 'asetToko'
+          | 'asetWarung'
+          | 'createdAt'
+          | 'createdBy'
+          | 'pendapatan'
+          | 'sktm'
+          | 'sktmUpload'
+          | 'stmKeterangan'
+          | 'tanggunganAnak'
+          | 'tanggunganFamili'
+          | 'tanggunganLain'
+          | 'tanggunganPasangan'
+          | 'updatedAt'
+          | 'updatedBy'
+          | 'usiaSaatKlien'
+        > & { personId: Pick<Person, 'id' | 'namaLengkap'>; caseid: Pick<Case, 'id'> }
+      >
+    >;
+  };
+};
+
+export type UpdatePersonMutationVariables = {
+  data: PersonUpdateInput;
+  where: PersonWhereUniqueInput;
+};
+
+export type UpdatePersonMutation = {
+  updatePerson: Maybe<
+    Pick<
+      Person,
+      | 'id'
+      | 'agama'
+      | 'alamatDomisili'
+      | 'alamatId'
+      | 'alatBantu'
+      | 'alias'
+      | 'createdAt'
+      | 'createdBy'
+      | 'disabilitas'
+      | 'distrikDomisili'
+      | 'distrikId'
+      | 'domisiliSama'
+      | 'email'
+      | 'golDarah'
+      | 'jenisDisabilitas'
+      | 'jenisDomisili'
+      | 'jenisId'
+      | 'jenisKelamin'
+      | 'jmlAnggota'
+      | 'namaLengkap'
+      | 'nomorId'
+      | 'pekerjaan'
+      | 'pendidikan'
+      | 'statusPernikahan'
+      | 'telepon'
+      | 'tglLahir'
+      | 'tmpLahir'
+      | 'unitSatuan'
+      | 'updatedAt'
+      | 'updatedBy'
+      | 'wargaNegara'
+    > & {
+      applications: Maybe<Array<Pick<Application, 'id' | 'noReg' | 'createdAt'>>>;
+      clients: Maybe<Array<Pick<Client, 'id'> & { applicationId: Pick<Application, 'id' | 'noReg' | 'createdAt'> }>>;
+      documents: Maybe<Array<Pick<PersonDocument, 'id' | 'title' | 'file'>>>;
+    }
+  >;
+};
+
+export type CreatePersonMutationVariables = {
+  data: PersonCreateInput;
+};
+
+export type CreatePersonMutation = {
+  createPerson: Pick<
+    Person,
+    | 'id'
+    | 'agama'
+    | 'alamatDomisili'
+    | 'alamatId'
+    | 'alatBantu'
+    | 'alias'
+    | 'createdAt'
+    | 'createdBy'
+    | 'disabilitas'
+    | 'distrikDomisili'
+    | 'distrikId'
+    | 'domisiliSama'
+    | 'email'
+    | 'golDarah'
+    | 'jenisDisabilitas'
+    | 'jenisDomisili'
+    | 'jenisId'
+    | 'jenisKelamin'
+    | 'jmlAnggota'
+    | 'namaLengkap'
+    | 'nomorId'
+    | 'pekerjaan'
+    | 'pendidikan'
+    | 'statusPernikahan'
+    | 'telepon'
+    | 'tglLahir'
+    | 'tmpLahir'
+    | 'unitSatuan'
+    | 'updatedAt'
+    | 'updatedBy'
+    | 'wargaNegara'
+  > & {
+    applications: Maybe<Array<Pick<Application, 'id' | 'noReg' | 'createdAt'>>>;
+    clients: Maybe<Array<Pick<Client, 'id'> & { applicationId: Pick<Application, 'id' | 'noReg' | 'createdAt'> }>>;
+    documents: Maybe<Array<Pick<PersonDocument, 'id' | 'title' | 'file'>>>;
+  };
+};
+
+export type GetClientQueryVariables = {
+  where?: Maybe<ClientWhereInput>;
+  orderBy?: Maybe<ClientOrderByInput>;
+  skip?: Maybe<number>;
+  after?: Maybe<string>;
+  before?: Maybe<string>;
+  first?: Maybe<number>;
+  last?: Maybe<number>;
+};
+
+export type GetClientQuery = {
+  clients: Array<
+    Maybe<
+      Pick<
+        Client,
+        | 'id'
+        | 'alamatLokasi'
+        | 'asetGedung'
+        | 'asetKios'
+        | 'asetLahanGarapan'
+        | 'asetLapak'
+        | 'asetMobil'
+        | 'asetMotor'
+        | 'asetRumah'
+        | 'asetTanah'
+        | 'asetToko'
+        | 'asetWarung'
+        | 'createdAt'
+        | 'createdBy'
+        | 'pendapatan'
+        | 'sktm'
+        | 'sktmUpload'
+        | 'stmKeterangan'
+        | 'tanggunganAnak'
+        | 'tanggunganFamili'
+        | 'tanggunganLain'
+        | 'tanggunganPasangan'
+        | 'updatedAt'
+        | 'updatedBy'
+        | 'usiaSaatKlien'
+      > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'>; caseid: Pick<Case, 'id'> }
+    >
+  >;
+};
+
+export type GetApplicationsQueryVariables = {
+  where?: Maybe<ApplicationWhereInput>;
+  orderBy?: Maybe<ApplicationOrderByInput>;
+  skip?: Maybe<number>;
+  after?: Maybe<string>;
+  before?: Maybe<string>;
+  first?: Maybe<number>;
+  last?: Maybe<number>;
+};
+
+export type GetApplicationsQuery = {
+  applications: Array<
+    Maybe<
+      Pick<
+        Application,
+        | 'id'
+        | 'createdAt'
+        | 'createdBy'
+        | 'dudukPerara'
+        | 'infoLbh'
+        | 'jumlahPenerimaManfaat'
+        | 'konfirmasiData'
+        | 'noReg'
+        | 'pernahKlien'
+        | 'pernahPpLain'
+        | 'ppLain'
+        | 'regDate'
+        | 'relasiWakilClient'
+        | 'setujuAdvokasi'
+        | 'statusPerwakilan'
+        | 'updatedAt'
+        | 'updatedBy'
+        | 'waktuPernahKlien'
+        | 'whyLbh'
+      > & {
+        wakilId: Pick<Person, 'id' | 'namaLengkap'>;
+        case: Pick<Case, 'id'>;
+        clients: Maybe<
+          Array<
+            Pick<
+              Client,
+              | 'id'
+              | 'alamatLokasi'
+              | 'asetGedung'
+              | 'asetKios'
+              | 'asetLahanGarapan'
+              | 'asetLapak'
+              | 'asetMobil'
+              | 'asetMotor'
+              | 'asetRumah'
+              | 'asetTanah'
+              | 'asetToko'
+              | 'asetWarung'
+              | 'createdAt'
+              | 'createdBy'
+              | 'pendapatan'
+              | 'sktm'
+              | 'sktmUpload'
+              | 'stmKeterangan'
+              | 'tanggunganAnak'
+              | 'tanggunganFamili'
+              | 'tanggunganLain'
+              | 'tanggunganPasangan'
+              | 'updatedAt'
+              | 'updatedBy'
+              | 'usiaSaatKlien'
+            > & { personId: Pick<Person, 'id' | 'namaLengkap'>; caseid: Pick<Case, 'id'> }
+          >
+        >;
+      }
+    >
+  >;
+};
+
 export type GetMtVocabsQueryVariables = {
   where?: Maybe<MtVocabWhereInput>;
   orderBy?: Maybe<MtVocabOrderByInput>;
@@ -13489,56 +13800,738 @@ export type AllPersonQuery = {
   >;
 };
 
-export type AllPersonnnnQueryVariables = {};
-
-export type AllPersonnnnQuery = {
-  persons: Array<
-    Maybe<
-      Pick<
-        Person,
-        | 'id'
-        | 'agama'
-        | 'alamatDomisili'
-        | 'alamatId'
-        | 'alatBantu'
-        | 'alias'
-        | 'createdAt'
-        | 'createdBy'
-        | 'disabilitas'
-        | 'distrikDomisili'
-        | 'distrikId'
-        | 'domisiliSama'
-        | 'email'
-        | 'golDarah'
-        | 'jenisDisabilitas'
-        | 'jenisDomisili'
-        | 'jenisId'
-        | 'jenisKelamin'
-        | 'jmlAnggota'
-        | 'namaLengkap'
-        | 'nomorId'
-        | 'pekerjaan'
-        | 'pendidikan'
-        | 'statusPernikahan'
-        | 'telepon'
-        | 'tglLahir'
-        | 'tmpLahir'
-        | 'unitSatuan'
-        | 'updatedAt'
-        | 'updatedBy'
-        | 'wargaNegara'
-      > & {
-        applications: Maybe<Array<Pick<Application, 'id' | 'noReg' | 'createdAt'>>>;
-        clients: Maybe<Array<Pick<Client, 'id'> & { applicationId: Pick<Application, 'id' | 'noReg' | 'createdAt'> }>>;
-        documents: Maybe<Array<Pick<PersonDocument, 'id' | 'title' | 'file'>>>;
-      }
-    >
-  >;
-};
-
 // ====================================================
 // Documents
 // ====================================================
+
+export namespace CreateClient {
+  export type Variables = {
+    data: ClientCreateInput;
+  };
+
+  export type Mutation = {
+    __typename?: 'Mutation';
+
+    createClient: CreateClient;
+  };
+
+  export type CreateClient = {
+    __typename?: 'Client';
+
+    id: number;
+
+    alamatLokasi: Maybe<string>;
+
+    applicationId: ApplicationId;
+
+    asetGedung: Maybe<string>;
+
+    asetKios: Maybe<string>;
+
+    asetLahanGarapan: Maybe<string>;
+
+    asetLapak: Maybe<string>;
+
+    asetMobil: Maybe<string>;
+
+    asetMotor: Maybe<string>;
+
+    asetRumah: Maybe<string>;
+
+    asetTanah: Maybe<string>;
+
+    asetToko: Maybe<string>;
+
+    asetWarung: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    pendapatan: Maybe<string>;
+
+    personId: PersonId;
+
+    sktm: boolean;
+
+    sktmUpload: Maybe<string>;
+
+    stmKeterangan: Maybe<string>;
+
+    tanggunganAnak: Maybe<number>;
+
+    tanggunganFamili: Maybe<number>;
+
+    tanggunganLain: Maybe<number>;
+
+    tanggunganPasangan: Maybe<number>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    usiaSaatKlien: Maybe<number>;
+
+    caseid: Caseid;
+  };
+
+  export type ApplicationId = {
+    __typename?: 'Application';
+
+    id: number;
+  };
+
+  export type PersonId = {
+    __typename?: 'Person';
+
+    id: number;
+  };
+
+  export type Caseid = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+}
+
+export namespace CreateApplication {
+  export type Variables = {
+    data: ApplicationCreateInput;
+  };
+
+  export type Mutation = {
+    __typename?: 'Mutation';
+
+    createApplication: CreateApplication;
+  };
+
+  export type CreateApplication = {
+    __typename?: 'Application';
+
+    id: number;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    dudukPerara: Maybe<string>;
+
+    infoLbh: Maybe<string>;
+
+    jumlahPenerimaManfaat: Maybe<number>;
+
+    konfirmasiData: boolean;
+
+    noReg: Maybe<string>;
+
+    pernahKlien: Maybe<string>;
+
+    pernahPpLain: Maybe<string>;
+
+    ppLain: Maybe<string>;
+
+    regDate: Maybe<Date>;
+
+    relasiWakilClient: Maybe<string>;
+
+    setujuAdvokasi: boolean;
+
+    statusPerwakilan: Maybe<string>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    wakilId: WakilId;
+
+    waktuPernahKlien: Maybe<string>;
+
+    whyLbh: Maybe<string>;
+
+    case: Case;
+
+    clients: Maybe<Clients[]>;
+  };
+
+  export type WakilId = {
+    __typename?: 'Person';
+
+    id: number;
+
+    namaLengkap: Maybe<string>;
+  };
+
+  export type Case = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+
+  export type Clients = {
+    __typename?: 'Client';
+
+    id: number;
+
+    alamatLokasi: Maybe<string>;
+
+    asetGedung: Maybe<string>;
+
+    asetKios: Maybe<string>;
+
+    asetLahanGarapan: Maybe<string>;
+
+    asetLapak: Maybe<string>;
+
+    asetMobil: Maybe<string>;
+
+    asetMotor: Maybe<string>;
+
+    asetRumah: Maybe<string>;
+
+    asetTanah: Maybe<string>;
+
+    asetToko: Maybe<string>;
+
+    asetWarung: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    pendapatan: Maybe<string>;
+
+    personId: PersonId;
+
+    sktm: boolean;
+
+    sktmUpload: Maybe<string>;
+
+    stmKeterangan: Maybe<string>;
+
+    tanggunganAnak: Maybe<number>;
+
+    tanggunganFamili: Maybe<number>;
+
+    tanggunganLain: Maybe<number>;
+
+    tanggunganPasangan: Maybe<number>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    usiaSaatKlien: Maybe<number>;
+
+    caseid: Caseid;
+  };
+
+  export type PersonId = {
+    __typename?: 'Person';
+
+    id: number;
+
+    namaLengkap: Maybe<string>;
+  };
+
+  export type Caseid = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+}
+
+export namespace UpdatePerson {
+  export type Variables = {
+    data: PersonUpdateInput;
+    where: PersonWhereUniqueInput;
+  };
+
+  export type Mutation = {
+    __typename?: 'Mutation';
+
+    updatePerson: Maybe<UpdatePerson>;
+  };
+
+  export type UpdatePerson = {
+    __typename?: 'Person';
+
+    id: number;
+
+    agama: Maybe<string>;
+
+    alamatDomisili: Maybe<string>;
+
+    alamatId: Maybe<string>;
+
+    alatBantu: Maybe<string>;
+
+    alias: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    disabilitas: boolean;
+
+    distrikDomisili: Maybe<string>;
+
+    distrikId: Maybe<string>;
+
+    domisiliSama: boolean;
+
+    email: Maybe<string>;
+
+    golDarah: Maybe<string>;
+
+    jenisDisabilitas: Maybe<string>;
+
+    jenisDomisili: Maybe<string>;
+
+    jenisId: Maybe<string>;
+
+    jenisKelamin: Maybe<string>;
+
+    jmlAnggota: Maybe<number>;
+
+    namaLengkap: Maybe<string>;
+
+    nomorId: Maybe<string>;
+
+    pekerjaan: Maybe<string>;
+
+    pendidikan: Maybe<string>;
+
+    statusPernikahan: Maybe<string>;
+
+    telepon: Maybe<string>;
+
+    tglLahir: Maybe<Date>;
+
+    tmpLahir: Maybe<string>;
+
+    unitSatuan: Maybe<string>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    wargaNegara: Maybe<string>;
+
+    applications: Maybe<Applications[]>;
+
+    clients: Maybe<Clients[]>;
+
+    documents: Maybe<Documents[]>;
+  };
+
+  export type Applications = {
+    __typename?: 'Application';
+
+    id: number;
+
+    noReg: Maybe<string>;
+
+    createdAt: Date;
+  };
+
+  export type Clients = {
+    __typename?: 'Client';
+
+    id: number;
+
+    applicationId: ApplicationId;
+  };
+
+  export type ApplicationId = {
+    __typename?: 'Application';
+
+    id: number;
+
+    noReg: Maybe<string>;
+
+    createdAt: Date;
+  };
+
+  export type Documents = {
+    __typename?: 'PersonDocument';
+
+    id: number;
+
+    title: Maybe<number>;
+
+    file: Maybe<number>;
+  };
+}
+
+export namespace CreatePerson {
+  export type Variables = {
+    data: PersonCreateInput;
+  };
+
+  export type Mutation = {
+    __typename?: 'Mutation';
+
+    createPerson: CreatePerson;
+  };
+
+  export type CreatePerson = {
+    __typename?: 'Person';
+
+    id: number;
+
+    agama: Maybe<string>;
+
+    alamatDomisili: Maybe<string>;
+
+    alamatId: Maybe<string>;
+
+    alatBantu: Maybe<string>;
+
+    alias: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    disabilitas: boolean;
+
+    distrikDomisili: Maybe<string>;
+
+    distrikId: Maybe<string>;
+
+    domisiliSama: boolean;
+
+    email: Maybe<string>;
+
+    golDarah: Maybe<string>;
+
+    jenisDisabilitas: Maybe<string>;
+
+    jenisDomisili: Maybe<string>;
+
+    jenisId: Maybe<string>;
+
+    jenisKelamin: Maybe<string>;
+
+    jmlAnggota: Maybe<number>;
+
+    namaLengkap: Maybe<string>;
+
+    nomorId: Maybe<string>;
+
+    pekerjaan: Maybe<string>;
+
+    pendidikan: Maybe<string>;
+
+    statusPernikahan: Maybe<string>;
+
+    telepon: Maybe<string>;
+
+    tglLahir: Maybe<Date>;
+
+    tmpLahir: Maybe<string>;
+
+    unitSatuan: Maybe<string>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    wargaNegara: Maybe<string>;
+
+    applications: Maybe<Applications[]>;
+
+    clients: Maybe<Clients[]>;
+
+    documents: Maybe<Documents[]>;
+  };
+
+  export type Applications = {
+    __typename?: 'Application';
+
+    id: number;
+
+    noReg: Maybe<string>;
+
+    createdAt: Date;
+  };
+
+  export type Clients = {
+    __typename?: 'Client';
+
+    id: number;
+
+    applicationId: ApplicationId;
+  };
+
+  export type ApplicationId = {
+    __typename?: 'Application';
+
+    id: number;
+
+    noReg: Maybe<string>;
+
+    createdAt: Date;
+  };
+
+  export type Documents = {
+    __typename?: 'PersonDocument';
+
+    id: number;
+
+    title: Maybe<number>;
+
+    file: Maybe<number>;
+  };
+}
+
+export namespace GetClient {
+  export type Variables = {
+    where?: Maybe<ClientWhereInput>;
+    orderBy?: Maybe<ClientOrderByInput>;
+    skip?: Maybe<number>;
+    after?: Maybe<string>;
+    before?: Maybe<string>;
+    first?: Maybe<number>;
+    last?: Maybe<number>;
+  };
+
+  export type Query = {
+    __typename?: 'Query';
+
+    clients: (Maybe<Clients>)[];
+  };
+
+  export type Clients = {
+    __typename?: 'Client';
+
+    id: number;
+
+    alamatLokasi: Maybe<string>;
+
+    applicationId: ApplicationId;
+
+    asetGedung: Maybe<string>;
+
+    asetKios: Maybe<string>;
+
+    asetLahanGarapan: Maybe<string>;
+
+    asetLapak: Maybe<string>;
+
+    asetMobil: Maybe<string>;
+
+    asetMotor: Maybe<string>;
+
+    asetRumah: Maybe<string>;
+
+    asetTanah: Maybe<string>;
+
+    asetToko: Maybe<string>;
+
+    asetWarung: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    pendapatan: Maybe<string>;
+
+    personId: PersonId;
+
+    sktm: boolean;
+
+    sktmUpload: Maybe<string>;
+
+    stmKeterangan: Maybe<string>;
+
+    tanggunganAnak: Maybe<number>;
+
+    tanggunganFamili: Maybe<number>;
+
+    tanggunganLain: Maybe<number>;
+
+    tanggunganPasangan: Maybe<number>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    usiaSaatKlien: Maybe<number>;
+
+    caseid: Caseid;
+  };
+
+  export type ApplicationId = {
+    __typename?: 'Application';
+
+    id: number;
+  };
+
+  export type PersonId = {
+    __typename?: 'Person';
+
+    id: number;
+  };
+
+  export type Caseid = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+}
+
+export namespace GetApplications {
+  export type Variables = {
+    where?: Maybe<ApplicationWhereInput>;
+    orderBy?: Maybe<ApplicationOrderByInput>;
+    skip?: Maybe<number>;
+    after?: Maybe<string>;
+    before?: Maybe<string>;
+    first?: Maybe<number>;
+    last?: Maybe<number>;
+  };
+
+  export type Query = {
+    __typename?: 'Query';
+
+    applications: (Maybe<Applications>)[];
+  };
+
+  export type Applications = {
+    __typename?: 'Application';
+
+    id: number;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    dudukPerara: Maybe<string>;
+
+    infoLbh: Maybe<string>;
+
+    jumlahPenerimaManfaat: Maybe<number>;
+
+    konfirmasiData: boolean;
+
+    noReg: Maybe<string>;
+
+    pernahKlien: Maybe<string>;
+
+    pernahPpLain: Maybe<string>;
+
+    ppLain: Maybe<string>;
+
+    regDate: Maybe<Date>;
+
+    relasiWakilClient: Maybe<string>;
+
+    setujuAdvokasi: boolean;
+
+    statusPerwakilan: Maybe<string>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    wakilId: WakilId;
+
+    waktuPernahKlien: Maybe<string>;
+
+    whyLbh: Maybe<string>;
+
+    case: Case;
+
+    clients: Maybe<Clients[]>;
+  };
+
+  export type WakilId = {
+    __typename?: 'Person';
+
+    id: number;
+
+    namaLengkap: Maybe<string>;
+  };
+
+  export type Case = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+
+  export type Clients = {
+    __typename?: 'Client';
+
+    id: number;
+
+    alamatLokasi: Maybe<string>;
+
+    asetGedung: Maybe<string>;
+
+    asetKios: Maybe<string>;
+
+    asetLahanGarapan: Maybe<string>;
+
+    asetLapak: Maybe<string>;
+
+    asetMobil: Maybe<string>;
+
+    asetMotor: Maybe<string>;
+
+    asetRumah: Maybe<string>;
+
+    asetTanah: Maybe<string>;
+
+    asetToko: Maybe<string>;
+
+    asetWarung: Maybe<string>;
+
+    createdAt: Date;
+
+    createdBy: Maybe<string>;
+
+    pendapatan: Maybe<string>;
+
+    personId: PersonId;
+
+    sktm: boolean;
+
+    sktmUpload: Maybe<string>;
+
+    stmKeterangan: Maybe<string>;
+
+    tanggunganAnak: Maybe<number>;
+
+    tanggunganFamili: Maybe<number>;
+
+    tanggunganLain: Maybe<number>;
+
+    tanggunganPasangan: Maybe<number>;
+
+    updatedAt: Date;
+
+    updatedBy: Maybe<string>;
+
+    usiaSaatKlien: Maybe<number>;
+
+    caseid: Caseid;
+  };
+
+  export type PersonId = {
+    __typename?: 'Person';
+
+    id: number;
+
+    namaLengkap: Maybe<string>;
+  };
+
+  export type Caseid = {
+    __typename?: 'Case';
+
+    id: number;
+  };
+}
 
 export namespace GetMtVocabs {
   export type Variables = {
@@ -13702,126 +14695,6 @@ export namespace AllPerson {
   };
 }
 
-export namespace AllPersonnnn {
-  export type Variables = {};
-
-  export type Query = {
-    __typename?: 'Query';
-
-    persons: (Maybe<Persons>)[];
-  };
-
-  export type Persons = {
-    __typename?: 'Person';
-
-    id: number;
-
-    agama: Maybe<string>;
-
-    alamatDomisili: Maybe<string>;
-
-    alamatId: Maybe<string>;
-
-    alatBantu: Maybe<string>;
-
-    alias: Maybe<string>;
-
-    createdAt: Date;
-
-    createdBy: Maybe<string>;
-
-    disabilitas: boolean;
-
-    distrikDomisili: Maybe<string>;
-
-    distrikId: Maybe<string>;
-
-    domisiliSama: boolean;
-
-    email: Maybe<string>;
-
-    golDarah: Maybe<string>;
-
-    jenisDisabilitas: Maybe<string>;
-
-    jenisDomisili: Maybe<string>;
-
-    jenisId: Maybe<string>;
-
-    jenisKelamin: Maybe<string>;
-
-    jmlAnggota: Maybe<number>;
-
-    namaLengkap: Maybe<string>;
-
-    nomorId: Maybe<string>;
-
-    pekerjaan: Maybe<string>;
-
-    pendidikan: Maybe<string>;
-
-    statusPernikahan: Maybe<string>;
-
-    telepon: Maybe<string>;
-
-    tglLahir: Maybe<Date>;
-
-    tmpLahir: Maybe<string>;
-
-    unitSatuan: Maybe<string>;
-
-    updatedAt: Date;
-
-    updatedBy: Maybe<string>;
-
-    wargaNegara: Maybe<string>;
-
-    applications: Maybe<Applications[]>;
-
-    clients: Maybe<Clients[]>;
-
-    documents: Maybe<Documents[]>;
-  };
-
-  export type Applications = {
-    __typename?: 'Application';
-
-    id: number;
-
-    noReg: Maybe<string>;
-
-    createdAt: Date;
-  };
-
-  export type Clients = {
-    __typename?: 'Client';
-
-    id: number;
-
-    applicationId: ApplicationId;
-  };
-
-  export type ApplicationId = {
-    __typename?: 'Application';
-
-    id: number;
-
-    noReg: Maybe<string>;
-
-    createdAt: Date;
-  };
-
-  export type Documents = {
-    __typename?: 'PersonDocument';
-
-    id: number;
-
-    title: Maybe<number>;
-
-    file: Maybe<number>;
-  };
-}
-
 // ====================================================
 // START: Apollo Angular template
 // ====================================================
@@ -13838,32 +14711,44 @@ import gql from 'graphql-tag';
 @Injectable({
   providedIn: 'root',
 })
-export class GetMtVocabsGQL extends Apollo.Query<GetMtVocabs.Query, GetMtVocabs.Variables> {
+export class CreateClientGQL extends Apollo.Mutation<CreateClient.Mutation, CreateClient.Variables> {
   document: any = gql`
-    query getMtVocabs(
-      $where: MtVocabWhereInput
-      $orderBy: MtVocabOrderByInput
-      $skip: Int
-      $after: String
-      $before: String
-      $first: Int
-      $last: Int
-    ) {
-      mtVocabs(
-        where: $where
-        orderBy: $orderBy
-        skip: $skip
-        after: $after
-        before: $before
-        first: $first
-        last: $last
-      ) {
-        KODE
-        kode_induk
-        level
-        sembunyikan
-        teks
-        urutan
+    mutation createClient($data: ClientCreateInput!) {
+      createClient(data: $data) {
+        id
+        alamatLokasi
+        applicationId {
+          id
+        }
+        asetGedung
+        asetKios
+        asetLahanGarapan
+        asetLapak
+        asetMobil
+        asetMotor
+        asetRumah
+        asetTanah
+        asetToko
+        asetWarung
+        createdAt
+        createdBy
+        pendapatan
+        personId {
+          id
+        }
+        sktm
+        sktmUpload
+        stmKeterangan
+        tanggunganAnak
+        tanggunganFamili
+        tanggunganLain
+        tanggunganPasangan
+        updatedAt
+        updatedBy
+        usiaSaatKlien
+        caseid {
+          id
+        }
       }
     }
   `;
@@ -13871,26 +14756,81 @@ export class GetMtVocabsGQL extends Apollo.Query<GetMtVocabs.Query, GetMtVocabs.
 @Injectable({
   providedIn: 'root',
 })
-export class AllPersonGQL extends Apollo.Query<AllPerson.Query, AllPerson.Variables> {
+export class CreateApplicationGQL extends Apollo.Mutation<CreateApplication.Mutation, CreateApplication.Variables> {
   document: any = gql`
-    query allPerson(
-      $where: PersonWhereInput
-      $orderBy: PersonOrderByInput
-      $skip: Int
-      $after: String
-      $before: String
-      $first: Int
-      $last: Int
-    ) {
-      persons(
-        where: $where
-        orderBy: $orderBy
-        skip: $skip
-        after: $after
-        before: $before
-        first: $first
-        last: $last
-      ) {
+    mutation createApplication($data: ApplicationCreateInput!) {
+      createApplication(data: $data) {
+        id
+        createdAt
+        createdBy
+        dudukPerara
+        infoLbh
+        jumlahPenerimaManfaat
+        konfirmasiData
+        noReg
+        pernahKlien
+        pernahPpLain
+        ppLain
+        regDate
+        relasiWakilClient
+        setujuAdvokasi
+        statusPerwakilan
+        updatedAt
+        updatedBy
+        wakilId {
+          id
+          namaLengkap
+        }
+        waktuPernahKlien
+        whyLbh
+        case {
+          id
+        }
+        clients {
+          id
+          alamatLokasi
+          asetGedung
+          asetKios
+          asetLahanGarapan
+          asetLapak
+          asetMobil
+          asetMotor
+          asetRumah
+          asetTanah
+          asetToko
+          asetWarung
+          createdAt
+          createdBy
+          pendapatan
+          personId {
+            id
+            namaLengkap
+          }
+          sktm
+          sktmUpload
+          stmKeterangan
+          tanggunganAnak
+          tanggunganFamili
+          tanggunganLain
+          tanggunganPasangan
+          updatedAt
+          updatedBy
+          usiaSaatKlien
+          caseid {
+            id
+          }
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class UpdatePersonGQL extends Apollo.Mutation<UpdatePerson.Mutation, UpdatePerson.Variables> {
+  document: any = gql`
+    mutation updatePerson($data: PersonUpdateInput!, $where: PersonWhereUniqueInput!) {
+      updatePerson(data: $data, where: $where) {
         id
         agama
         alamatDomisili
@@ -13947,10 +14887,259 @@ export class AllPersonGQL extends Apollo.Query<AllPerson.Query, AllPerson.Variab
 @Injectable({
   providedIn: 'root',
 })
-export class AllPersonnnnGQL extends Apollo.Query<AllPersonnnn.Query, AllPersonnnn.Variables> {
+export class CreatePersonGQL extends Apollo.Mutation<CreatePerson.Mutation, CreatePerson.Variables> {
   document: any = gql`
-    query allPersonnnn {
-      persons {
+    mutation createPerson($data: PersonCreateInput!) {
+      createPerson(data: $data) {
+        id
+        agama
+        alamatDomisili
+        alamatId
+        alatBantu
+        alias
+        createdAt
+        createdBy
+        disabilitas
+        distrikDomisili
+        distrikId
+        domisiliSama
+        email
+        golDarah
+        jenisDisabilitas
+        jenisDomisili
+        jenisId
+        jenisKelamin
+        jmlAnggota
+        namaLengkap
+        nomorId
+        pekerjaan
+        pendidikan
+        statusPernikahan
+        telepon
+        tglLahir
+        tmpLahir
+        unitSatuan
+        updatedAt
+        updatedBy
+        wargaNegara
+        applications {
+          id
+          noReg
+          createdAt
+        }
+        clients {
+          id
+          applicationId {
+            id
+            noReg
+            createdAt
+          }
+        }
+        documents {
+          id
+          title
+          file
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class GetClientGQL extends Apollo.Query<GetClient.Query, GetClient.Variables> {
+  document: any = gql`
+    query getClient(
+      $where: ClientWhereInput
+      $orderBy: ClientOrderByInput
+      $skip: Int
+      $after: String
+      $before: String
+      $first: Int
+      $last: Int
+    ) {
+      clients {
+        id
+        alamatLokasi
+        applicationId {
+          id
+        }
+        asetGedung
+        asetKios
+        asetLahanGarapan
+        asetLapak
+        asetMobil
+        asetMotor
+        asetRumah
+        asetTanah
+        asetToko
+        asetWarung
+        createdAt
+        createdBy
+        pendapatan
+        personId {
+          id
+        }
+        sktm
+        sktmUpload
+        stmKeterangan
+        tanggunganAnak
+        tanggunganFamili
+        tanggunganLain
+        tanggunganPasangan
+        updatedAt
+        updatedBy
+        usiaSaatKlien
+        caseid {
+          id
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class GetApplicationsGQL extends Apollo.Query<GetApplications.Query, GetApplications.Variables> {
+  document: any = gql`
+    query getApplications(
+      $where: ApplicationWhereInput
+      $orderBy: ApplicationOrderByInput
+      $skip: Int
+      $after: String
+      $before: String
+      $first: Int
+      $last: Int
+    ) {
+      applications(
+        where: $where
+        orderBy: $orderBy
+        skip: $skip
+        after: $after
+        before: $before
+        first: $first
+        last: $last
+      ) {
+        id
+        createdAt
+        createdBy
+        dudukPerara
+        infoLbh
+        jumlahPenerimaManfaat
+        konfirmasiData
+        noReg
+        pernahKlien
+        pernahPpLain
+        ppLain
+        regDate
+        relasiWakilClient
+        setujuAdvokasi
+        statusPerwakilan
+        updatedAt
+        updatedBy
+        wakilId {
+          id
+          namaLengkap
+        }
+        waktuPernahKlien
+        whyLbh
+        case {
+          id
+        }
+        clients {
+          id
+          alamatLokasi
+          asetGedung
+          asetKios
+          asetLahanGarapan
+          asetLapak
+          asetMobil
+          asetMotor
+          asetRumah
+          asetTanah
+          asetToko
+          asetWarung
+          createdAt
+          createdBy
+          pendapatan
+          personId {
+            id
+            namaLengkap
+          }
+          sktm
+          sktmUpload
+          stmKeterangan
+          tanggunganAnak
+          tanggunganFamili
+          tanggunganLain
+          tanggunganPasangan
+          updatedAt
+          updatedBy
+          usiaSaatKlien
+          caseid {
+            id
+          }
+        }
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class GetMtVocabsGQL extends Apollo.Query<GetMtVocabs.Query, GetMtVocabs.Variables> {
+  document: any = gql`
+    query getMtVocabs(
+      $where: MtVocabWhereInput
+      $orderBy: MtVocabOrderByInput
+      $skip: Int
+      $after: String
+      $before: String
+      $first: Int
+      $last: Int
+    ) {
+      mtVocabs(
+        where: $where
+        orderBy: $orderBy
+        skip: $skip
+        after: $after
+        before: $before
+        first: $first
+        last: $last
+      ) {
+        KODE
+        kode_induk
+        level
+        sembunyikan
+        teks
+        urutan
+      }
+    }
+  `;
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class AllPersonGQL extends Apollo.Query<AllPerson.Query, AllPerson.Variables> {
+  document: any = gql`
+    query allPerson(
+      $where: PersonWhereInput
+      $orderBy: PersonOrderByInput
+      $skip: Int
+      $after: String
+      $before: String
+      $first: Int
+      $last: Int
+    ) {
+      persons(
+        where: $where
+        orderBy: $orderBy
+        skip: $skip
+        after: $after
+        before: $before
+        first: $first
+        last: $last
+      ) {
         id
         agama
         alamatDomisili

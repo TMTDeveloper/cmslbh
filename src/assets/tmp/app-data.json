@@ -30,6 +30,19 @@
             "link": "/form/person/list"
           }
         ]
+      },
+      {
+        "text": "Application",
+        "icon": "anticon-edit",
+        "children": [{
+            "text": "Create Application",
+            "link": "/form/application/create"
+          },
+          {
+            "text": "List Application",
+            "link": "/form/application/list"
+          }
+        ]
       }
     ]
   }]

@@ -1,5 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { NzMessageService, CascaderOption } from 'ng-zorro-antd';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnDestroy,
+  ElementRef,
+  TemplateRef,
+} from '@angular/core';
+import { NzMessageService, CascaderOption, NzModalService } from 'ng-zorro-antd';
 import { SettingsService } from '@delon/theme';
 import { SFSchema, CascaderWidget, SFComponent } from '@delon/form';
 import {
@@ -17,14 +27,15 @@ import {
 import { MtVocabHelper } from '@shared/helper';
 import * as moment from 'moment';
 import { map, take } from 'rxjs/operators';
-import { AllPersonGQL } from '@shared/generated/graphql';
+import { AllPersonGQL, AllPerson } from '@shared/generated/graphql';
+import { Observable } from 'apollo-link';
 
 @Component({
-  selector: 'app-create-person',
-  templateUrl: './create-person.component.html',
-  styleUrls: ['./create-person.component.less'],
+  selector: 'app-create-client',
+  templateUrl: './create-client.component.html',
+  styleUrls: ['./create-client.component.less'],
 })
-export class CreatePersonComponent implements OnInit, OnDestroy {
+export class CreateClientComponent implements OnInit, OnDestroy {
   private _editData: any;
 
   constructor(
@@ -34,10 +45,13 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     private createPersonGQL: CreatePersonGQL,
     private settingService: SettingsService,
     private updatePersonGQL: UpdatePersonGQL,
+    private modalSrv: NzModalService,
   ) {}
 
   @Output() saveDone = new EventEmitter<boolean>();
   @ViewChild('sf') sf: SFComponent;
+  @ViewChild('card') card: ElementRef;
+  @ViewChild('listPerson') listPerson: TemplateRef<{}>;
   @Input() parent: boolean;
   @Input() create: boolean;
   @Input()
@@ -134,6 +148,14 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         type: 'string',
         ui: {
           hidden: true,
+        },
+      },
+      personId: {
+        type: 'string',
+        title: 'Clients',
+        readOnly: true,
+        ui: {
+          widget: 'custom',
         },
       },
       namaLengkap: {
@@ -404,5 +426,23 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       },
       orderBy: MtVocabOrderByInput.Teks_Asc,
     };
+  }
+
+  add(tpl: TemplateRef<{}>, title: string) {
+    this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+
+  openModal() {
+    this.add(this.listPerson, 'Pilih Person');
+  }
+  closeModalAndSaveData(event: AllPerson.Persons) {
+    this.modalSrv.closeAll();
+    this.sf.setValue('/personId', event);
   }
 }

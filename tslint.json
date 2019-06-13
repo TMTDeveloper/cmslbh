@@ -99,7 +99,6 @@
     "directive-class-suffix": true,
     "no-access-missing-member": true,
     "templates-use-public": true,
-    "invoke-injectable": true,
-    "use-path-mapping": [true, ["@core/*", "@shared/*", "@shared"]]
+    "invoke-injectable": true
   }
 }

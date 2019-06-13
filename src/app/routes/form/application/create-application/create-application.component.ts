@@ -18,14 +18,16 @@ import { MtVocabHelper } from '@shared/helper';
 import * as moment from 'moment';
 import { map, take } from 'rxjs/operators';
 import { AllPersonGQL } from '@shared/generated/graphql';
+import { STComponent, STColumn, STData, STChange } from '@delon/abc';
 
 @Component({
-  selector: 'app-create-person',
-  templateUrl: './create-person.component.html',
-  styleUrls: ['./create-person.component.less'],
+  selector: 'app-create-application',
+  templateUrl: './create-application.component.html',
+  styleUrls: ['./create-application.component.less'],
 })
-export class CreatePersonComponent implements OnInit, OnDestroy {
+export class CreateApplicationComponent implements OnInit, OnDestroy {
   private _editData: any;
+  private clientData = [];
 
   constructor(
     public msg: NzMessageService,
@@ -128,6 +130,35 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       );
   }
 
+  columns: STColumn[] = [
+    {
+      title: 'Nama Lengkap',
+      index: 'namaLengkap',
+    },
+    {
+      title: 'Email',
+      index: 'email',
+    },
+    {
+      title: 'Telp',
+      index: 'telepon',
+    },
+    {
+      title: 'Nomor Id',
+      index: 'nomorId',
+    },
+    {
+      title: 'Updated At',
+      index: 'updatedAt',
+      type: 'date',
+    },
+    {
+      title: 'Created At',
+      index: 'createdAt',
+      type: 'date',
+    },
+  ];
+
   schema: SFSchema = {
     properties: {
       id: {
@@ -136,20 +167,29 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           hidden: true,
         },
       },
-      namaLengkap: {
+      noReg: {
         type: 'string',
-        title: 'Nama Lengkap',
+        title: 'No Reg',
       },
-      alias: {
+      regDate: {
         type: 'string',
-        title: 'Alias',
+        title: 'Tanggal Registrasi',
       },
-      unitSatuan: {
+      clients: {
+        type: 'string',
+        title: 'Clients',
+        enum: [],
+        ui: {
+          widget: 'custom',
+        },
+        default: 'test',
+      },
+      statusPerwakilan: {
         type: 'string',
         title: 'Unit Satuan',
         ui: {
           widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(7, 'kode'),
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(70, 'kode'),
         },
       },
       jmlAnggota: {

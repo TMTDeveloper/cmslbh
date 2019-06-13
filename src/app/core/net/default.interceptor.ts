@@ -16,21 +16,21 @@ import { environment } from '@env/environment';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 const CODEMESSAGE = {
-  200: '服务器成功返回请求的数据。',
-  201: '新建或修改数据成功。',
-  202: '一个请求已经进入后台排队（异步任务）。',
-  204: '删除数据成功。',
-  400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
-  403: '用户得到授权，但是访问是被禁止的。',
-  404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-  406: '请求的格式不可得。',
-  410: '请求的资源被永久删除，且不会再得到的。',
-  422: '当创建一个对象时，发生一个验证错误。',
-  500: '服务器发生错误，请检查服务器。',
-  502: '网关错误。',
-  503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
+  200: 'The server successfully returned the requested data.',
+  201: 'New or modified data is successful.',
+  202: 'A request has entered the background queue (asynchronous task).',
+  204: 'The data was deleted successfully.',
+  400: 'The request was made with an error and the server did not perform any operations to create or modify data.',
+  401: 'User does not have permission (token, username, password is incorrect).',
+  403: 'The user is authorized, but access is forbidden.',
+  404: 'The request is made for a record that does not exist and the server does not operate.',
+  406: 'The format of the request is not available.',
+  410: 'The requested resource is permanently deleted and will not be retrieved.',
+  422: 'A validation error occurred when creating an object.',
+  500: 'An error occurred on the server. Please check the server.',
+  502: 'Gateway error.',
+  503: 'The service is unavailable and the server is temporarily overloaded or maintained.',
+  504: 'The gateway timed out.',
 };
 
 /**
@@ -54,10 +54,11 @@ export class DefaultInterceptor implements HttpInterceptor {
     }
 
     const errortext = CODEMESSAGE[ev.status] || ev.statusText;
-    this.notification.error(`请求错误 ${ev.status}: ${ev.url}`, errortext);
+    this.notification.error(`Request error ${ev.status}: ${ev.url}`, errortext);
   }
 
   private handleData(ev: HttpResponseBase): Observable<any> {
+    console.log(ev.status);
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
     if (ev.status > 0) {
       this.injector.get(_HttpClient).end();
@@ -87,7 +88,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         // }
         break;
       case 401:
-        this.notification.error(`未登录或登录已过期，请重新登录。`, ``);
+        this.notification.error(`Not logged in or the login has expired, please log in again.`, ``);
         // 清空 token 信息
         (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
         this.goTo('/passport/login');
@@ -99,7 +100,10 @@ export class DefaultInterceptor implements HttpInterceptor {
         break;
       default:
         if (ev instanceof HttpErrorResponse) {
-          console.warn('未可知错误，大部分是由于后端不支持CORS或无效配置引起', ev);
+          console.warn(
+            "I don't know the error, most of it is caused by the backend not supporting CORS or invalid configuration.",
+            ev,
+          );
           return throwError(ev);
         }
         break;
@@ -113,8 +117,10 @@ export class DefaultInterceptor implements HttpInterceptor {
     if (!url.startsWith('https://') && !url.startsWith('http://')) {
       url = environment.SERVER_URL + url;
     }
-
+    console.log(url);
+    console.log(req);
     const newReq = req.clone({ url });
+    console.log(newReq);
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {
         // 允许统一对请求错误处理

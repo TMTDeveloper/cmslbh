@@ -6,10 +6,12 @@ import { filter } from 'rxjs/operators';
 import { registerLocaleData } from '@angular/common';
 import ngZh from '@angular/common/locales/zh';
 import ngEn from '@angular/common/locales/en';
+import ngId from '@angular/common/locales/id';
 import ngZhTw from '@angular/common/locales/zh-Hant';
 
 import { en_US, zh_CN, zh_TW, NzI18nService } from 'ng-zorro-antd';
 import * as df_en from 'date-fns/locale/en';
+import * as df_id from 'date-fns/locale/id';
 import * as df_zh_cn from 'date-fns/locale/zh_cn';
 import * as df_zh_tw from 'date-fns/locale/zh_tw';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,29 +33,13 @@ interface LangData {
   abbr: string;
 }
 
-const DEFAULT = 'zh-CN';
+const DEFAULT = 'id';
 const LANGS: { [key: string]: LangData } = {
-  'zh-CN': {
-    text: '简体中文',
-    ng: ngZh,
-    zorro: zh_CN,
-    dateFns: df_zh_cn,
-    delon: delonZhCn,
-    abbr: '🇨🇳',
-  },
-  'zh-TW': {
-    text: '繁体中文',
-    ng: ngZhTw,
-    zorro: zh_TW,
-    dateFns: df_zh_tw,
-    delon: delonZhTw,
-    abbr: '🇭🇰',
-  },
-  'en-US': {
-    text: 'English',
-    ng: ngEn,
+  id: {
+    text: 'Indonesian',
+    ng: ngId,
     zorro: en_US,
-    dateFns: df_en,
+    dateFns: df_id,
     delon: delonEnUS,
     abbr: '🇬🇧',
   },
@@ -88,7 +74,7 @@ export class I18NService implements AlainI18NService {
     const item = LANGS[lang];
     registerLocaleData(item.ng);
     this.nzI18nService.setLocale(item.zorro);
-    (window as any).__locale__ = item.dateFns;
+    (window as any).__localeId__ = item.dateFns;
     this.delonLocaleService.setLocale(item.delon);
   }
 

@@ -1,0 +1,4 @@
+<page-header *ngIf="!parent" [title]="'Create Person'"></page-header>
+<nz-card [nzBordered]="false">
+  <sf [schema]="schema" [formData]="formData" (formSubmit)="submit($event)"></sf>
+</nz-card>

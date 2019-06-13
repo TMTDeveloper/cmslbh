@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SimpleGuard } from '@delon/auth';
+import { SimpleGuard, JWTGuard } from '@delon/auth';
 import { environment } from '@env/environment';
 // layout
 import { LayoutDefaultComponent } from '../layout/default/default.component';
@@ -23,8 +23,8 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    canActivate: [SimpleGuard],
-    canActivateChild: [SimpleGuard],
+    canActivate: [JWTGuard],
+    canActivateChild: [JWTGuard],
     children: [
       { path: '', redirectTo: 'dashboard/v1', pathMatch: 'full' },
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
@@ -42,6 +42,7 @@ const routes: Routes = [
       { path: 'pro', loadChildren: './pro/pro.module#ProModule' },
       // Exception
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
+      { path: 'form', loadChildren: './form/form.module#FormModule' },
     ],
   },
   // 全屏布局

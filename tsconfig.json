@@ -1,5 +1,5 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -15,15 +15,26 @@
     ],
     "lib": [
       "es2018",
-      "dom"
+      "dom",
+      "esnext.asynciterable"
     ],
     "baseUrl": "./src/",
     "paths": {
-      "@shared": [ "app/shared/index" ],
-      "@shared/*": [ "app/shared/*" ],
-      "@core": [ "app/core/index" ],
-      "@core/*": [ "app/core/*" ],
-      "@env/*": [ "environments/*" ]
+      "@shared": [
+        "app/shared/index"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@core": [
+        "app/core/index"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@env/*": [
+        "environments/*"
+      ]
     }
   }
 }

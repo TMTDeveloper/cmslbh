@@ -5,22 +5,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // #region default language
 // 参考：https://ng-alain.com/docs/i18n
-import { default as ngLang } from '@angular/common/locales/zh';
-import { NZ_I18N, zh_CN as zorroLang } from 'ng-zorro-antd';
-import { DELON_LOCALE, zh_CN as delonLang } from '@delon/theme';
+import { default as ngLangID } from '@angular/common/locales/id';
+import { NZ_I18N, en_US as zorroLang, NZ_DATE_LOCALE } from 'ng-zorro-antd';
+import ngId from '@angular/common/locales/id';
+import { DELON_LOCALE, en_US as delonLang } from '@delon/theme';
 const LANG = {
-  abbr: 'zh',
-  ng: ngLang,
+  abbr: 'en',
   zorro: zorroLang,
   delon: delonLang,
 };
 // register angular
 import { registerLocaleData } from '@angular/common';
-registerLocaleData(LANG.ng, LANG.abbr);
+registerLocaleData(ngLangID, 'id');
 const LANG_PROVIDES = [
-  { provide: LOCALE_ID, useValue: LANG.abbr },
-  { provide: NZ_I18N, useValue: LANG.zorro },
-  { provide: DELON_LOCALE, useValue: LANG.delon },
+  { provide: LOCALE_ID, useValue: ngLangID },
+  { provide: NZ_I18N, useValue: ngLangID },
+  { provide: DELON_LOCALE, useValue: ngLangID },
+  { provide: NZ_DATE_LOCALE, useValue: ngId },
 ];
 // #endregion
 
@@ -62,10 +63,10 @@ const FORM_MODULES = [JsonSchemaModule];
 
 // #region Http Interceptors
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SimpleInterceptor } from '@delon/auth';
+import { JWTInterceptor } from '@delon/auth';
 import { DefaultInterceptor } from '@core';
 const INTERCEPTOR_PROVIDES = [
-  { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
 ];
 // #endregion
@@ -92,6 +93,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -107,6 +109,7 @@ import { LayoutModule } from './layout/layout.module';
     ...I18NSERVICE_MODULES,
     ...GLOBAL_THIRD_MODULES,
     ...FORM_MODULES,
+    GraphQLModule,
   ],
   providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
   bootstrap: [AppComponent],

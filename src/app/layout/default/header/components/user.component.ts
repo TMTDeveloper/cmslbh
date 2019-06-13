@@ -16,13 +16,13 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
           <i nz-icon nzType="user" class="mr-sm"></i>
           {{ 'menu.account.center' | translate }}
         </div>
+        //
         <div nz-menu-item routerLink="/pro/account/settings">
-          <i nz-icon nzType="setting" class="mr-sm"></i>
-          {{ 'menu.account.settings' | translate }}
+          // <i nz-icon nzType="setting" class="mr-sm"></i> // {{ 'menu.account.settings' | translate }} //
         </div>
+        //
         <div nz-menu-item routerLink="/exception/trigger">
-          <i nz-icon nzType="close-circle" class="mr-sm"></i>
-          {{ 'menu.account.trigger' | translate }}
+          // <i nz-icon nzType="close-circle" class="mr-sm"></i> // {{ 'menu.account.trigger' | translate }} //
         </div>
         <li nz-menu-divider></li>
         <div nz-menu-item (click)="logout()">

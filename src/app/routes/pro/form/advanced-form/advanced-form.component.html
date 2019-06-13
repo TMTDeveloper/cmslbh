@@ -9,7 +9,7 @@
           <nz-form-label nzFor="name">仓库名</nz-form-label>
           <nz-form-control>
             <input nz-input formControlName="name" id="name" placeholder="请输入仓库名称" />
-            <nz-form-explain *ngIf="(name.dirty || name.touched) && name.errors?.required">
+            <nz-form-explain *ngIf="(name.dirty || name.touched) && !!name.errors?.required">
               请输入仓库名称
             </nz-form-explain>
           </nz-form-control>
@@ -22,7 +22,7 @@
             <nz-input-group nzAddOnBefore="http://" nzAddOnAfter=".com">
               <input nz-input formControlName="url" placeholder="请输入" />
             </nz-input-group>
-            <nz-form-explain *ngIf="(url.dirty || url.touched) && url.errors?.required">
+            <nz-form-explain *ngIf="(url.dirty || url.touched) && !!url.errors?.required">
               请输入仓库域名
             </nz-form-explain>
           </nz-form-control>

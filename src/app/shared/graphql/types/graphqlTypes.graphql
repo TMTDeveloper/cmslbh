@@ -1,0 +1,133 @@
+query getMtVocabs(
+  $where: MtVocabWhereInput
+  $orderBy: MtVocabOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  mtVocabs(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    KODE
+    kode_induk
+    level
+    sembunyikan
+    teks
+    urutan
+  }
+}
+query allPerson(
+  $where: PersonWhereInput
+  $orderBy: PersonOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  persons(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+    agama
+    alamatDomisili
+    alamatId
+    alatBantu
+    alias
+    createdAt
+    createdBy
+    disabilitas
+    distrikDomisili
+    distrikId
+    domisiliSama
+    email
+    golDarah
+    jenisDisabilitas
+    jenisDomisili
+    jenisId
+    jenisKelamin
+    jmlAnggota
+    namaLengkap
+    nomorId
+    pekerjaan
+    pendidikan
+    statusPernikahan
+    telepon
+    tglLahir
+    tmpLahir
+    unitSatuan
+    updatedAt
+    updatedBy
+    wargaNegara
+    applications {
+      id
+      noReg
+      createdAt
+    }
+    clients {
+      id
+      applicationId {
+        id
+        noReg
+        createdAt
+      }
+    }
+    documents {
+      id
+      title
+      file
+    }
+  }
+}
+
+query allPersonnnn {
+  persons {
+    id
+    agama
+    alamatDomisili
+    alamatId
+    alatBantu
+    alias
+    createdAt
+    createdBy
+    disabilitas
+    distrikDomisili
+    distrikId
+    domisiliSama
+    email
+    golDarah
+    jenisDisabilitas
+    jenisDomisili
+    jenisId
+    jenisKelamin
+    jmlAnggota
+    namaLengkap
+    nomorId
+    pekerjaan
+    pendidikan
+    statusPernikahan
+    telepon
+    tglLahir
+    tmpLahir
+    unitSatuan
+    updatedAt
+    updatedBy
+    wargaNegara
+    applications {
+      id
+      noReg
+      createdAt
+    }
+    clients {
+      id
+      applicationId {
+        id
+        noReg
+        createdAt
+      }
+    }
+    documents {
+      id
+      title
+      file
+    }
+  }
+}

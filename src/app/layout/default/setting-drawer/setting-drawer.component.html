@@ -52,8 +52,8 @@
         固定头和侧边栏
         <nz-switch
           nzSize="small"
-          [(ngModel)]="layout.fixed"
-          (ngModelChange)="setLayout('fixed', layout.fixed)"
+          [(ngModel)]="!!layout.fixed"
+          (ngModelChange)="setLayout('fixed', !!layout.fixed)"
         ></nz-switch>
       </div>
       <div class="setting-drawer__body-item">

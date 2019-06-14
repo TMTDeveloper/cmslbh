@@ -1,5 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { NzMessageService, CascaderOption } from 'ng-zorro-antd';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnDestroy,
+  TemplateRef,
+  ElementRef,
+} from '@angular/core';
+import { NzMessageService, CascaderOption, NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { SettingsService } from '@delon/theme';
 import { SFSchema, CascaderWidget, SFComponent } from '@delon/form';
 import {
@@ -27,8 +37,9 @@ import { STComponent, STColumn, STData, STChange } from '@delon/abc';
 })
 export class CreateApplicationComponent implements OnInit, OnDestroy {
   private _editData: any;
-  private clientData = [];
-
+  clientData: any[] = [];
+  modalInstance: NzModalRef;
+  mode = '';
   constructor(
     public msg: NzMessageService,
     private getMtVocabsGQL: GetMtVocabsGQL,
@@ -36,10 +47,14 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     private createPersonGQL: CreatePersonGQL,
     private settingService: SettingsService,
     private updatePersonGQL: UpdatePersonGQL,
+    private modalSrv: NzModalService,
   ) {}
 
-  @Output() saveDone = new EventEmitter<boolean>();
+  @Output() saveDone = new EventEmitter<any>();
   @ViewChild('sf') sf: SFComponent;
+  @ViewChild('st') st: STComponent;
+  @ViewChild('modalClient') modalClient: TemplateRef<{}>;
+  @ViewChild('card') card: ElementRef;
   @Input() parent: boolean;
   @Input() create: boolean;
   @Input()
@@ -133,29 +148,35 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     {
       title: 'Nama Lengkap',
-      index: 'namaLengkap',
+      index: 'personId.namaLengkap',
     },
     {
-      title: 'Email',
-      index: 'email',
+      title: 'SKTM',
+      index: 'personId.sktm',
+      format: (item: any, col: STColumn) => (item.sktm ? 'Ada SKTM' : 'Tidak ada SKTM'),
     },
     {
-      title: 'Telp',
-      index: 'telepon',
-    },
-    {
-      title: 'Nomor Id',
-      index: 'nomorId',
-    },
-    {
-      title: 'Updated At',
-      index: 'updatedAt',
-      type: 'date',
-    },
-    {
-      title: 'Created At',
-      index: 'createdAt',
-      type: 'date',
+      title: 'Action',
+      buttons: [
+        {
+          text: 'Delete',
+          click: (item: any) => {
+            this.clientData.forEach((el, ind) => {
+              if (el.personId.id === item.personId.id) {
+                this.clientData.splice(ind, 1);
+              }
+            });
+            this.st.removeRow(item);
+          },
+        },
+        {
+          text: 'Edit',
+          click: (item: any) => {
+            this.editData = item;
+            this.createModal(this.modalClient, 'Edit Client', 'edit');
+          },
+        },
+      ],
     },
   ];
 
@@ -444,5 +465,32 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
       },
       orderBy: MtVocabOrderByInput.Teks_Asc,
     };
+  }
+
+  createModal(tpl: TemplateRef<{}>, title: string, mode: string) {
+    this.mode = mode;
+    if (this.mode === 'create') this.editData = {};
+    this.modalInstance = this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+
+  saveClient(event: any) {
+    this.modalInstance.close();
+    const sameIndex = this.clientData.findIndex(el => el.personId.id === event.value.personId.id);
+    if (sameIndex > -1) {
+      this.mode === 'create'
+        ? this.msg.warning('Person sudah dipilih menjadi client')
+        : (this.clientData[sameIndex] = event.value);
+    } else {
+      this.clientData.push(event.value);
+    }
+    this.st.reload();
+    console.log(event);
+    console.log(this.clientData);
   }
 }

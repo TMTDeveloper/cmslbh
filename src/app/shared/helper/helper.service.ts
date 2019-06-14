@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpRequest, HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HelperService {
-  constructor() {}
+  constructor(public http: HttpClient) {}
 
-  public extract<T>(properties: Record<keyof T, true>) {
-    return function<TActual extends T>(value: TActual) {
-      let result = {} as T;
-      for (const property of Object.keys(properties) as Array<keyof T>) {
-        result[property] = value[property];
-      }
-      return result;
-    };
+  downloadFile(id: string): Observable<Blob> {
+    return this.http.get('http://192.168.1.12:3000/files/' + id, { responseType: 'blob' });
   }
 }

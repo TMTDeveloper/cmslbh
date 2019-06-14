@@ -2,7 +2,17 @@
   <nz-card [nzBordered]="false">
     <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading">
       <ng-template sf-template="personId" let-me let-ui="ui" let-schema="schema">
-        <button nz-button nzType="dashed" nzSize="default" (click)="openModal()" nzSearch>Search</button>
+        <button
+          type="button"
+          [disabled]="mode === 'edit'"
+          nz-button
+          nzType="dashed"
+          nzSize="default"
+          (click)="openModal()"
+          nzSearch
+        >
+          Search
+        </button>
         <input
           *ngIf="me.formProperty.value"
           nz-input
@@ -11,6 +21,17 @@
           [nzSize]="ui.size"
           [ngModel]="me.formProperty.value.namaLengkap"
         />
+      </ng-template>
+      <ng-template sf-template="sktmUpload" let-me let-ui="ui" let-schema="schema">
+        <nz-upload
+          [nzBeforeUpload]="beforeUpload"
+          (nzChange)="changedStatusUpload($event)"
+          nzAction="http://192.168.1.12:3000/upload"
+          [(nzFileList)]="fileList"
+          [nzPreview]="preview"
+        >
+          <button type="button" nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
+        </nz-upload>
       </ng-template>
     </sf>
   </nz-card>

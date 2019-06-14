@@ -1,14 +1,29 @@
 <page-header *ngIf="!parent" [title]="'Create Application'"></page-header>
-<nz-card [nzBordered]="false">
-  <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading">
-    <ng-template sf-template="clients" let-me let-ui="ui" let-schema="schema">
-      <div>
-        <button nz-button [nzType]="'primary'">
-          <i nz-icon nzType="plus"></i>
-          <span>New</span>
-        </button>
-      </div>
-      <st #st [columns]="columns" [data]="clientData" [loading]="loading"> </st>
-    </ng-template>
-  </sf>
-</nz-card>
+<div #card>
+  <nz-card [nzBordered]="false">
+    <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading">
+      <ng-template sf-template="clients" let-me let-ui="ui" let-schema="schema">
+        <div>
+          <button
+            type="button"
+            (click)="createModal(modalClient, 'Buat Client', 'create')"
+            nz-button
+            [nzType]="'primary'"
+          >
+            <i nz-icon nzType="plus"></i>
+            <span>New</span>
+          </button>
+        </div>
+        <st #st [columns]="columns" [data]="clientData"> </st>
+      </ng-template>
+    </sf>
+  </nz-card>
+</div>
+<ng-template #modalClient>
+  <app-create-client
+    [parent]="true"
+    [mode]="mode"
+    [editData]="editData"
+    (saveData)="saveClient($event)"
+  ></app-create-client>
+</ng-template>

@@ -9,9 +9,9 @@ import {
   ElementRef,
   TemplateRef,
 } from '@angular/core';
-import { NzMessageService, CascaderOption, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService, CascaderOption, NzModalService, UploadFile, NzModalRef } from 'ng-zorro-antd';
 import { SettingsService } from '@delon/theme';
-import { SFSchema, CascaderWidget, SFComponent } from '@delon/form';
+import { SFSchema, CascaderWidget, SFComponent, SFSchemaEnumType } from '@delon/form';
 import {
   GetMtVocabsGQL,
   GetMtVocabs,
@@ -24,11 +24,12 @@ import {
   UpdatePersonGQL,
   PersonWhereUniqueInput,
 } from '@shared';
-import { MtVocabHelper } from '@shared/helper';
+import { MtVocabHelper, HelperService } from '@shared/helper';
 import * as moment from 'moment';
 import { map, take } from 'rxjs/operators';
 import { AllPersonGQL, AllPerson } from '@shared/generated/graphql';
 import { Observable } from 'apollo-link';
+import { saveAs as importedSaveAs } from 'file-saver';
 
 @Component({
   selector: 'app-create-client',
@@ -37,54 +38,54 @@ import { Observable } from 'apollo-link';
 })
 export class CreateClientComponent implements OnInit, OnDestroy {
   private _editData: any;
-
+  fileList: UploadFile[] = [];
+  modalInstance: NzModalRef;
   constructor(
     public msg: NzMessageService,
-    private getMtVocabsGQL: GetMtVocabsGQL,
     public mtVocabHelper: MtVocabHelper,
     private createPersonGQL: CreatePersonGQL,
     private settingService: SettingsService,
     private updatePersonGQL: UpdatePersonGQL,
     private modalSrv: NzModalService,
+    private helper: HelperService,
   ) {}
 
-  @Output() saveDone = new EventEmitter<boolean>();
+  @Output() saveData = new EventEmitter<any>();
   @ViewChild('sf') sf: SFComponent;
   @ViewChild('card') card: ElementRef;
   @ViewChild('listPerson') listPerson: TemplateRef<{}>;
+  @Input() mode: string;
   @Input() parent: boolean;
   @Input() create: boolean;
   @Input()
   set editData(editData: any) {
-    (async () => {
-      this.loading = true;
-      if (!Array.isArray(editData.distrikId) && editData.distrikId) {
-        editData.distrikId = (await this.mtVocabHelper.findParent(editData.distrikId)).reverse();
-      }
-      if (!Array.isArray(editData.distrikDomisili) && editData.distrikDomisili) {
-        editData.distrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
-      }
-      if (!Array.isArray(editData.pekerjaan) && editData.pekerjaan) {
-        editData.pekerjaan = (await this.mtVocabHelper.findParentPekerjaan(editData.pekerjaan)).reverse();
-      }
-      this._editData = editData;
-      this.loading = false;
-    })();
+    this.loading = true;
+    this.cobajing(editData);
+    if (Array.isArray(editData.fileList)) this.fileList = editData.fileList;
+    this._editData = editData;
+    this.loading = false;
   }
   get editData(): any {
     return this._editData;
   }
 
+  cobajing(d) {
+    console.log(d);
+  }
   ngOnInit() {}
 
   ngOnDestroy(): void {}
   loading = false;
 
   submit(value: any) {
-    const processedData = this.processData(value);
-    !this.create
-      ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
-      : this.dataMutationCreate(<PersonCreateInput>processedData);
+    console.log(value);
+    console.log(this.sf.getValue('/sktmUpload'));
+    value.fileList = this.fileList;
+    this.saveData.emit({ value: value, mode: this.mode });
+    // const processedData = this.processData(value);
+    // !this.create
+    //   ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
+    //   : this.dataMutationCreate(<PersonCreateInput>processedData);
   }
 
   processData(data: any): PersonCreateInput | PersonUpdateInput {
@@ -110,38 +111,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  dataMutationCreate(data: PersonCreateInput) {
-    this.createPersonGQL
-      .mutate({ data })
-      .pipe(take(1))
-      .subscribe(
-        () => {
-          this.msg.success('Data Sukses Dibuat');
-          this.sf.refreshSchema(this.schema);
-          if (this.parent) this.saveDone.emit(true);
-        },
-        error => {
-          this.msg.error(JSON.stringify(error));
-        },
-      );
-  }
-
-  dataMutationUpdate(data: PersonUpdateInput, id: PersonWhereUniqueInput) {
-    this.updatePersonGQL
-      .mutate({ where: id, data: data })
-      .pipe(take(1))
-      .subscribe(
-        () => {
-          this.msg.success('Data Sukses Dirubah');
-          this.sf.refreshSchema(this.schema);
-          if (this.parent) this.saveDone.emit(true);
-        },
-        error => {
-          this.msg.error(JSON.stringify(error));
-        },
-      );
-  }
-
   schema: SFSchema = {
     properties: {
       id: {
@@ -158,278 +127,159 @@ export class CreateClientComponent implements OnInit, OnDestroy {
           widget: 'custom',
         },
       },
-      namaLengkap: {
-        type: 'string',
-        title: 'Nama Lengkap',
-      },
-      alias: {
-        type: 'string',
-        title: 'Alias',
-      },
-      unitSatuan: {
-        type: 'string',
-        title: 'Unit Satuan',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(7, 'kode'),
-        },
-      },
-      jmlAnggota: {
+      usiaSaatKlien: {
         type: 'number',
-        title: 'Jumlah Anggota',
-        ui: {
-          visibleIf: {
-            unitSatuan: (value: any) => value !== '01000000000007' && value !== null,
-          },
-        },
+        title: 'Usia Saat Ini',
       },
-      jenisKelamin: {
-        type: 'string',
-        title: 'Jenis Kelamin',
-        ui: {
-          widget: 'radio',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(74, 'teks'),
-        },
-      },
-      tmpLahir: {
-        type: 'string',
-        title: 'Tempat Lahir',
-      },
-      tglLahir: {
-        type: 'string',
-        title: 'Tanggal Lahir',
-        ui: { widget: 'date', mode: 'date', displayFormat: 'dd-MM-yyyy' },
-      },
-      agama: {
-        type: 'string',
-        title: 'Agama',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(75, 'teks'),
-        },
-      },
-      wargaNegara: {
-        type: 'string',
-        title: 'Warga Negara',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(77, 'teks'),
-        },
-      },
-      golDarah: {
-        type: 'string',
-        title: 'Golongan Darah',
-        enum: ['A', 'B', 'AB', 'O'],
-        ui: {
-          widget: 'radio',
-          styleType: 'button',
-          buttonStyle: 'solid',
-        },
-      },
-      telepon: {
-        type: 'string',
-        title: 'Telepon',
-      },
-      email: {
-        type: 'string',
-        title: 'Email',
-      },
-      jenisId: {
-        type: 'string',
-        title: 'Jenis ID',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(76, 'teks'),
-        },
-      },
-      nomorId: {
-        type: 'string',
-        title: 'Nomor Id',
-      },
-      alamatId: {
-        type: 'string',
-        title: 'Alamat ID',
-        ui: {
-          widget: 'textarea',
-          autosize: { minRows: 2, maxRows: 6 },
-        },
-      },
-      distrikId: {
-        type: 'string',
-        title: 'Distrik ID',
-        ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(
-                node.value === undefined ? '00030424000063' : node.value.toString(),
-                63,
-              );
-
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
-            });
-          }) as any,
-        },
-      },
-      domisiliSama: {
+      sktm: {
         type: 'boolean',
-        title: 'Domisili sama ?',
-        description: 'Checklist Jika Domisili sama',
-        ui: {
-          widget: 'checkbox',
-        },
-        default: true,
-      },
-      alamatDomisili: {
-        type: 'string',
-        title: 'Alamat Domisili',
-        ui: {
-          widget: 'textarea',
-          autosize: { minRows: 2, maxRows: 6 },
-          visibleIf: {
-            domisiliSama: (value: any) => value === false,
-          },
-        },
-      },
-
-      distrikDomisili: {
-        type: 'string',
-        title: 'Distrik Domisili',
-        ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(
-                node.value === undefined ? '00030424000063' : node.value.toString(),
-                63,
-              );
-
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
-            });
-          }) as any,
-          visibleIf: {
-            domisiliSama: (value: any) => value === false,
-          },
-        },
-      },
-      jenisDomisili: {
-        type: 'string',
-        title: 'Jenis Domisili',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(71, 'teks'),
-        },
-      },
-      pendidikan: {
-        type: 'string',
-        title: 'Pendidikan',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(78, 'kode'),
-        },
-      },
-      pekerjaan: {
-        type: 'string',
-        title: 'Pekerjaan',
-        ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(node.value === undefined ? '0' : node.value.toString(), 10);
-              for (const item in data) {
-                const child = await this.mtVocabHelper.isThereAChild(data[item].value);
-                data[item].isLeaf = child.length === 0;
-              }
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
-            });
-          }) as any,
-        },
-      },
-      statusPernikahan: {
-        type: 'string',
-        title: 'Status Pernikahan',
-        ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(79, 'teks'),
-        },
-      },
-      disabilitas: {
-        type: 'boolean',
-        title: 'Mempunyai Disabilitas?',
-        description: 'Checklist jika mempunyai disabilitas',
+        title: 'SKTM',
+        description: 'Ada surat keterangan tidak mampu (SKTM) ?',
         ui: {
           widget: 'checkbox',
         },
         default: false,
       },
-      jenisDisabilitas: {
+      sktmKeterangan: {
         type: 'string',
-        title: 'Jenis Disabilitas',
+        title: 'Keterangan SKTM',
         ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(95, 'kode'),
-          visibleIf: {
-            disabilitas: (value: any) => value === true,
-          },
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
         },
       },
-      alatBantu: {
+      pendapatan: {
         type: 'string',
-        title: 'Alat Bantu Disabilitas',
+        title: 'Pendapatan',
         ui: {
           widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(96, 'kode'),
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(82, 'kode'),
+        },
+      },
+      alamatLokasi: {
+        type: 'string',
+        title: 'Alamat Sekarang',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      tanggunganPasangan: {
+        type: 'string',
+        title: 'Jumlah tanggungan istri/suami',
+      },
+      tanggunganAnak: {
+        type: 'string',
+        title: 'Jumlah tanggungan anak',
+      },
+      tanggunganFamili: {
+        type: 'string',
+        title: 'Jumlah tanggungan famili',
+      },
+      tanggunganLain: {
+        type: 'string',
+        title: 'Jumlah tanggungan lainnya',
+      },
+      asetRumah: {
+        type: 'string',
+        title: 'Aset (rumah)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetGedung: {
+        type: 'string',
+        title: 'Aset (gedung)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetToko: {
+        type: 'string',
+        title: 'Aset (toko)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetWarung: {
+        type: 'string',
+        title: 'Aset (warung)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetKios: {
+        type: 'string',
+        title: 'Aset (kios)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetLapak: {
+        type: 'string',
+        title: 'Aset (lapak)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetTanah: {
+        type: 'string',
+        title: 'Aset (tanah)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetLahanGarapan: {
+        type: 'string',
+        title: 'Aset (lahan garapan)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetMobil: {
+        type: 'string',
+        title: 'Aset (mobil)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      asetMotor: {
+        type: 'string',
+        title: 'Aset (motor)',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 2, maxRows: 6 },
+        },
+      },
+      sktmUpload: {
+        type: 'string',
+        title: 'SKTM Upload',
+        ui: {
+          widget: 'custom',
           visibleIf: {
-            disabilitas: (value: any) => value === true,
+            sktm: (value: any) => value,
           },
         },
       },
     },
-    required: ['namaLengkap', 'unitSatuan'],
+    required: ['personId'],
 
     ui: {
       size: 'large',
     },
   };
 
-  private getTreeData(kode: any, kode_list: number) {
-    return this.getMtVocabsGQL
-      .watch(this.searchTreeGenerator(kode, kode_list))
-      .valueChanges.pipe(
-        map(result =>
-          result.data.mtVocabs.map(res => {
-            const obj: any = {};
-            obj.value = res.KODE;
-            obj.label = res.teks;
-            obj.parent = res.kode_induk;
-            if (kode_list === 63) {
-              obj.isLeaf = res.level === 3;
-            }
-            return obj;
-          }),
-        ),
-      )
-      .pipe(take(1))
-      .toPromise();
-  }
-
-  private searchTreeGenerator(kode: string, kode_list: number): GetMtVocabs.Variables {
-    return <GetMtVocabs.Variables>{
-      where: <MtVocabWhereInput>{
-        AND: <MtVocabWhereInput[]>[{ kode_induk: kode, kode_list: <MtVocabGroupWhereInput>{ kode_list: kode_list } }],
-      },
-      orderBy: MtVocabOrderByInput.Teks_Asc,
-    };
-  }
-
   add(tpl: TemplateRef<{}>, title: string) {
-    this.modalSrv.create({
+    this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
       nzWidth: this.card.nativeElement.offsetWidth,
@@ -442,7 +292,25 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.add(this.listPerson, 'Pilih Person');
   }
   closeModalAndSaveData(event: AllPerson.Persons) {
-    this.modalSrv.closeAll();
+    this.modalInstance.close();
     this.sf.setValue('/personId', event);
   }
+
+  beforeUpload = (file: UploadFile, fileList: UploadFile[]) => {
+    this.fileList.pop();
+    return true;
+  };
+
+  changedStatusUpload(event) {
+    if (event.type === 'success') {
+      this.fileList[0].filename = event.file.response.filename;
+      this.fileList[0].name = event.file.response.filename;
+    }
+  }
+
+  preview = (file: UploadFile) => {
+    this.helper.downloadFile(file.filename).subscribe(res => {
+      importedSaveAs(res, file.filename);
+    });
+  };
 }

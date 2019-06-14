@@ -10,7 +10,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap, map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -40,6 +40,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   persons: QueryRef<AllPerson.Query, AllPerson.Variables>;
   personsObs: Subscription;
   loading = false;
+  modalInstance: NzModalRef;
   @ViewChild('st')
   st: STComponent;
 
@@ -194,7 +195,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   add(tpl: TemplateRef<{}>, title: string) {
     this.create = true;
     this.dataSelected = <AllPerson.Persons>{};
-    this.modalSrv.create({
+    this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
       nzWidth: this.card.nativeElement.offsetWidth,
@@ -204,7 +205,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   }
 
   edit(tpl: TemplateRef<{}>, title: string) {
-    this.modalSrv.create({
+    this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
       nzWidth: this.card.nativeElement.offsetWidth,
@@ -214,7 +215,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.modalSrv.closeAll();
+    this.modalInstance.close();
     this.getData();
   }
 

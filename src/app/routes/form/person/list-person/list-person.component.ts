@@ -36,7 +36,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   };
   data: AllPerson.Persons[] = [];
   dataSelected: AllPerson.Persons;
-  create = false;
+  mode = '';
   persons: QueryRef<AllPerson.Query, AllPerson.Variables>;
   personsObs: Subscription;
   loading = false;
@@ -59,7 +59,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
           text: 'Edit',
           click: (item: any) => {
             this.dataSelected = item;
-            this.create = false;
+            this.mode = 'edit';
             this.edit(this.modalEl, 'Edit Data');
           },
         },
@@ -138,6 +138,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
         tap(() => (this.loading = false)),
       )
       .subscribe(res => {
+        console.log(res);
         this.data = res;
         this.cdr.detectChanges();
       });
@@ -193,7 +194,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
   }
 
   add(tpl: TemplateRef<{}>, title: string) {
-    this.create = true;
+    this.mode = 'create';
     this.dataSelected = <AllPerson.Persons>{};
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,

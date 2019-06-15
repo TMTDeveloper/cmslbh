@@ -51,6 +51,6 @@
   </nz-card>
 </div>
 <ng-template #modalContent>
-  <app-create-person [parent]="true" [create]="create" [editData]="dataSelected" (saveDone)="closeModal($event)">
+  <app-create-person [parent]="true" [mode]="mode" [editData]="dataSelected" (saveDone)="closeModal($event)">
   </app-create-person>
 </ng-template>

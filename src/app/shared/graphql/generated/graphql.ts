@@ -991,7 +991,6 @@ export type Case = {
   updatedAt: Date;
   updatedBy?: Maybe<string>;
   application: Application;
-  clients?: Maybe<Array<Client>>;
   classifications?: Maybe<Array<CaseClassification>>;
   consultations?: Maybe<Array<CaseConsultation>>;
   documents?: Maybe<Array<CaseDocument>>;
@@ -1003,16 +1002,6 @@ export type Case = {
   activities?: Maybe<Array<CaseProgressActivity>>;
   transferreferrals?: Maybe<Array<CaseTransferReferral>>;
   violatedrights?: Maybe<Array<CaseViolatedRight>>;
-};
-
-export type CaseClientsArgs = {
-  where?: Maybe<ClientWhereInput>;
-  orderBy?: Maybe<ClientOrderByInput>;
-  skip?: Maybe<number>;
-  after?: Maybe<string>;
-  before?: Maybe<string>;
-  first?: Maybe<number>;
-  last?: Maybe<number>;
 };
 
 export type CaseClassificationsArgs = {
@@ -1962,7 +1951,6 @@ export type CaseCreateInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -1988,11 +1976,6 @@ export type CaseCreateOneWithoutApplicationInput = {
 
 export type CaseCreateOneWithoutClassificationsInput = {
   create: Maybe<CaseCreateWithoutClassificationsInput>;
-  connect: Maybe<CaseWhereUniqueInput>;
-};
-
-export type CaseCreateOneWithoutClientsInput = {
-  create: Maybe<CaseCreateWithoutClientsInput>;
   connect: Maybe<CaseWhereUniqueInput>;
 };
 
@@ -2058,7 +2041,6 @@ export type CaseCreateWithoutActivitiesInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2087,7 +2069,6 @@ export type CaseCreateWithoutApplicationInput = {
   unlockPk: boolean;
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2118,37 +2099,6 @@ export type CaseCreateWithoutClassificationsInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
-  consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
-  documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
-  issues: Maybe<CaseIssueCreateManyWithoutCaseIdInput>;
-  korbans: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>;
-  pelakus: Maybe<CasePelakuCreateManyWithoutCaseIdInput>;
-  pks: Maybe<CasePkCreateManyWithoutCaseIdInput>;
-  progresses: Maybe<CaseProgressCreateManyWithoutCaseIdInput>;
-  activities: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>;
-  transferreferrals: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>;
-  violatedrights: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>;
-};
-
-export type CaseCreateWithoutClientsInput = {
-  applicationId: Maybe<number>;
-  caseClosed: boolean;
-  caseClosedJenis: Maybe<string>;
-  createdBy: Maybe<string>;
-  hakTerlanggar: Maybe<string>;
-  issue: Maybe<string>;
-  judulKasus: Maybe<string>;
-  klasifikasiDok: Maybe<string>;
-  kronologiKasus: Maybe<string>;
-  lockDitolak: boolean;
-  statusPendampingan: Maybe<string>;
-  targetAdvokasi: Maybe<string>;
-  unlockPk: boolean;
-  unlockTransfer: boolean;
-  updatedBy: Maybe<string>;
-  application: ApplicationCreateOneWithoutCaseInput;
-  classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueCreateManyWithoutCaseIdInput>;
@@ -2178,7 +2128,6 @@ export type CaseCreateWithoutConsultationsInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueCreateManyWithoutCaseIdInput>;
@@ -2208,7 +2157,6 @@ export type CaseCreateWithoutDocumentsInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueCreateManyWithoutCaseIdInput>;
@@ -2238,7 +2186,6 @@ export type CaseCreateWithoutIssuesInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2268,7 +2215,6 @@ export type CaseCreateWithoutKorbansInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2298,7 +2244,6 @@ export type CaseCreateWithoutPelakusInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2328,7 +2273,6 @@ export type CaseCreateWithoutPksInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2358,7 +2302,6 @@ export type CaseCreateWithoutProgressesInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2388,7 +2331,6 @@ export type CaseCreateWithoutTransferreferralsInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -2418,7 +2360,6 @@ export type CaseCreateWithoutViolatedrightsInput = {
   unlockTransfer: boolean;
   updatedBy: Maybe<string>;
   application: ApplicationCreateOneWithoutCaseInput;
-  clients: Maybe<ClientCreateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>;
@@ -5527,7 +5468,6 @@ export type CaseUpdateInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5578,13 +5518,6 @@ export type CaseUpdateOneRequiredWithoutClassificationsInput = {
   connect: Maybe<CaseWhereUniqueInput>;
   update: Maybe<CaseUpdateWithoutClassificationsDataInput>;
   upsert: Maybe<CaseUpsertWithoutClassificationsInput>;
-};
-
-export type CaseUpdateOneRequiredWithoutClientsInput = {
-  create: Maybe<CaseCreateWithoutClientsInput>;
-  connect: Maybe<CaseWhereUniqueInput>;
-  update: Maybe<CaseUpdateWithoutClientsDataInput>;
-  upsert: Maybe<CaseUpsertWithoutClientsInput>;
 };
 
 export type CaseUpdateOneRequiredWithoutConsultationsInput = {
@@ -5667,7 +5600,6 @@ export type CaseUpdateWithoutActivitiesDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5696,7 +5628,6 @@ export type CaseUpdateWithoutApplicationDataInput = {
   unlockPk: Maybe<boolean>;
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5727,37 +5658,6 @@ export type CaseUpdateWithoutClassificationsDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
-  consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
-  documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
-  issues: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>;
-  korbans: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>;
-  pelakus: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>;
-  pks: Maybe<CasePkUpdateManyWithoutCaseIdInput>;
-  progresses: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>;
-  activities: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>;
-  transferreferrals: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>;
-  violatedrights: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>;
-};
-
-export type CaseUpdateWithoutClientsDataInput = {
-  applicationId: Maybe<number>;
-  caseClosed: Maybe<boolean>;
-  caseClosedJenis: Maybe<string>;
-  createdBy: Maybe<string>;
-  hakTerlanggar: Maybe<string>;
-  issue: Maybe<string>;
-  judulKasus: Maybe<string>;
-  klasifikasiDok: Maybe<string>;
-  kronologiKasus: Maybe<string>;
-  lockDitolak: Maybe<boolean>;
-  statusPendampingan: Maybe<string>;
-  targetAdvokasi: Maybe<string>;
-  unlockPk: Maybe<boolean>;
-  unlockTransfer: Maybe<boolean>;
-  updatedBy: Maybe<string>;
-  application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>;
@@ -5787,7 +5687,6 @@ export type CaseUpdateWithoutConsultationsDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>;
@@ -5817,7 +5716,6 @@ export type CaseUpdateWithoutDocumentsDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   issues: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>;
@@ -5847,7 +5745,6 @@ export type CaseUpdateWithoutIssuesDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5877,7 +5774,6 @@ export type CaseUpdateWithoutKorbansDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5907,7 +5803,6 @@ export type CaseUpdateWithoutPelakusDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5937,7 +5832,6 @@ export type CaseUpdateWithoutPksDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5967,7 +5861,6 @@ export type CaseUpdateWithoutProgressesDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -5997,7 +5890,6 @@ export type CaseUpdateWithoutTransferreferralsDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -6027,7 +5919,6 @@ export type CaseUpdateWithoutViolatedrightsDataInput = {
   unlockTransfer: Maybe<boolean>;
   updatedBy: Maybe<string>;
   application: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>;
-  clients: Maybe<ClientUpdateManyWithoutCaseidInput>;
   classifications: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>;
   consultations: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>;
   documents: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>;
@@ -6053,11 +5944,6 @@ export type CaseUpsertWithoutApplicationInput = {
 export type CaseUpsertWithoutClassificationsInput = {
   update: CaseUpdateWithoutClassificationsDataInput;
   create: CaseCreateWithoutClassificationsInput;
-};
-
-export type CaseUpsertWithoutClientsInput = {
-  update: CaseUpdateWithoutClientsDataInput;
-  create: CaseCreateWithoutClientsInput;
 };
 
 export type CaseUpsertWithoutConsultationsInput = {
@@ -6457,9 +6343,6 @@ export type CaseWhereInput = {
   updatedBy_ends_with: Maybe<string>;
   updatedBy_not_ends_with: Maybe<string>;
   application: Maybe<ApplicationWhereInput>;
-  clients_every: Maybe<ClientWhereInput>;
-  clients_some: Maybe<ClientWhereInput>;
-  clients_none: Maybe<ClientWhereInput>;
   classifications_every: Maybe<CaseClassificationWhereInput>;
   classifications_some: Maybe<CaseClassificationWhereInput>;
   classifications_none: Maybe<CaseClassificationWhereInput>;
@@ -6527,7 +6410,6 @@ export type Client = {
   updatedAt: Date;
   updatedBy?: Maybe<string>;
   usiaSaatKlien?: Maybe<number>;
-  caseid: Case;
 };
 
 export type ClientConnection = {
@@ -6561,16 +6443,10 @@ export type ClientCreateInput = {
   usiaSaatKlien: Maybe<number>;
   applicationId: ApplicationCreateOneWithoutClientsInput;
   personId: PersonCreateOneWithoutClientsInput;
-  caseid: CaseCreateOneWithoutClientsInput;
 };
 
 export type ClientCreateManyWithoutApplicationIdInput = {
   create: Maybe<Array<ClientCreateWithoutApplicationIdInput>>;
-  connect: Maybe<Array<ClientWhereUniqueInput>>;
-};
-
-export type ClientCreateManyWithoutCaseidInput = {
-  create: Maybe<Array<ClientCreateWithoutCaseidInput>>;
   connect: Maybe<Array<ClientWhereUniqueInput>>;
 };
 
@@ -6603,34 +6479,6 @@ export type ClientCreateWithoutApplicationIdInput = {
   updatedBy: Maybe<string>;
   usiaSaatKlien: Maybe<number>;
   personId: PersonCreateOneWithoutClientsInput;
-  caseid: CaseCreateOneWithoutClientsInput;
-};
-
-export type ClientCreateWithoutCaseidInput = {
-  alamatLokasi: Maybe<string>;
-  asetGedung: Maybe<string>;
-  asetKios: Maybe<string>;
-  asetLahanGarapan: Maybe<string>;
-  asetLapak: Maybe<string>;
-  asetMobil: Maybe<string>;
-  asetMotor: Maybe<string>;
-  asetRumah: Maybe<string>;
-  asetTanah: Maybe<string>;
-  asetToko: Maybe<string>;
-  asetWarung: Maybe<string>;
-  createdBy: Maybe<string>;
-  pendapatan: Maybe<string>;
-  sktm: boolean;
-  sktmUpload: Maybe<string>;
-  stmKeterangan: Maybe<string>;
-  tanggunganAnak: Maybe<number>;
-  tanggunganFamili: Maybe<number>;
-  tanggunganLain: Maybe<number>;
-  tanggunganPasangan: Maybe<number>;
-  updatedBy: Maybe<string>;
-  usiaSaatKlien: Maybe<number>;
-  applicationId: ApplicationCreateOneWithoutClientsInput;
-  personId: PersonCreateOneWithoutClientsInput;
 };
 
 export type ClientCreateWithoutPersonIdInput = {
@@ -6657,7 +6505,6 @@ export type ClientCreateWithoutPersonIdInput = {
   updatedBy: Maybe<string>;
   usiaSaatKlien: Maybe<number>;
   applicationId: ApplicationCreateOneWithoutClientsInput;
-  caseid: CaseCreateOneWithoutClientsInput;
 };
 
 export type ClientEdge = {
@@ -7085,7 +6932,6 @@ export type ClientUpdateInput = {
   usiaSaatKlien: Maybe<number>;
   applicationId: Maybe<ApplicationUpdateOneRequiredWithoutClientsInput>;
   personId: Maybe<PersonUpdateOneRequiredWithoutClientsInput>;
-  caseid: Maybe<CaseUpdateOneRequiredWithoutClientsInput>;
 };
 
 export type ClientUpdateManyDataInput = {
@@ -7150,18 +6996,6 @@ export type ClientUpdateManyWithoutApplicationIdInput = {
   upsert: Maybe<Array<ClientUpsertWithWhereUniqueWithoutApplicationIdInput>>;
 };
 
-export type ClientUpdateManyWithoutCaseidInput = {
-  create: Maybe<Array<ClientCreateWithoutCaseidInput>>;
-  connect: Maybe<Array<ClientWhereUniqueInput>>;
-  set: Maybe<Array<ClientWhereUniqueInput>>;
-  disconnect: Maybe<Array<ClientWhereUniqueInput>>;
-  delete: Maybe<Array<ClientWhereUniqueInput>>;
-  update: Maybe<Array<ClientUpdateWithWhereUniqueWithoutCaseidInput>>;
-  updateMany: Maybe<Array<ClientUpdateManyWithWhereNestedInput>>;
-  deleteMany: Maybe<Array<ClientScalarWhereInput>>;
-  upsert: Maybe<Array<ClientUpsertWithWhereUniqueWithoutCaseidInput>>;
-};
-
 export type ClientUpdateManyWithoutPersonIdInput = {
   create: Maybe<Array<ClientCreateWithoutPersonIdInput>>;
   connect: Maybe<Array<ClientWhereUniqueInput>>;
@@ -7203,34 +7037,6 @@ export type ClientUpdateWithoutApplicationIdDataInput = {
   updatedBy: Maybe<string>;
   usiaSaatKlien: Maybe<number>;
   personId: Maybe<PersonUpdateOneRequiredWithoutClientsInput>;
-  caseid: Maybe<CaseUpdateOneRequiredWithoutClientsInput>;
-};
-
-export type ClientUpdateWithoutCaseidDataInput = {
-  alamatLokasi: Maybe<string>;
-  asetGedung: Maybe<string>;
-  asetKios: Maybe<string>;
-  asetLahanGarapan: Maybe<string>;
-  asetLapak: Maybe<string>;
-  asetMobil: Maybe<string>;
-  asetMotor: Maybe<string>;
-  asetRumah: Maybe<string>;
-  asetTanah: Maybe<string>;
-  asetToko: Maybe<string>;
-  asetWarung: Maybe<string>;
-  createdBy: Maybe<string>;
-  pendapatan: Maybe<string>;
-  sktm: Maybe<boolean>;
-  sktmUpload: Maybe<string>;
-  stmKeterangan: Maybe<string>;
-  tanggunganAnak: Maybe<number>;
-  tanggunganFamili: Maybe<number>;
-  tanggunganLain: Maybe<number>;
-  tanggunganPasangan: Maybe<number>;
-  updatedBy: Maybe<string>;
-  usiaSaatKlien: Maybe<number>;
-  applicationId: Maybe<ApplicationUpdateOneRequiredWithoutClientsInput>;
-  personId: Maybe<PersonUpdateOneRequiredWithoutClientsInput>;
 };
 
 export type ClientUpdateWithoutPersonIdDataInput = {
@@ -7257,17 +7063,11 @@ export type ClientUpdateWithoutPersonIdDataInput = {
   updatedBy: Maybe<string>;
   usiaSaatKlien: Maybe<number>;
   applicationId: Maybe<ApplicationUpdateOneRequiredWithoutClientsInput>;
-  caseid: Maybe<CaseUpdateOneRequiredWithoutClientsInput>;
 };
 
 export type ClientUpdateWithWhereUniqueWithoutApplicationIdInput = {
   where: ClientWhereUniqueInput;
   data: ClientUpdateWithoutApplicationIdDataInput;
-};
-
-export type ClientUpdateWithWhereUniqueWithoutCaseidInput = {
-  where: ClientWhereUniqueInput;
-  data: ClientUpdateWithoutCaseidDataInput;
 };
 
 export type ClientUpdateWithWhereUniqueWithoutPersonIdInput = {
@@ -7279,12 +7079,6 @@ export type ClientUpsertWithWhereUniqueWithoutApplicationIdInput = {
   where: ClientWhereUniqueInput;
   update: ClientUpdateWithoutApplicationIdDataInput;
   create: ClientCreateWithoutApplicationIdInput;
-};
-
-export type ClientUpsertWithWhereUniqueWithoutCaseidInput = {
-  where: ClientWhereUniqueInput;
-  update: ClientUpdateWithoutCaseidDataInput;
-  create: ClientCreateWithoutCaseidInput;
 };
 
 export type ClientUpsertWithWhereUniqueWithoutPersonIdInput = {
@@ -7589,7 +7383,6 @@ export type ClientWhereInput = {
   usiaSaatKlien_gte: Maybe<number>;
   applicationId: Maybe<ApplicationWhereInput>;
   personId: Maybe<PersonWhereInput>;
-  caseid: Maybe<CaseWhereInput>;
 };
 
 export type ClientWhereUniqueInput = {
@@ -13420,11 +13213,11 @@ export type UserWhereInput = {
 export type UserWhereUniqueInput = {
   id: Maybe<number>;
 };
-export type CreateClientMutationVariables = {
+export type PostClientMutationVariables = {
   data: ClientCreateInput;
 };
 
-export type CreateClientMutation = {
+export type PostClientMutation = {
   createClient: Pick<
     Client,
     | 'id'
@@ -13452,14 +13245,14 @@ export type CreateClientMutation = {
     | 'updatedAt'
     | 'updatedBy'
     | 'usiaSaatKlien'
-  > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'>; caseid: Pick<Case, 'id'> };
+  > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'> };
 };
 
-export type CreateApplicationMutationVariables = {
+export type PostApplicationMutationVariables = {
   data: ApplicationCreateInput;
 };
 
-export type CreateApplicationMutation = {
+export type PostApplicationMutation = {
   createApplication: Pick<
     Application,
     | 'id'
@@ -13513,18 +13306,18 @@ export type CreateApplicationMutation = {
           | 'updatedAt'
           | 'updatedBy'
           | 'usiaSaatKlien'
-        > & { personId: Pick<Person, 'id' | 'namaLengkap'>; caseid: Pick<Case, 'id'> }
+        > & { personId: Pick<Person, 'id' | 'namaLengkap'> }
       >
     >;
   };
 };
 
-export type UpdatePersonMutationVariables = {
+export type PutPersonMutationVariables = {
   data: PersonUpdateInput;
   where: PersonWhereUniqueInput;
 };
 
-export type UpdatePersonMutation = {
+export type PutPersonMutation = {
   updatePerson: Maybe<
     Pick<
       Person,
@@ -13567,11 +13360,11 @@ export type UpdatePersonMutation = {
   >;
 };
 
-export type CreatePersonMutationVariables = {
+export type PostPersonMutationVariables = {
   data: PersonCreateInput;
 };
 
-export type CreatePersonMutation = {
+export type PostPersonMutation = {
   createPerson: Pick<
     Person,
     | 'id'
@@ -13652,7 +13445,7 @@ export type GetClientQuery = {
         | 'updatedAt'
         | 'updatedBy'
         | 'usiaSaatKlien'
-      > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'>; caseid: Pick<Case, 'id'> }
+      > & { applicationId: Pick<Application, 'id'>; personId: Pick<Person, 'id'> }
     >
   >;
 };
@@ -13723,7 +13516,7 @@ export type GetApplicationsQuery = {
               | 'updatedAt'
               | 'updatedBy'
               | 'usiaSaatKlien'
-            > & { personId: Pick<Person, 'id' | 'namaLengkap'>; caseid: Pick<Case, 'id'> }
+            > & { personId: Pick<Person, 'id' | 'namaLengkap'> }
           >
         >;
       }
@@ -13804,7 +13597,7 @@ export type AllPersonQuery = {
 // Documents
 // ====================================================
 
-export namespace CreateClient {
+export namespace PostClient {
   export type Variables = {
     data: ClientCreateInput;
   };
@@ -13871,8 +13664,6 @@ export namespace CreateClient {
     updatedBy: Maybe<string>;
 
     usiaSaatKlien: Maybe<number>;
-
-    caseid: Caseid;
   };
 
   export type ApplicationId = {
@@ -13886,15 +13677,9 @@ export namespace CreateClient {
 
     id: number;
   };
-
-  export type Caseid = {
-    __typename?: 'Case';
-
-    id: number;
-  };
 }
 
-export namespace CreateApplication {
+export namespace PostApplication {
   export type Variables = {
     data: ApplicationCreateInput;
   };
@@ -14021,8 +13806,6 @@ export namespace CreateApplication {
     updatedBy: Maybe<string>;
 
     usiaSaatKlien: Maybe<number>;
-
-    caseid: Caseid;
   };
 
   export type PersonId = {
@@ -14032,15 +13815,9 @@ export namespace CreateApplication {
 
     namaLengkap: Maybe<string>;
   };
-
-  export type Caseid = {
-    __typename?: 'Case';
-
-    id: number;
-  };
 }
 
-export namespace UpdatePerson {
+export namespace PutPerson {
   export type Variables = {
     data: PersonUpdateInput;
     where: PersonWhereUniqueInput;
@@ -14163,7 +13940,7 @@ export namespace UpdatePerson {
   };
 }
 
-export namespace CreatePerson {
+export namespace PostPerson {
   export type Variables = {
     data: PersonCreateInput;
   };
@@ -14358,8 +14135,6 @@ export namespace GetClient {
     updatedBy: Maybe<string>;
 
     usiaSaatKlien: Maybe<number>;
-
-    caseid: Caseid;
   };
 
   export type ApplicationId = {
@@ -14370,12 +14145,6 @@ export namespace GetClient {
 
   export type PersonId = {
     __typename?: 'Person';
-
-    id: number;
-  };
-
-  export type Caseid = {
-    __typename?: 'Case';
 
     id: number;
   };
@@ -14514,8 +14283,6 @@ export namespace GetApplications {
     updatedBy: Maybe<string>;
 
     usiaSaatKlien: Maybe<number>;
-
-    caseid: Caseid;
   };
 
   export type PersonId = {
@@ -14524,12 +14291,6 @@ export namespace GetApplications {
     id: number;
 
     namaLengkap: Maybe<string>;
-  };
-
-  export type Caseid = {
-    __typename?: 'Case';
-
-    id: number;
   };
 }
 
@@ -14711,9 +14472,9 @@ import gql from 'graphql-tag';
 @Injectable({
   providedIn: 'root',
 })
-export class CreateClientGQL extends Apollo.Mutation<CreateClient.Mutation, CreateClient.Variables> {
+export class PostClientGQL extends Apollo.Mutation<PostClient.Mutation, PostClient.Variables> {
   document: any = gql`
-    mutation createClient($data: ClientCreateInput!) {
+    mutation postClient($data: ClientCreateInput!) {
       createClient(data: $data) {
         id
         alamatLokasi
@@ -14746,9 +14507,6 @@ export class CreateClientGQL extends Apollo.Mutation<CreateClient.Mutation, Crea
         updatedAt
         updatedBy
         usiaSaatKlien
-        caseid {
-          id
-        }
       }
     }
   `;
@@ -14756,9 +14514,9 @@ export class CreateClientGQL extends Apollo.Mutation<CreateClient.Mutation, Crea
 @Injectable({
   providedIn: 'root',
 })
-export class CreateApplicationGQL extends Apollo.Mutation<CreateApplication.Mutation, CreateApplication.Variables> {
+export class PostApplicationGQL extends Apollo.Mutation<PostApplication.Mutation, PostApplication.Variables> {
   document: any = gql`
-    mutation createApplication($data: ApplicationCreateInput!) {
+    mutation postApplication($data: ApplicationCreateInput!) {
       createApplication(data: $data) {
         id
         createdAt
@@ -14816,9 +14574,6 @@ export class CreateApplicationGQL extends Apollo.Mutation<CreateApplication.Muta
           updatedAt
           updatedBy
           usiaSaatKlien
-          caseid {
-            id
-          }
         }
       }
     }
@@ -14827,9 +14582,9 @@ export class CreateApplicationGQL extends Apollo.Mutation<CreateApplication.Muta
 @Injectable({
   providedIn: 'root',
 })
-export class UpdatePersonGQL extends Apollo.Mutation<UpdatePerson.Mutation, UpdatePerson.Variables> {
+export class PutPersonGQL extends Apollo.Mutation<PutPerson.Mutation, PutPerson.Variables> {
   document: any = gql`
-    mutation updatePerson($data: PersonUpdateInput!, $where: PersonWhereUniqueInput!) {
+    mutation putPerson($data: PersonUpdateInput!, $where: PersonWhereUniqueInput!) {
       updatePerson(data: $data, where: $where) {
         id
         agama
@@ -14887,9 +14642,9 @@ export class UpdatePersonGQL extends Apollo.Mutation<UpdatePerson.Mutation, Upda
 @Injectable({
   providedIn: 'root',
 })
-export class CreatePersonGQL extends Apollo.Mutation<CreatePerson.Mutation, CreatePerson.Variables> {
+export class PostPersonGQL extends Apollo.Mutation<PostPerson.Mutation, PostPerson.Variables> {
   document: any = gql`
-    mutation createPerson($data: PersonCreateInput!) {
+    mutation postPerson($data: PersonCreateInput!) {
       createPerson(data: $data) {
         id
         agama
@@ -14990,9 +14745,6 @@ export class GetClientGQL extends Apollo.Query<GetClient.Query, GetClient.Variab
         updatedAt
         updatedBy
         usiaSaatKlien
-        caseid {
-          id
-        }
       }
     }
   `;
@@ -15076,9 +14828,6 @@ export class GetApplicationsGQL extends Apollo.Query<GetApplications.Query, GetA
           updatedAt
           updatedBy
           usiaSaatKlien
-          caseid {
-            id
-          }
         }
       }
     }

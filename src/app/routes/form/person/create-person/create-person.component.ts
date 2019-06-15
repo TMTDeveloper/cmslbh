@@ -9,9 +9,9 @@ import {
   MtVocabGroupWhereInput,
   MtVocabOrderByInput,
   PersonCreateInput,
-  CreatePersonGQL,
+  PostPersonGQL,
   PersonUpdateInput,
-  UpdatePersonGQL,
+  PutPersonGQL,
   PersonWhereUniqueInput,
 } from '@shared';
 import { MtVocabHelper } from '@shared/helper';
@@ -31,15 +31,15 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     public msg: NzMessageService,
     private getMtVocabsGQL: GetMtVocabsGQL,
     public mtVocabHelper: MtVocabHelper,
-    private createPersonGQL: CreatePersonGQL,
+    private postPersonGQL: PostPersonGQL,
     private settingService: SettingsService,
-    private updatePersonGQL: UpdatePersonGQL,
+    private putPersonGQL: PutPersonGQL,
   ) {}
 
   @Output() saveDone = new EventEmitter<boolean>();
   @ViewChild('sf') sf: SFComponent;
   @Input() parent: boolean;
-  @Input() create: boolean;
+  @Input() mode = 'create';
   @Input()
   set editData(editData: any) {
     (async () => {
@@ -68,7 +68,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
 
   submit(value: any) {
     const processedData = this.processData(value);
-    !this.create
+    this.mode === 'edit'
       ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
       : this.dataMutationCreate(<PersonCreateInput>processedData);
   }
@@ -86,18 +86,19 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
     data.distrikDomisili = Array.isArray(data.distrikDomisili) ? data.distrikDomisili.slice(-1)[0] : null;
     data.pekerjaan = Array.isArray(data.pekerjaan) ? data.pekerjaan.slice(-1)[0] : null;
     data.tglLahir = moment(data.tglLahir, 'YYYY-MM-DD HH:mm:ss').toDate() || null;
-    data.createdBy = this.settingService.user.name;
-    data.updatedBy = this.settingService.user.name;
-    if (!this.create) {
+
+    if (this.mode === 'edit') {
+      data.updatedBy = this.settingService.user.name;
       const { id, createdAt, updatedAt, __typename, _values, ...newData } = data;
       return <PersonUpdateInput>{ ...newData };
     } else {
+      data.createdBy = this.settingService.user.name;
       return <PersonCreateInput>{ ...data };
     }
   }
 
   dataMutationCreate(data: PersonCreateInput) {
-    this.createPersonGQL
+    this.postPersonGQL
       .mutate({ data })
       .pipe(take(1))
       .subscribe(
@@ -113,7 +114,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   }
 
   dataMutationUpdate(data: PersonUpdateInput, id: PersonWhereUniqueInput) {
-    this.updatePersonGQL
+    this.putPersonGQL
       .mutate({ where: id, data: data })
       .pipe(take(1))
       .subscribe(

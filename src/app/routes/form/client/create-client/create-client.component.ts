@@ -19,9 +19,9 @@ import {
   MtVocabGroupWhereInput,
   MtVocabOrderByInput,
   PersonCreateInput,
-  CreatePersonGQL,
+  PostPersonGQL,
   PersonUpdateInput,
-  UpdatePersonGQL,
+  PutPersonGQL,
   PersonWhereUniqueInput,
 } from '@shared';
 import { MtVocabHelper, HelperService } from '@shared/helper';
@@ -43,9 +43,9 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   constructor(
     public msg: NzMessageService,
     public mtVocabHelper: MtVocabHelper,
-    private createPersonGQL: CreatePersonGQL,
+    private postPersonGQL: PostPersonGQL,
     private settingService: SettingsService,
-    private updatePersonGQL: UpdatePersonGQL,
+    private putPersonGQL: PutPersonGQL,
     private modalSrv: NzModalService,
     private helper: HelperService,
   ) {}
@@ -61,7 +61,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   set editData(editData: any) {
     this.loading = true;
     this.cobajing(editData);
-    if (Array.isArray(editData.fileList)) this.fileList = editData.fileList;
+    if (editData.fileList) this.fileList = editData.fileList;
     this._editData = editData;
     this.loading = false;
   }
@@ -140,7 +140,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         },
         default: false,
       },
-      sktmKeterangan: {
+      stmKeterangan: {
         type: 'string',
         title: 'Keterangan SKTM',
         ui: {
@@ -165,19 +165,19 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         },
       },
       tanggunganPasangan: {
-        type: 'string',
+        type: 'number',
         title: 'Jumlah tanggungan istri/suami',
       },
       tanggunganAnak: {
-        type: 'string',
+        type: 'number',
         title: 'Jumlah tanggungan anak',
       },
       tanggunganFamili: {
-        type: 'string',
+        type: 'number',
         title: 'Jumlah tanggungan famili',
       },
       tanggunganLain: {
-        type: 'string',
+        type: 'number',
         title: 'Jumlah tanggungan lainnya',
       },
       asetRumah: {

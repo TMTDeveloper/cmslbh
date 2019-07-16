@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
+import { MenuService } from '@delon/theme';
 
 @Component({
   selector: 'exception-404',
@@ -8,7 +9,8 @@ import { NzModalService } from 'ng-zorro-antd';
   `,
 })
 export class Exception404Component {
-  constructor(modalSrv: NzModalService) {
+  constructor(modalSrv: NzModalService, public menuService: MenuService) {
     modalSrv.closeAll();
+    this.menuService.resume();
   }
 }

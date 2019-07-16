@@ -88,6 +88,7 @@ export function fnDelonFormConfig(): DelonFormConfig {
   return Object.assign(new DelonFormConfig(), <DelonFormConfig>{
     // values
     errors: ERRORSDEFAULT,
+    uiEmailSuffixes: ['gmail.com', 'outlook.com', 'yahoo.com'],
   });
 }
 

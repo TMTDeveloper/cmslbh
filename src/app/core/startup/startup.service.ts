@@ -60,8 +60,16 @@ export class StartupService {
             // 用户信息：包括姓名、头像、邮箱地址
             // this.settingService.setUser(res.user);
             // // ACL：设置权限为全量
-            // this.aclService.setFull(true);
+            console.log(this.settingService.user.roles_type);
+            if (this.settingService.user.roles_type) {
+              if (this.settingService.user.roles_type.find(el => el.type.id === 4)) {
+                this.aclService.setFull(true);
+              } else this.aclService.setFull(false);
+              const roles_type = this.settingService.user.roles_type.map(val => val.type.id.toString());
+              this.aclService.setRole([...roles_type]);
+            }
             // 初始化菜单
+            this.menuService.clear();
             this.menuService.add(res.menu);
             // 设置页面标题的后缀
             this.titleService.default = '';
@@ -77,9 +85,10 @@ export class StartupService {
 
   setRoleAndUser(user: User) {
     this.settingService.setUser(user);
-    if (user.roles === '4') {
+    if (user.roles_type.find(el => el.type.id === 4)) {
       this.aclService.setFull(true);
-    }
-    this.aclService.setRole([user.roles]);
+    } else this.aclService.setFull(false);
+    const roles_type = user.roles_type.map(val => val.type.id.toString());
+    this.aclService.setRole([...roles_type]);
   }
 }

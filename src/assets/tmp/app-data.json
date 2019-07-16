@@ -43,6 +43,38 @@
             "link": "/form/application/list"
           }
         ]
+      },
+      {
+        "text": "User",
+        "icon": "anticon-edit",
+        "acl": ["8"],
+        "children": [{
+            "text": "Create User",
+            "link": "/form/user/create"
+          },
+          {
+            "text": "List User",
+            "link": "/form/user/list"
+          }
+        ]
+      },
+      {
+        "text": "Antrian",
+        "icon": "anticon-edit",
+        "acl": ["8", "1", "2", "3", "4"],
+        "children": [{
+          "text": "Konsultasi",
+          "link": "/form/consultation-queue"
+        }]
+      },
+      {
+        "text": "Kasus",
+        "icon": "anticon-edit",
+        "acl": ["8", "1", "2", "3", "4"],
+        "children": [{
+          "text": "List Kasus",
+          "link": "/form/case/list"
+        }]
       }
     ]
   }]

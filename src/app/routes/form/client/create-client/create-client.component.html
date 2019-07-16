@@ -26,7 +26,7 @@
         <nz-upload
           [nzBeforeUpload]="beforeUpload"
           (nzChange)="changedStatusUpload($event)"
-          nzAction="http://192.168.1.12:3000/upload"
+          [nzAction]="uploadAction"
           [(nzFileList)]="fileList"
           [nzPreview]="preview"
         >

@@ -1,5 +1,5 @@
 overwrite: true
-schema: http://192.168.1.12:3000/graphql
+schema: http://localhost:3000/graphql
 documents: src/app/shared/graphql/types/*.graphql
 config:
   scalars:
@@ -11,5 +11,5 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-client
       - typescript-apollo-angular\
+      - typescript-compatibility

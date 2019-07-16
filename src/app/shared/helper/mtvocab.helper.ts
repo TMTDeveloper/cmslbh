@@ -3,13 +3,19 @@ import { GetMtVocabsGQL, GetMtVocabs, MtVocabWhereInput, MtVocabGroupWhereInput,
 import { map, tap, zip, take } from 'rxjs/operators';
 import { doWhileStatement } from 'babel-types';
 import { SFSchemaEnumType } from '@delon/form';
+import { GetRolesTypeGQL, GetUser, UserWhereInput, GetUserGQL, RoleWhereInput } from '@shared/graphql';
+import { valid } from 'mockjs';
 @Injectable({
   providedIn: 'root',
 })
 export class MtVocabHelper {
   // return array for cascade in cascader from mtvocab
 
-  constructor(private getMtVocabsGQL: GetMtVocabsGQL) {}
+  constructor(
+    private getMtVocabsGQL: GetMtVocabsGQL,
+    private getRolesTypeGQL: GetRolesTypeGQL,
+    private getUserGQL: GetUserGQL,
+  ) {}
 
   async findParent(kode: string) {
     const arrMtvocabs: GetMtVocabs.MtVocabs[] = [];
@@ -68,12 +74,49 @@ export class MtVocabHelper {
       .pipe(take(1));
   }
 
+  getRolesType() {
+    return this.getRolesTypeGQL
+      .watch()
+      .valueChanges.pipe(
+        map(
+          result =>
+            result.data.rolesTypes.map(res => {
+              const obj: any = {};
+              obj.value = res.id;
+              obj.label = res.description;
+              return obj;
+            }) as SFSchemaEnumType[],
+        ),
+      )
+      .pipe(take(1));
+  }
+
+  getUsers(roles: String[]) {
+    const rolesNumber = roles.map(val => Number(val));
+    return this.getUserGQL
+      .watch(<GetUser.Variables>{
+        where: <UserWhereInput>{ roles_type_some: <RoleWhereInput>{ type: { id_in: rolesNumber } } },
+      })
+      .valueChanges.pipe(
+        map(
+          result =>
+            result.data.users.map(res => {
+              const obj: any = {};
+              obj.value = res.id;
+              obj.label = res.name;
+              return obj;
+            }) as SFSchemaEnumType[],
+        ),
+      )
+      .pipe(take(1));
+  }
+
   private searchGeneratorEnum(kode_list: number): GetMtVocabs.Variables {
     return <GetMtVocabs.Variables>{
       where: <MtVocabWhereInput>{
         AND: <MtVocabWhereInput[]>[{ kode_list: <MtVocabGroupWhereInput>{ kode_list: kode_list } }],
       },
-      orderBy: MtVocabOrderByInput.Teks_Asc,
+      orderBy: MtVocabOrderByInput.TeksAsc,
     };
   }
 

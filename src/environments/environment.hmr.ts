@@ -4,9 +4,10 @@
 
 export const environment = {
   SERVER_URL: `./`,
-  production: false,
+  production: true,
   useHash: true,
-  hmr: true,
+  hmr: false,
+  API_URL: `http://localhost:3000/`,
 };
 
 /*

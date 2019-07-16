@@ -5,7 +5,7 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="user">
-            <input nz-input formControlName="userName" placeholder="username: admin or user" />
+            <input nz-input formControlName="userName" placeholder="username: resepsionis@gmail.com" />
           </nz-input-group>
           <nz-form-explain *ngIf="userName.dirty && userName.errors">
             {{ 'Please enter email!' | translate }}
@@ -15,7 +15,7 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="lock">
-            <input nz-input type="password" formControlName="password" placeholder="password: lbhjakarta" />
+            <input nz-input type="password" formControlName="password" placeholder="password: resepsionis" />
           </nz-input-group>
           <nz-form-explain *ngIf="password.dirty && password.errors">
             {{ 'Please enter password!' | translate }}

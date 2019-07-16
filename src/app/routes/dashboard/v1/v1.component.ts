@@ -1,12 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { _HttpClient } from '@delon/theme';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { _HttpClient, MenuService } from '@delon/theme';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-v1',
   templateUrl: './v1.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardV1Component implements OnInit {
+export class DashboardV1Component implements OnInit, OnDestroy {
+  navigationSubscription: any;
+
   todoData: any[] = [
     {
       completed: true,
@@ -50,14 +53,39 @@ export class DashboardV1Component implements OnInit {
   salesData: any[];
   offlineChartData: any[];
 
-  constructor(private http: _HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: _HttpClient,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    public menuService: MenuService,
+  ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initialiseInvites();
+      }
+    });
+  }
+
+  initialiseInvites() {
+    this.menuService.resume();
+  }
 
   ngOnInit() {
-    this.http.get('/chart').subscribe((res: any) => {
-      this.webSite = res.visitData.slice(0, 10);
-      this.salesData = res.salesData;
-      this.offlineChartData = res.offlineChartData;
-      this.cdr.detectChanges();
-    });
+    this.menuService.resume();
+    // this.http.get('chart').subscribe((res: any) => {
+    //   this.webSite = res.visitData.slice(0, 10);
+    //   this.salesData = res.salesData;
+    //   this.offlineChartData = res.offlineChartData;
+    //   this.cdr.detectChanges();
+    // });
+  }
+  ngOnDestroy() {
+    // avoid memory leaks here by cleaning up after ourselves. If we
+    // don't then we will continue to run our initialiseInvites()
+    // method on every navigationEnd event.
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 }

@@ -1,5 +1,73 @@
 # mutation
 
+mutation destroyRoles($where: RoleWhereInput!) {
+  deleteManyRoles(where: $where) {
+    count
+  }
+}
+
+mutation destroyLog($where: LogRequestWhereInput!) {
+  deleteManyLogRequests(where: $where) {
+    count
+  }
+}
+
+mutation postLogRequest($data: LogRequestCreateInput!) {
+  createLogRequest(data: $data) {
+    ID
+    caseId {
+      id
+    }
+    isiRequest
+    applicationId {
+      id
+    }
+    jenisRequest
+    networkId {
+      id
+    }
+    personId {
+      id
+    }
+    pp {
+      id
+    }
+    requestBy {
+      id
+    }
+    requestTo {
+      id
+    }
+    tanggapanRequest
+    tglExpired
+    tglRequest
+    tglRespon
+  }
+}
+
+mutation postUser($data: UserCreateInput!) {
+  createUser(data: $data) {
+    address
+    avatar
+    createdAt
+    deletedAt
+    email
+    id
+    name
+    password
+    phone
+    position
+    rememberToken
+    roles
+    status
+    updatedAt
+    username
+    profile {
+      id
+      noContact
+    }
+  }
+}
 mutation postClient($data: ClientCreateInput!) {
   createClient(data: $data) {
     id
@@ -38,6 +106,125 @@ mutation postClient($data: ClientCreateInput!) {
 
 mutation postApplication($data: ApplicationCreateInput!) {
   createApplication(data: $data) {
+    id
+    createdAt
+    createdBy
+    dudukPerara
+    infoLbh
+    jumlahPenerimaManfaat
+    konfirmasiData
+    noReg
+    pernahKlien
+    pernahPpLain
+    ppLain
+    regDate
+    relasiWakilClient
+    setujuAdvokasi
+    statusPerwakilan
+    updatedAt
+    updatedBy
+    wakilId {
+      id
+      namaLengkap
+    }
+    waktuPernahKlien
+    whyLbh
+    case {
+      id
+    }
+    clients {
+      id
+      alamatLokasi
+      asetGedung
+      asetKios
+      asetLahanGarapan
+      asetLapak
+      asetMobil
+      asetMotor
+      asetRumah
+      asetTanah
+      asetToko
+      asetWarung
+      createdAt
+      createdBy
+      pendapatan
+      personId {
+        id
+        namaLengkap
+      }
+      sktm
+      sktmUpload
+      stmKeterangan
+      tanggunganAnak
+      tanggunganFamili
+      tanggunganLain
+      tanggunganPasangan
+      updatedAt
+      updatedBy
+      usiaSaatKlien
+    }
+  }
+}
+
+mutation putLogRequest($data: LogRequestUpdateInput!, $where: LogRequestWhereUniqueInput!) {
+  updateLogRequest(data: $data, where: $where) {
+    ID
+    caseId {
+      id
+    }
+    isiRequest
+    applicationId {
+      id
+    }
+    jenisRequest
+    networkId {
+      id
+    }
+    personId {
+      id
+    }
+    pp {
+      id
+    }
+    requestBy {
+      id
+    }
+    requestTo {
+      id
+    }
+    tanggapanRequest
+    tglExpired
+    tglRequest
+    tglRespon
+  }
+}
+
+mutation putUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+  updateUser(data: $data, where: $where) {
+    address
+    avatar
+    createdAt
+    deletedAt
+    email
+    id
+    name
+    password
+    phone
+    position
+    rememberToken
+    roles
+    status
+    updatedAt
+    username
+    profile {
+      id
+      noContact
+    }
+  }
+}
+
+mutation putApplication($data: ApplicationUpdateInput!, $where: ApplicationWhereUniqueInput!) {
+  updateApplication(data: $data, where: $where) {
     id
     createdAt
     createdBy
@@ -207,6 +394,131 @@ mutation postPerson($data: PersonCreateInput!) {
 }
 
 # query
+
+query getLogRequest(
+  $where: LogRequestWhereInput
+  $orderBy: LogRequestOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  logRequests(
+    where: $where
+    orderBy: $orderBy
+    skip: $skip
+    after: $after
+    before: $before
+    first: $first
+    last: $last
+  ) {
+    ID
+    caseId {
+      id
+      judulKasus
+    }
+    isiRequest
+    applicationId {
+      id
+      tahap
+      noReg
+      dudukPerara
+      clients {
+        id
+        personId {
+          namaLengkap
+        }
+      }
+    }
+    jenisRequest
+    networkId {
+      id
+    }
+    personId {
+      id
+    }
+    pp {
+      id
+      appConsultation {
+        name
+      }
+    }
+    requestBy {
+      id
+    }
+    requestTo {
+      id
+    }
+    statusRequest
+    tanggapanRequest
+    tglExpired
+    tglRequest
+    tglRespon
+  }
+}
+
+query getRolesType(
+  $where: RolesTypeWhereInput
+  $orderBy: RolesTypeOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  rolesTypes(
+    where: $where
+    orderBy: $orderBy
+    skip: $skip
+    after: $after
+    before: $before
+    first: $first
+    last: $last
+  ) {
+    id
+    description
+  }
+}
+query getUser(
+  $where: UserWhereInput
+  $orderBy: UserOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  users(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    address
+    avatar
+    createdAt
+    deletedAt
+    email
+    id
+    name
+    password
+    phone
+    position
+    rememberToken
+    roles
+    status
+    updatedAt
+    username
+    profile {
+      id
+      noContact
+    }
+    roles_type {
+      id
+      type {
+        id
+        description
+      }
+    }
+  }
+}
+
 query getClient(
   $where: ClientWhereInput
   $orderBy: ClientOrderByInput

@@ -1,4 +1,4 @@
-import { SettingsService, _HttpClient } from '@delon/theme';
+import { SettingsService, _HttpClient, MenuService } from '@delon/theme';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, Inject, Optional } from '@angular/core';
 import { Router } from '@angular/router';
@@ -34,6 +34,7 @@ export class UserLoginComponent implements OnDestroy {
     private startupSrv: StartupService,
     public http: _HttpClient,
     public msg: NzMessageService,
+    public menuService: MenuService,
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(4)]],
@@ -100,7 +101,7 @@ export class UserLoginComponent implements OnDestroy {
       token:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.rQ6RqWVa505gFM295E7UAdjA4BJMy0Liu5rIUs-9quM',
     });
-    const urlLogin = 'http://192.168.1.12:3000/auth/token';
+    const urlLogin = `${environment.API_URL}auth/token`;
     this.http
       .post(urlLogin, {
         type: this.type,
@@ -119,6 +120,7 @@ export class UserLoginComponent implements OnDestroy {
           this.tokenService.set({ token: res.token });
           // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
           this.startupSrv.load().then(() => {
+            console.log(res.user);
             this.startupSrv.setRoleAndUser(res.user);
             const url = '/';
             this.router.navigateByUrl(url);

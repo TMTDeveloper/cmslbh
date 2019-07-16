@@ -8,6 +8,11 @@ import { CreateApplicationComponent } from './application/create-application/cre
 import { ListApplicationComponent } from './application/list-application/list-application.component';
 
 import { CreateClientComponent } from './client/create-client/create-client.component';
+import { CreateUserComponent } from './user/create-user/create-user.component';
+import { ListUserComponent } from './user/list-user/list-user.component';
+import { ConsultationQueueComponent } from './consultation-queue/consultation-queue.component';
+import { ListCaseComponent } from './case/list-case/list-case.component';
+import { ViewCaseComponent } from './case/view-case/view-case.component';
 
 const routes: Routes = [
   {
@@ -18,8 +23,20 @@ const routes: Routes = [
     path: 'application',
     children: [
       { path: 'create', component: CreateApplicationComponent },
-      { path: 'list', component: CreateClientComponent },
+      { path: 'list', component: ListApplicationComponent },
     ],
+  },
+  {
+    path: 'user',
+    children: [{ path: 'create', component: CreateUserComponent }, { path: 'list', component: ListUserComponent }],
+  },
+  {
+    path: 'consultation-queue',
+    component: ConsultationQueueComponent,
+  },
+  {
+    path: 'case',
+    children: [{ path: 'view/:id', component: ViewCaseComponent }, { path: 'list', component: ListCaseComponent }],
   },
 ];
 

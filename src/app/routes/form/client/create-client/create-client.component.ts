@@ -30,6 +30,7 @@ import { map, take } from 'rxjs/operators';
 import { AllPersonGQL, AllPerson } from '@shared/generated/graphql';
 import { Observable } from 'apollo-link';
 import { saveAs as importedSaveAs } from 'file-saver';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-create-client',
@@ -40,6 +41,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   private _editData: any;
   fileList: UploadFile[] = [];
   modalInstance: NzModalRef;
+  uploadAction = `${environment.API_URL}upload`;
   constructor(
     public msg: NzMessageService,
     public mtVocabHelper: MtVocabHelper,
@@ -309,8 +311,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   preview = (file: UploadFile) => {
-    this.helper.downloadFile(file.filename).subscribe(res => {
-      importedSaveAs(res, file.filename);
+    this.helper.downloadFile(file.name).subscribe(res => {
+      importedSaveAs(res, file.name);
     });
   };
 }

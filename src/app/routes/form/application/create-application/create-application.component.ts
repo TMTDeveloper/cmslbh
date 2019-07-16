@@ -11,24 +11,20 @@ import {
 } from '@angular/core';
 import { NzMessageService, NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { SettingsService } from '@delon/theme';
-import { SFSchema, SFComponent, FormProperty, PropertyGroup, ErrorData } from '@delon/form';
+import { SFSchema, SFComponent, ErrorData } from '@delon/form';
 import {
-  GetMtVocabsGQL,
-  GetMtVocabs,
-  MtVocabWhereInput,
-  MtVocabGroupWhereInput,
-  MtVocabOrderByInput,
-  PersonCreateInput,
-  PostPersonGQL,
-  PersonUpdateInput,
-  PutPersonGQL,
-  PersonWhereUniqueInput,
   AllPerson,
   ClientCreateManyWithoutApplicationIdInput,
   ClientCreateWithoutApplicationIdInput,
   ApplicationCreateInput,
   CaseCreateWithoutApplicationInput,
   PostApplicationGQL,
+  ApplicationUpdateInput,
+  ClientUpdateManyWithoutApplicationIdInput,
+  ClientUpdateWithWhereUniqueWithoutApplicationIdInput,
+  ApplicationWhereUniqueInput,
+  PutApplicationGQL,
+  ClientWhereUniqueInput,
 } from '@shared';
 import { MtVocabHelper } from '@shared/helper';
 import * as moment from 'moment';
@@ -44,16 +40,16 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
   public modalEditData: any;
   private _editData: any;
   clientData: any[] = [];
+  deletedClient: any[] = [];
   modalInstance: NzModalRef;
   mode = '';
   constructor(
     public msg: NzMessageService,
     public mtVocabHelper: MtVocabHelper,
-    private postPersonGQL: PostPersonGQL,
     private settingService: SettingsService,
-    private updatePersonGQL: PutPersonGQL,
     private modalSrv: NzModalService,
     private postApplicationGQL: PostApplicationGQL,
+    private putApplicationGQL: PutApplicationGQL,
   ) {}
 
   @Output() saveDone = new EventEmitter<any>();
@@ -62,21 +58,19 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
   @ViewChild('modalClient') modalClient: TemplateRef<{}>;
   @ViewChild('card') card: ElementRef;
   @Input() parent: boolean;
-  @Input() create: boolean;
+  @Input() modeApp = 'create';
   @Input()
   set editData(editData: any) {
     (async () => {
       this.loading = true;
-      if (!Array.isArray(editData.distrikId) && editData.distrikId) {
-        editData.distrikId = (await this.mtVocabHelper.findParent(editData.distrikId)).reverse();
-      }
-      if (!Array.isArray(editData.distrikDomisili) && editData.distrikDomisili) {
-        editData.distrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
-      }
-      if (!Array.isArray(editData.pekerjaan) && editData.pekerjaan) {
-        editData.pekerjaan = (await this.mtVocabHelper.findParentPekerjaan(editData.pekerjaan)).reverse();
+      if (this.modeApp !== 'create') {
+        for (const obj of editData.clients) {
+          if (obj.sktmUpload !== '') obj.fileList = [{ name: obj.sktmUpload, status: 'done' }];
+        }
+        this.clientData = editData.clients;
       }
       this._editData = editData;
+      console.log(editData);
       this.loading = false;
     })();
   }
@@ -91,16 +85,18 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
 
   submit(value: any) {
     console.log(value);
-
-    const processedData = this.processData(value);
-    console.log(processedData);
-    this.dataMutationCreate(processedData);
-    // !this.create
-    //   ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
-    //   : this.dataMutationCreate(<PersonCreateInput>processedData);
+    if (this.modeApp === 'create') {
+      const processedData = this.processDataCreate(value);
+      console.log(processedData);
+      this.dataMutationCreate(processedData);
+    } else {
+      const processedData = this.processDataUpdate(value);
+      console.log(processedData);
+      this.dataMutationUpdate(processedData, { id: value.id });
+    }
   }
 
-  processData(data: any): ApplicationCreateInput {
+  processDataCreate(data: any): ApplicationCreateInput {
     // createmode
     const arrClient = <ClientCreateWithoutApplicationIdInput[]>[];
     for (const obj of this.clientData) {
@@ -135,6 +131,61 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     return <ApplicationCreateInput>{ ...applicationCreateInput };
   }
 
+  processDataUpdate(data: any): ApplicationUpdateInput {
+    // updatemode
+    const clients = this.processUpdateClientData(data);
+    data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
+    const wakilId = data.wakilId.id;
+    data.wakilId = undefined;
+    data.tahap = '1';
+    data.clients = clients;
+    data.updatedBy = this.settingService.user.name;
+    delete data.case;
+    const { id, fileList, createdAt, createdBy, updatedAt, __typename, _values, ...applicationUpdateInput } = data;
+    applicationUpdateInput.wakilId = { connect: { id: wakilId } };
+
+    return <ApplicationUpdateInput>{ ...applicationUpdateInput };
+  }
+
+  processUpdateClientData(data: any) {
+    const clients = <ClientUpdateManyWithoutApplicationIdInput>{};
+    const arrClientUpdate = <ClientUpdateWithWhereUniqueWithoutApplicationIdInput[]>[];
+    const arrClientCreate = <ClientCreateWithoutApplicationIdInput[]>[];
+    const arrClientDelete = <ClientWhereUniqueInput[]>[...this.deletedClient];
+    for (const obj of this.clientData) {
+      if (obj.id) {
+        if (obj.fileList) if (obj.fileList.length > 0) obj.sktmUpload = obj.fileList[0].name;
+        let personId;
+        if (obj.personId.id) {
+          personId = obj.personId.id;
+        } else {
+          personId = obj.personId;
+        }
+        obj.personId = undefined;
+        data.updatedBy = this.settingService.user.name;
+        const { fileList, createdBy, id, createdAt, updatedAt, __typename, _values, ...newData } = obj;
+        newData.personId = { connect: { id: personId } };
+        arrClientUpdate.push(<ClientUpdateWithWhereUniqueWithoutApplicationIdInput>{
+          where: { id: obj.id },
+          data: newData,
+        });
+      } else {
+        if (obj.fileList.length > 0) obj.sktmUpload = obj.fileList[0].name;
+        const personId = obj.personId.id;
+        obj.personId = undefined;
+        data.createdBy = this.settingService.user.name;
+        data.updatedBy = this.settingService.user.name;
+        const { fileList, _values, ...newData } = obj;
+        newData.personId = { connect: { id: personId } };
+        arrClientCreate.push(newData);
+      }
+    }
+    clients.update = arrClientUpdate;
+    clients.create = arrClientCreate;
+    clients.delete = arrClientDelete;
+    return clients;
+  }
+
   dataMutationCreate(data: ApplicationCreateInput) {
     this.postApplicationGQL
       .mutate({ data })
@@ -153,14 +204,16 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
       );
   }
 
-  dataMutationUpdate(data: PersonUpdateInput, id: PersonWhereUniqueInput) {
-    this.updatePersonGQL
+  dataMutationUpdate(data: ApplicationUpdateInput, id: ApplicationWhereUniqueInput) {
+    this.putApplicationGQL
       .mutate({ where: id, data: data })
       .pipe(take(1))
       .subscribe(
         () => {
           this.msg.success('Data Sukses Dirubah');
-          this.sf.refreshSchema(this.schema);
+          this.clientData.length = 0;
+          setTimeout(() => this.st.reset());
+          setTimeout(() => this.sf.refreshSchema());
           if (this.parent) this.saveDone.emit(true);
         },
         error => {
@@ -190,6 +243,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
                 this.clientData.splice(ind, 1);
               }
             });
+            if (item.id) this.deletedClient.push({ id: item.id });
             this.st.removeRow(item);
             this.sf.setValue('/clients', this.clientData);
           },
@@ -321,7 +375,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         description: 'Konfirmasi data yang diisikan sudah benar',
         ui: {
           widget: 'checkbox',
-          validator: (value: any, formProperty: FormProperty, form: PropertyGroup): ErrorData[] => {
+          validator: (value: any): ErrorData[] => {
             if (value === false) {
               return <ErrorData[]>[{ message: 'Konfirmasi Harus Di Checklist' }];
             }
@@ -335,7 +389,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         description: 'Pilih jika setuju untuk advokasi',
         ui: {
           widget: 'checkbox',
-          validator: (value: any, formProperty: FormProperty, form: PropertyGroup): ErrorData[] => {
+          validator: (value: any): ErrorData[] => {
             if (value === false) {
               return <ErrorData[]>[{ message: 'Harus Setuju Advokasi' }];
             }

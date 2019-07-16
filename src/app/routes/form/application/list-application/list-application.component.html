@@ -1,3 +1,54 @@
-<p>
-  list-application works!
-</p>
+<page-header *ngIf="!parent" [title]="'List Application'"></page-header>
+<div #card>
+  <nz-card [nzBordered]="false">
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+      <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+        <div nz-col nzMd="8" nzSm="24">
+          <nz-form-item>
+            <nz-form-label nzFor="namaLengkap">Nama Wakil</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                [(ngModel)]="q.namaLengkap"
+                name="namaLengkap"
+                placeholder="Nama Wakil"
+                id="namaLengkap"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzSm="24">
+          <nz-form-item>
+            <nz-form-label nzFor="nomorId">Nomor Registrasi</nz-form-label>
+            <nz-form-control>
+              <input nz-input [(ngModel)]="q.noReg" name="noReg" placeholder="no Registrasi" id="noReg" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+          <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">Search</button>
+          <button nz-button type="reset" (click)="reset()" class="mx-sm">Reset</button>
+          <a (click)="expandForm = !expandForm">
+            {{ expandForm ? 'Hide' : 'Expand' }}
+            <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+          </a>
+        </div>
+      </div>
+    </form>
+    <div class="my-md">
+      <button nz-button (click)="add(modalContent, 'Create New Person')" [nzType]="'primary'">
+        <i nz-icon nzType="plus"></i>
+        <span>New</span>
+      </button>
+    </div>
+    <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
+      <ng-template st-row="status" let-i>
+        <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+      </ng-template>
+    </st>
+  </nz-card>
+</div>
+<ng-template #modalContent>
+  <app-create-application [parent]="true" [modeApp]="mode" [editData]="dataSelected" (saveDone)="closeModal($event)">
+  </app-create-application>
+</ng-template>

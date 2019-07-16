@@ -7,3 +7,4 @@ node_modules/
 coverage/
 dist/
 package.json
+src/app/shared/graphql/generated/graphql.ts

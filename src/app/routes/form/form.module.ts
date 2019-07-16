@@ -8,12 +8,35 @@ import { CreatePersonComponent } from './person/create-person/create-person.comp
 import { CreateApplicationComponent } from './application/create-application/create-application.component';
 import { ListApplicationComponent } from './application/list-application/list-application.component';
 import { CreateClientComponent } from './client/create-client/create-client.component';
+import { CreateUserComponent } from './user/create-user/create-user.component';
+import { ListUserComponent } from './user/list-user/list-user.component';
+import { ConsultationQueueComponent } from './consultation-queue/consultation-queue.component';
+import { ViewCaseComponent } from './case/view-case/view-case.component';
+import { ListCaseComponent } from './case/list-case/list-case.component';
+import { CaseTransferComponent } from './case/case-transfer/case-transfer.component';
+import { CasePkComponent } from './case/case-pk/case-pk.component';
+import { CaseDocumentComponent } from './case/case-document/case-document.component';
+import { CaseConsultationComponent } from './case/case-consultation/case-consultation.component';
 
 const COMPONENTS = [ListPersonComponent, CreatePersonComponent];
 
 @NgModule({
   imports: [SharedModule, FormRoutingModule],
-  declarations: [...COMPONENTS, CreateApplicationComponent, ListApplicationComponent, CreateClientComponent],
+  declarations: [
+    ...COMPONENTS,
+    CreateApplicationComponent,
+    ListApplicationComponent,
+    CreateClientComponent,
+    CreateUserComponent,
+    ListUserComponent,
+    ConsultationQueueComponent,
+    ViewCaseComponent,
+    ListCaseComponent,
+    CaseTransferComponent,
+    CasePkComponent,
+    CaseDocumentComponent,
+    CaseConsultationComponent,
+  ],
   entryComponents: [],
   exports: [...COMPONENTS],
 })

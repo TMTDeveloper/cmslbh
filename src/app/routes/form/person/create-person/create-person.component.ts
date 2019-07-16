@@ -403,7 +403,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       where: <MtVocabWhereInput>{
         AND: <MtVocabWhereInput[]>[{ kode_induk: kode, kode_list: <MtVocabGroupWhereInput>{ kode_list: kode_list } }],
       },
-      orderBy: MtVocabOrderByInput.Teks_Asc,
+      orderBy: MtVocabOrderByInput.TeksAsc,
     };
   }
 }

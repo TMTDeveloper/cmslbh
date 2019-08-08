@@ -110,18 +110,19 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
       arrClient.push(newData);
     }
     const clients = <ClientCreateManyWithoutApplicationIdInput>{ create: arrClient };
-    const caseCreate = <CaseCreateWithoutApplicationInput>(<unknown>{
-      create: {
-        caseClosed: false,
-        unlockPk: false,
-        lockDitolak: false,
-        unlockTransfer: false,
-      },
-    });
+    // const caseCreate = <CaseCreateWithoutApplicationInput>(<unknown>{
+    //   create: {
+    //     caseClosed: false,
+    //     unlockPk: false,
+    //     lockDitolak: false,
+    //     unlockTransfer: false,
+    //   },
+    // });
     data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
-    data.case = caseCreate;
+    // data.case = caseCreate;
     const wakilId = data.wakilId.id;
     data.wakilId = undefined;
+    data.tahap = '1012';
     data.clients = clients;
     data.createdBy = this.settingService.user.name;
     data.updatedBy = this.settingService.user.name;
@@ -137,10 +138,9 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
     const wakilId = data.wakilId.id;
     data.wakilId = undefined;
-    data.tahap = '1';
     data.clients = clients;
     data.updatedBy = this.settingService.user.name;
-    delete data.case;
+    // delete data.case;
     const { id, fileList, createdAt, createdBy, updatedAt, __typename, _values, ...applicationUpdateInput } = data;
     applicationUpdateInput.wakilId = { connect: { id: wakilId } };
 

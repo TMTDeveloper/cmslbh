@@ -16,6 +16,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 import { UEditorModule } from 'ngx-ueditor';
 import { NgxTinymceModule } from 'ngx-tinymce';
+import { LinkyModule } from 'angular-linky';
 
 const THIRDMODULES = [NgZorroAntdModule, CountdownModule, UEditorModule, NgxTinymceModule];
 // #endregion
@@ -27,6 +28,7 @@ const DIRECTIVES = [];
 
 @NgModule({
   imports: [
+    LinkyModule,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -45,6 +47,7 @@ const DIRECTIVES = [];
     ...DIRECTIVES,
   ],
   exports: [
+    LinkyModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

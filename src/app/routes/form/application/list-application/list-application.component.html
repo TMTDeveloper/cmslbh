@@ -41,7 +41,7 @@
         <span>New</span>
       </button>
     </div>
-    <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
+    <st #st [columns]="columns" [data]="data" [loading]="loading">
       <ng-template st-row="status" let-i>
         <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
       </ng-template>

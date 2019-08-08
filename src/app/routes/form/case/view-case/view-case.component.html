@@ -1,25 +1,26 @@
-<page-header [title]="'单号：234231029431'" [logo]="logo" [action]="action" [extra]="extra" [tab]="tab">
-  <ng-template #logo>
+<div #card>
+  <page-header [title]="'Detail Kasus'" autoBreadcrumb="false" [action]="action" [tab]="tab" [loading]="loading">
+    <!-- <ng-template #logo>
     <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
-  </ng-template>
-  <ng-template #action>
-    <nz-button-group>
+  </ng-template> -->
+    <ng-template #action>
+      <!-- <nz-button-group>
       <button nz-button>操作</button>
       <button nz-button>操作</button>
-    </nz-button-group>
-    <button nz-button nz-dropdown class="mx-sm">
+    </nz-button-group> -->
+      <!-- <button nz-button nz-dropdown  [nzDropdownMenu]="opMenu" class="mx-sm">
       <i nz-icon nzType="ellipsis"></i>
     </button>
-    <!-- <nz-dropdown-menu #opMenu="nzDropdownMenu">
+    <nz-dropdown-menu #opMenu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>选项一</li>
         <li nz-menu-item>选项二</li>
         <li nz-menu-item>选项三</li>
       </ul>
     </nz-dropdown-menu> -->
-    <button nz-button [nzType]="'primary'">主操作</button>
-  </ng-template>
-  <ng-template #extra>
+      <!-- <button nz-button [nzType]="'default'" (click)="changeShow()">Edit</button> -->
+    </ng-template>
+    <!-- <ng-template #extra>
     <div nz-row>
       <div nz-col nzXs="24" nzSm="12">
         <p class="text-grey">状态</p>
@@ -30,25 +31,367 @@
         <p class="text-lg">¥ 568.08</p>
       </div>
     </div>
-  </ng-template>
-  <ng-template #tab>
-    <nz-tabset>
-      <nz-tab nzTitle="详情"></nz-tab>
-      <nz-tab nzTitle="规则"></nz-tab>
-    </nz-tabset>
-  </ng-template>
-  <sv-container size="small" col="2">
-    <sv label="创建人">曲丽丽</sv>
-    <sv label="订购产品">XX 服务</sv>
-    <sv label="创建时间">2017-07-07</sv>
+  </ng-template> -->
+    <ng-template #tab>
+      <nz-tabset [nzType]="'card'">
+        <nz-tab nzTitle="Data Permohonan">
+          <nz-card [nzBordered]="false">
+            <sv-container size="Large" col="1" layout="vertical">
+              <sv label="Bertindak untuk diri sendiri atau mewakili">{{
+                data.application?.statusPerwakilanTeks | async
+              }}</sv>
+              <sv label="Tanggal Registrasi">{{
+                data.application?.regDate ? momentF(data.application?.regDate).format('DD/MM/YYYY HH:mm') : null
+              }}</sv>
+              <sv label="Klien">{{ translateClients() }}</sv>
+              <sv label="Yang Mewakili">{{ data.application?.wakilId?.namaLengkap }}</sv>
+              <sv label="Hubungan Wakil Klien">{{ data.application?.relasiWakilClient }}</sv>
+              <sv label="Duduk Perkara"
+                ><div *ngIf="data.application?.dudukPerara">
+                  <pre>{{ data.application?.dudukPerara }}</pre>
+                </div></sv
+              >
+            </sv-container>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Umum">
+          <nz-card [nzBordered]="false" class="asd">
+            <sv-container size="Large" col="1" layout="vertical">
+              <sv><a nz-button (click)="openModalUmum(modalContentUmum)">Edit</a></sv>
+              <sv label="Judul Kasus">{{ data?.judulKasus }}</sv>
+              <sv label="Deskripsi Kasus"
+                ><div *ngIf="data?.kronologiKasus">
+                  <pre>{{ data?.kronologiKasus }}</pre>
+                </div></sv
+              >
+              <sv label="Target Akhir Advokasi"
+                ><div *ngIf="data?.targetAdvokasi">
+                  <pre>{{ data?.targetAdvokasi }}</pre>
+                </div></sv
+              >
+              <sv *ngIf="kabid"><a nz-button (click)="openModalPenangananLebihLanjut(modalPenangananLebihLanjut)">Edit</a></sv>
+              <sv label="Status Penanganan Lebih Lanjut">{{ translateStatusPk(data?.statusPendampingan) }}</sv>
+            </sv-container>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Analisa">On Progress</nz-tab>
+        <nz-tab nzTitle="Konsultasi">
+          <nz-card [nzBordered]="false" class="asd">
+            <div *ngIf="allowedConsultation" nz-col>
+              <button nz-button (click)="openModalKonsultasiAdd(modalContentKonsultasi)" [nzType]="'primary'">
+                <i nz-icon nzType="plus"></i>
+                <span>New</span>
+              </button>
+            </div>
+            <div nz-col>
+              <st #st [columns]="columnsConsultation" [data]="data?.consultations" [loading]="loading">
+                <ng-template st-row="status" let-i>
+                  <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+                </ng-template>
+              </st>
+            </div>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Hasil Rapat PK">
+          <nz-card [nzBordered]="false">
+            <sv-container size="Large" col="1" layout="vertical">
+              <sv><a nz-button (click)="openModalRapatPK(modalContentRapatPK)">Edit</a></sv>
+              <sv label="Tanggal Rapat PK">{{
+                data.pk?.tglRapat ? momentF(data.pk?.tglRapat).format('DD/MM/YYYY') : null
+              }}</sv>
+              <sv label="Penanganan Lebih Lanjut">{{ translateStatusPk(data.pk?.didampingi) }}</sv>
+              <sv label="PP Pendamping">{{ data.pk?.ppPendamping?.name }}</sv>
+              <sv label="Alasan Bila Kasus Tidak Didampingi / Transfer"
+                ><div *ngIf="data.pk?.statusAlasanTdk">
+                  <pre>{{ data.pk?.statusAlasanTdk }}</pre>
+                </div></sv
+              >
+              <!-- <sv label="Link File Legal Memo"
+                ><span
+                  *ngIf="data.applicaton?.pk?.legalMemo"
+                  [innerHTML]="data.applicaton?.pk?.legalMemo | linky"
+                ></span
+              ></sv>
+              <sv label="Link File Notula Rapat"
+                ><span
+                  *ngIf="data.applicaton?.pk?.notulaRapat"
+                  [innerHTML]="data.applicaton?.pk?.notulaRapat | linky"
+                ></span
+              ></sv> -->
+            </sv-container>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Catatan Pendampingan">
+          <nz-card [nzBordered]="false">
+            <sv-container size="Large" col="1" layout="vertical">
+              <sv><a nz-button (click)="openCatatanPendampingan(modalContentCatatanPendampingan)">Edit</a></sv>
+              <sv label="Jenis Peradilan">{{ data.progresses?.jenisPeradilanTeks | async }}</sv>
+              <sv label="Catatan"
+                ><div *ngIf="data.progresses?.catatan">
+                  <pre>{{ data.progresses?.catatan }}</pre>
+                </div></sv
+              >
+            </sv-container>
+            <div nz-col>
+              <button
+                nz-button
+                (click)="openAktifitasPendampinganAdd(modalContentAktifitasPendampingan)"
+                [nzType]="'primary'"
+              >
+                <i nz-icon nzType="plus"></i>
+                <span>New</span>
+              </button>
+            </div>
+            <st #st [columns]="columnsCatatanPendampingan" [data]="data?.activities" [loading]="loading">
+              <ng-template st-row="status" let-i>
+                <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+              </ng-template>
+            </st>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Terminasi">On Progress</nz-tab>
+        <nz-tab nzTitle="Referral">On Progress</nz-tab>
+        <nz-tab nzTitle="Transfer">
+          <nz-card [nzBordered]="false">
+            <sv-container size="Large" col="1" layout="vertical">
+              <sv><a nz-button (click)="openModalTransfer(modalContentTransfer)">Edit</a></sv>
+              <sv label="Tanggal Transfer">{{
+                data.transfer?.tglTransfer ? momentF(data.transfer?.tglTransfer).format('DD/MM/YYYY') : null
+              }}</sv>
+              <sv label="Ditransfer Ke">{{ data.transfer?.network.name }}</sv>
+              <sv label="Catatan"
+                ><div *ngIf="data.transfer?.catatan">
+                  <pre>{{ data.transfer?.catatan }}</pre>
+                </div></sv
+              >
+              <!-- <sv label="Link File Legal Memo"
+                    ><span
+                      *ngIf="data.applicaton?.pk?.legalMemo"
+                      [innerHTML]="data.applicaton?.pk?.legalMemo | linky"
+                    ></span
+                  ></sv>
+                  <sv label="Link File Notula Rapat"
+                    ><span
+                      *ngIf="data.applicaton?.pk?.notulaRapat"
+                      [innerHTML]="data.applicaton?.pk?.notulaRapat | linky"
+                    ></span
+                  ></sv> -->
+            </sv-container>
+          </nz-card>
+        </nz-tab>
+        <nz-tab nzTitle="Dokumen">On Progress</nz-tab>
+      </nz-tabset>
+    </ng-template>
+    <sv-container *ngIf="show" size="Large" col="1">
+      <sv label="Nomor Registrasi">{{ data.application?.noReg }}</sv>
+      <sv label="Judul Kasus">{{ data?.judulKasus }}</sv>
+      <!-- <sv label="创建时间">2017-07-07</sv>
     <sv label="关联单据">
       <a (click)="msg.success('yes')">12421</a>
     </sv>
     <sv label="生效日期">2017-07-07 ~ 2017-08-08</sv>
-    <sv label="备注">请于两个工作日内确认</sv>
-  </sv-container>
-</page-header>
-<nz-card [nzBordered]="false" class="mb-lg" nzTitle="流程进度">
+    <sv label="备注">请于两个工作日内确认</sv> -->
+    </sv-container>
+    <!-- <form nz-form #f="ngForm" *ngIf="!show" se-container gutter="32">
+    <se label="Judul Kasus" error="请填写">
+      <input type="text" nz-input name="ak" required />
+    </se>
+    <se>
+      <button nz-button nzType="primary" [disabled]="f.invalid">Save</button>
+    </se>
+  </form> -->
+  </page-header>
+
+  <ng-template #modalContentUmum>
+    <sf
+      #sfUmum
+      [schema]="schemaUmum"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitUmum($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+  <ng-template #modalPenangananLebihLanjut>
+      <sf
+        #sfUmum
+        [schema]="schemaUmum"
+        [formData]="dataModalTemp"
+        (formSubmit)="submitUmum($event)"
+        [loading]="loading"
+      ></sf>
+    </ng-template>
+  <ng-template #modalContentRapatPK>
+    <sf
+      #sfUmum
+      [schema]="schemaRapatPK"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitRapatPK($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+  <ng-template #modalContentTransfer>
+    <sf
+      #sfUmum
+      [schema]="schemaTransfer"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitTransfer($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+  <ng-template #modalContentCatatanPendampingan>
+    <sf
+      #sfUmum
+      [schema]="schemaCatatanPendampingan"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitCatatanPendampingan($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+
+  <ng-template #modalContentAktifitasPendampingan>
+    <sf
+      #sfUmum
+      [schema]="schemaAktifitasPendampingan"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitAktifitasPendampingan($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+
+  <ng-template #modalContentKonsultasi>
+    <sf
+      #sfKonsultasi
+      [schema]="schemaKonsultasi"
+      [formData]="dataModalTemp"
+      (formSubmit)="submitKonsultasi($event)"
+      [loading]="loading"
+    ></sf>
+  </ng-template>
+  <ng-template #modalContentKonsultasiView>
+    <sv-container size="Large" col="1" layout="vertical">
+      <sv label="Judul Aktifitas">{{ dataModalTemp?.judulAktifitas }}</sv>
+      <sv label="Isi Konsultasi"
+        ><div *ngIf="dataModalTemp?.isiKonsul">
+          <pre>{{ dataModalTemp?.isiKonsul }}</pre>
+        </div></sv
+      >
+      <sv label="Harapan"
+        ><div *ngIf="dataModalTemp?.harapan">
+          <pre>{{ dataModalTemp?.harapan }}</pre>
+        </div></sv
+      >
+      <sv label="Saran Hukum"
+        ><div *ngIf="dataModalTemp?.saranHukum">
+          <pre>{{ dataModalTemp?.saranHukum }}</pre>
+        </div></sv
+      >
+      <sv label="Rencana Tindak Lanjut"
+        ><div *ngIf="dataModalTemp?.rencanaTindakLanjut">
+          <pre>{{ dataModalTemp?.rencanaTindakLanjut }}</pre>
+        </div></sv
+      >
+      <sv label="PP dan APBH"
+        ><div>
+          <pre>{{ dataModalTemp?.listPP }}</pre>
+        </div></sv
+      >
+    </sv-container>
+  </ng-template>
+
+  <ng-template #modalContentAktifitasView>
+    <sv-container size="Large" col="1" layout="vertical">
+      <sv label="Judul Aktifitas">{{ dataModalTemp?.judulAktifitas }}</sv>
+      <sv label="Tgl Aktifitas">{{
+        dataModalTemp?.tglAktifitas ? momentF(dataModalTemp?.tglAktifitas).format('DD/MM/YYYY HH:mm') : null
+      }}</sv>
+      <sv label="Posisi"
+        ><div *ngIf="dataModalTemp?.position">
+          <pre>{{ dataModalTemp?.position }}</pre>
+        </div></sv
+      >
+      <sv label="Target Advokasi"
+        ><div *ngIf="dataModalTemp?.targetAdvokasi">
+          <pre>{{ dataModalTemp?.targetAdvokasi }}</pre>
+        </div></sv
+      >
+      <sv label="Capaian"
+        ><div *ngIf="dataModalTemp?.capaian">
+          <pre>{{ dataModalTemp?.capaian }}</pre>
+        </div></sv
+      >
+      <sv label="Hambatan"
+        ><div *ngIf="dataModalTemp?.hambatan">
+          <pre>{{ dataModalTemp?.hambatan }}</pre>
+        </div></sv
+      >
+      <sv label="Rencana Strategi"
+        ><div *ngIf="dataModalTemp?.rencanaStrategi">
+          <pre>{{ dataModalTemp?.rencanaStrategi }}</pre>
+        </div></sv
+      >
+    </sv-container>
+  </ng-template>
+  <!-- schemaAktifitasPendampingan: SFSchema = {
+      properties: {
+        judulAktifitas: {
+          type: 'string',
+          title: 'Judul',
+        },
+        tglAktifitas: {
+          type: 'string',
+          title: 'Tanggal',
+          ui: { widget: 'date', mode: 'date', displayFormat: 'dd-MM-yyyy' },
+        },
+        position: {
+          type: 'string',
+          title: 'Posisi Kasus',
+          ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        },
+        targetAdvokasi: {
+          type: 'string',
+          title: 'Target Advokasi',
+          ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        },
+        capaian: {
+          type: 'string',
+          title: 'Capaian',
+          ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        },
+        hambatan: {
+          type: 'string',
+          title: 'Hambatan',
+          ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        },
+        rencanaStrategi: {
+          type: 'string',
+          title: 'Rencana Strategi',
+          ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        },
+        activitieslit: {
+          type: 'string',
+          title: 'Aktifitas Litigasi',
+          ui: {
+            widget: 'select',
+            mode: 'tags',
+            asyncData: () => this.mtVocabHelper.getMtVocabEnum(83, 'kode'),
+          },
+        },
+        activitiesnonlit: {
+          type: 'string',
+          title: 'Aktifitas Non-Litigasi',
+          ui: {
+            widget: 'select',
+            mode: 'tags',
+            asyncData: () => this.mtVocabHelper.getMtVocabEnum(84, 'kode'),
+          },
+        },
+      },
+      required: ['judulAktifitas', 'tglAktifitas', 'activitieslit', 'activitiesnonlit'],
+      ui: {
+        size: 'large',
+      },
+    }; -->
+  <!-- <nz-card [nzBordered]="false" class="mb-lg" nzTitle="流程进度">
   <nz-steps [nzCurrent]="1" nzProgressDot>
     <nz-step [nzTitle]="'创建项目'" [nzDescription]="createDesc">
       <ng-template #createDesc>
@@ -76,8 +419,8 @@
     <nz-step [nzTitle]="'完成'"></nz-step>
   </nz-steps>
   <div class="steps-content"></div>
-</nz-card>
-<nz-card [nzBordered]="false" nzTitle="用户信息" class="mb-lg">
+</nz-card> -->
+  <!-- <nz-card [nzBordered]="false" nzTitle="用户信息" class="mb-lg">
   <sv-container class="mb-lg">
     <sv label="用户姓名">付小小</sv>
     <sv label="会员卡号">32943898021309809423</sv>
@@ -123,8 +466,8 @@
       <sv label="角色码">1234568</sv>
     </sv-container>
   </nz-card>
-</nz-card>
-<nz-card [nzBordered]="false" nzTitle="用户近半年来电记录" class="mb-lg">
+</nz-card> -->
+  <!-- <nz-card [nzBordered]="false" nzTitle="用户近半年来电记录" class="mb-lg">
   <div class="no-data"><i nz-icon nzType="frown"></i>暂无数据</div>
 </nz-card>
 <nz-card [nzBordered]="false">
@@ -141,4 +484,5 @@
       <nz-badge *ngIf="i.status !== 'success'" [nzStatus]="'processing'" [nzText]="'进行中'"></nz-badge>
     </ng-template>
   </st>
-</nz-card>
+</nz-card> -->
+</div>

@@ -62,7 +62,7 @@ export class StartupService {
             // // ACL：设置权限为全量
             console.log(this.settingService.user.roles_type);
             if (this.settingService.user.roles_type) {
-              if (this.settingService.user.roles_type.find(el => el.type.id === 4)) {
+              if (this.settingService.user.roles_type.find(el => el.type.id === 8)) {
                 this.aclService.setFull(true);
               } else this.aclService.setFull(false);
               const roles_type = this.settingService.user.roles_type.map(val => val.type.id.toString());
@@ -85,7 +85,7 @@ export class StartupService {
 
   setRoleAndUser(user: User) {
     this.settingService.setUser(user);
-    if (user.roles_type.find(el => el.type.id === 4)) {
+    if (user.roles_type.find(el => el.type.id === 8)) {
       this.aclService.setFull(true);
     } else this.aclService.setFull(false);
     const roles_type = user.roles_type.map(val => val.type.id.toString());

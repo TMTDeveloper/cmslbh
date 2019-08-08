@@ -32,8 +32,9 @@ import * as moment from 'moment';
 import { MtVocabHelper } from '@shared/helper';
 import { map, tap, take } from 'rxjs/operators';
 import { ACLService } from '@delon/acl';
-import { SFSchema } from '@delon/form';
+import { SFSchema, SFComponent } from '@delon/form';
 import { SettingsService } from '@delon/theme';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-consultation-queue',
@@ -45,6 +46,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
   @Output() dataUser = new EventEmitter<GetUser.Users>();
   @ViewChild('card') card: ElementRef;
   @ViewChild('modalContent') modalEl: TemplateRef<{}>;
+  @ViewChild('sf') sf: SFComponent;
 
   q: any = {
     clientName: null,
@@ -60,18 +62,17 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
   modalInstance: NzModalRef;
   @ViewChild('st')
   st: STComponent;
-  editData: any;
+  editData: any = {};
 
   columns: STColumn[] = [
     {
       title: 'Action',
       buttons: [
         {
-          text: 'Select',
+          text: 'View Kasus',
           click: (item: any) => {
-            this.dataUser.emit(item);
+            this.router.navigateByUrl('form/case/view/' + item.caseId.id);
           },
-          iif: () => this.parent,
         },
         {
           text: 'Batalkan',
@@ -81,7 +82,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           iif: item => {
             if (
               this.aclService.data.roles.find(el => el === '2') &&
-              moment().isSameOrBefore(moment(item.tglRequest), 'day') &&
+              moment().isSame(moment(item.tglRequest), 'day') &&
               item.statusRequest === '1'
             ) {
               return true;
@@ -96,13 +97,14 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           text: 'Tetapkan PP',
           click: (item: any) => {
             this.editData = item;
+            console.log(this.editData);
             this.mode = 'edit';
             this.edit(this.modalEl, 'Edit Data');
           },
           iif: item => {
             if (
               this.aclService.data.roles.find(el => el === '2') &&
-              moment().isSameOrBefore(moment(item.tglRequest), 'day') &&
+              moment().isSame(moment(item.tglRequest), 'day') &&
               item.statusRequest === '0'
             ) {
               return true;
@@ -123,7 +125,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
               return true;
             } else if (
               this.aclService.data.roles.find(el => el === '1') &&
-              moment().isSameOrBefore(moment(item.tglRequest), 'day') &&
+              moment().isSame(moment(item.tglRequest), 'day') &&
               item.statusRequest === '0'
             ) {
               return true;
@@ -179,11 +181,24 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Tahap Kasus',
-      index: 'applicationId.tahap',
+      index: 'applicationId.tahapTeks',
     },
     {
       title: 'Status Request',
       index: 'statusRequest',
+      format: (item, col) => {
+        switch (item.statusRequest) {
+          case '0':
+            return 'Masuk Antrian Konsultasi';
+          case '1':
+            return 'Sudah Ditetapkan PP';
+          case '2':
+            return 'Sudah Konsultasi';
+
+          default:
+            break;
+        }
+      },
     },
     {
       title: 'Kadaluarsa',
@@ -216,6 +231,8 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     private mtVocabHelper: MtVocabHelper,
     private putLogRequestGQL: PutLogRequestGQL,
     private settingService: SettingsService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -230,22 +247,23 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.usersObs = this.users.valueChanges
       .pipe(
-        map(result => {
+        map(async result => {
           const tempLog = [];
           for (const a of result.data.logRequests) {
             const b = <any>{ ...a };
             b.noReg = a.applicationId.noReg;
-            b.caseTitle = a.caseId ? a.caseId.judulKasus : 'Case Belum Dibuat!';
-            b.dudukPerkara = a.applicationId.dudukPerara;
+            b.caseTitle = a.caseId ? a.caseId.judulKasus : '';
+            b.dudukPerara = a.applicationId.dudukPerara;
+            b.applicationId.tahapTeks = await this.mtVocabHelper.translateMtVocab(b.applicationId.tahap);
             tempLog.push(b);
           }
           return tempLog;
         }),
         tap(() => (this.loading = false)),
       )
-      .subscribe(res => {
+      .subscribe(async res => {
         console.log(res);
-        this.data = res;
+        this.data = await res;
         this.cdr.detectChanges();
       });
   }
@@ -258,13 +276,14 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.users
       .refetch(this.searchGenerator())
-      .then(res => {
+      .then(async res => {
         const tempLog = [];
         for (const a of res.data.logRequests) {
           const b = <any>{ ...a };
           b.noReg = a.applicationId.noReg;
           b.caseTitle = a.caseId.judulKasus ? a.caseId.judulKasus : 'Case Belum Dibuat!';
-          b.dudukPerkara = a.applicationId.dudukPerara;
+          b.dudukPerara = a.applicationId.dudukPerara;
+          b.applicationId.tahapTeks = await this.mtVocabHelper.translateMtVocab(b.applicationId.tahap);
           tempLog.push(b);
         }
         this.data = tempLog;
@@ -275,6 +294,10 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
   }
 
   searchGenerator(): GetLogRequest.Variables {
+    if (this.aclService.data.roles.find(el => el === '2'))
+      return <GetLogRequest.Variables>{
+        where: { jenisRequest: '1011' },
+      };
     if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
     if (this.q.ppName || this.q.clientName || this.q.noReg) {
       return <GetLogRequest.Variables>{
@@ -285,6 +308,9 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
               : {},
             {
               pp_some: { appConsultation: { name_contains: this.q.ppName === '' ? null : this.q.ppName } },
+            },
+            {
+              jenisRequest: '1011',
             },
             {
               applicationId: {
@@ -304,7 +330,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     }
     return <GetLogRequest.Variables>{
       where: <LogRequestWhereInput>this.aclService.data.roles.find(el => el === '3' || el === '4')
-        ? { pp_some: { appConsultation: { id: this.settingService.user.id } } }
+        ? { pp_some: { appConsultation: { id: this.settingService.user.id } }, jenisRequest: '1011' }
         : {},
     };
   }
@@ -334,7 +360,65 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     });
   }
 
-  edit(tpl: TemplateRef<{}>, title: string) {
+  async edit(tpl: TemplateRef<{}>, title: string) {
+    Object.defineProperties(this.schema, {
+      properties: {
+        value: {
+          id: {
+            type: 'string',
+            ui: {
+              hidden: true,
+            },
+          },
+          noReg: {
+            type: 'string',
+            title: 'No Reg',
+            readOnly: true,
+          },
+          dudukPerara: {
+            type: 'string',
+            title: 'Duduk Perkara',
+            readOnly: true,
+            ui: { widget: 'textarea', autosize: { minRows: 2, maxRows: 6 } },
+          },
+          caseTitle: {
+            type: 'string',
+            title: 'Judul Kasus',
+            readOnly: this.isCaseTitleDisabled(),
+          },
+          handlingPP: {
+            type: 'string',
+            title: 'PP yang pernah menangani',
+            readOnly: true,
+          },
+          listPP: {
+            type: 'string',
+            title: 'PP',
+            ui: {
+              widget: 'select',
+              asyncData: () => this.mtVocabHelper.getUsers(['3']),
+            },
+          },
+          listAPP: {
+            type: 'string',
+            title: 'APP',
+            ui: {
+              widget: 'select',
+              mode: 'tags',
+              asyncData: () => this.mtVocabHelper.getUsers(['4']),
+            },
+          },
+        },
+
+        ui: {
+          size: 'large',
+        },
+      },
+    });
+    console.log('caseId.id' in this.editData);
+    if ('caseId.id' in this.editData) {
+      this.editData.handlingPP = await this.mtVocabHelper.findHandlingPPString(Number(this.editData.caseId.id));
+    }
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
@@ -383,10 +467,16 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         type: 'string',
         title: 'Duduk Perkara',
         readOnly: true,
+        ui: { widget: 'textarea', autosize: { minRows: 2, maxRows: 6 } },
       },
       caseTitle: {
         type: 'string',
         title: 'Judul Kasus',
+        readOnly: this.isCaseTitleDisabled(),
+      },
+      handlingPP: {
+        type: 'string',
+        title: 'PP yang pernah menangani',
         readOnly: true,
       },
       listPP: {
@@ -413,6 +503,15 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     },
   };
 
+  isCaseTitleDisabled() {
+    console.log(this.editData.caseId ? true : false);
+    if (this.editData.caseId === '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   submit(value: any) {
     console.log(value);
     this.dataMutationUpdate(this.processDataAssign(value), <LogRequestWhereUniqueInput>{ ID: value.ID });
@@ -432,7 +531,23 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     data.tglRespon = moment().toDate();
     data.statusRequest = '1';
     data.pp = <LogRequestAppUpdateManyWithoutLogRequestIdInput>{ create: listPPAPP };
-    return <LogRequestUpdateInput>{ pp: data.pp, tglRespon: data.tglRespon, statusRequest: data.statusRequest };
+    return <LogRequestUpdateInput>{
+      pp: data.pp,
+      tglRespon: data.tglRespon,
+      statusRequest: data.statusRequest,
+      caseId: data.caseId
+        ? null
+        : {
+            create: {
+              judulKasus: data.caseTitle,
+              caseClosed: false,
+              unlockPk: false,
+              lockDitolak: false,
+              unlockTransfer: false,
+              application: { connect: { id: data.applicationId.id } },
+            },
+          },
+    };
   }
 
   processDataUnassign(data): LogRequestUpdateInput {
@@ -440,7 +555,12 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     data.statusRequest = '0';
     const ppIncluded = data.pp.map(val => val.id);
     data.pp = <LogRequestAppUpdateManyWithoutLogRequestIdInput>{ deleteMany: [{ id_in: [...ppIncluded] }] };
-    return <LogRequestUpdateInput>{ pp: data.pp, tglRespon: data.tglRespon, statusRequest: data.statusRequest };
+    return <LogRequestUpdateInput>{
+      pp: data.pp,
+      tglRespon: data.tglRespon,
+      statusRequest: data.statusRequest,
+      caseId: { delete: true },
+    };
   }
 
   dataMutationUpdate(data: LogRequestUpdateInput, id: LogRequestWhereUniqueInput) {

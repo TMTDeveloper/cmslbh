@@ -10,6 +10,7 @@
     "hideInBreadcrumb": true,
     "children": [{
         "text": "Dashboard",
+        "acl": ["8"],
         "i18n": "menu.dashboard",
         "icon": "anticon-dashboard",
         "children": [{
@@ -21,6 +22,7 @@
       {
         "text": "Person",
         "icon": "anticon-edit",
+        "acl": ["8", "1"],
         "children": [{
             "text": "Create Person",
             "link": "/form/person/create"
@@ -34,6 +36,7 @@
       {
         "text": "Application",
         "icon": "anticon-edit",
+        "acl": ["8", "1"],
         "children": [{
             "text": "Create Application",
             "link": "/form/application/create"
@@ -59,18 +62,23 @@
         ]
       },
       {
-        "text": "Antrian",
+        "text": "Permintaan",
         "icon": "anticon-edit",
-        "acl": ["8", "1", "2", "3", "4"],
+        "acl": ["8", "1", "2", "3", "4", "5"],
         "children": [{
           "text": "Konsultasi",
+          "acl": ["1", "2", "3", "4", "5"],
           "link": "/form/consultation-queue"
+        }, {
+          "text": "Rekomendasi Kasus",
+          "acl": ["3", "4", "5"],
+          "link": "/form/rapat-queue"
         }]
       },
       {
         "text": "Kasus",
         "icon": "anticon-edit",
-        "acl": ["8", "1", "2", "3", "4"],
+        "acl": ["8"],
         "children": [{
           "text": "List Kasus",
           "link": "/form/case/list"

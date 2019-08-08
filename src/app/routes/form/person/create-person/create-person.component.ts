@@ -67,6 +67,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   loading = false;
 
   submit(value: any) {
+    console.log(value);
     const processedData = this.processData(value);
     this.mode === 'edit'
       ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
@@ -89,11 +90,12 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
 
     if (this.mode === 'edit') {
       data.updatedBy = this.settingService.user.name;
-      const { id, createdAt, updatedAt, __typename, _values, ...newData } = data;
+      const { id, createdAt, updatedAt, __typename, _values, documents, clients, applications, ...newData } = data;
       return <PersonUpdateInput>{ ...newData };
     } else {
       data.createdBy = this.settingService.user.name;
-      return <PersonCreateInput>{ ...data };
+      const { documents, clients, applications, ...createData } = data;
+      return <PersonCreateInput>{ ...createData };
     }
   }
 

@@ -252,7 +252,7 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
         applicationId: { connect: { id: dataApplication.id } },
         caseId: dataApplication.case ? { connect: { id: dataApplication.case.id } } : null,
         requestBy: { connect: { id: this.settingService.user.id } },
-        jenisRequest: '1',
+        jenisRequest: '1011',
         statusRequest: '0',
         tglRequest: moment().toDate(),
       },

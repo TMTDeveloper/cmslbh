@@ -1,12 +1,227 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+  OnDestroy,
+} from '@angular/core';
+import { AllPerson, AllPersonGQL, PersonWhereInput, GetCaseGQL, GetCase, CaseWhereInput } from '@shared';
+import { QueryRef } from 'apollo-angular';
+import { Subscription } from 'rxjs';
+import { NzModalRef, NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { STComponent, STColumn, STData, STChange } from '@delon/abc';
+import * as moment from 'moment';
+import { _HttpClient } from '@delon/theme';
+import { MtVocabHelper } from '@shared/helper';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-case',
   templateUrl: './list-case.component.html',
   styleUrls: ['./list-case.component.less'],
 })
-export class ListCaseComponent implements OnInit {
-  constructor() {}
+export class ListCaseComponent implements OnInit, OnDestroy {
+  @Input() parent: boolean;
+  @Output() dataKasus = new EventEmitter<String>();
+  @ViewChild('card') card: ElementRef;
+  @ViewChild('modalContent') modalEl: TemplateRef<{}>;
+  @Input() query: GetCase.Variables;
+  caseParam = '';
+  q: any = {
+    namaLengkap: null,
+    nomorId: null,
+  };
+  data: GetCase.Cases[] = [];
+  dataSelected: GetCase.Cases;
+  mode = '';
+  cases: QueryRef<GetCase.Query, GetCase.Variables>;
+  casesObs: Subscription;
+  loading = false;
+  modalInstance: NzModalRef;
+  @ViewChild('st')
+  st: STComponent;
 
-  ngOnInit() {}
+  columns: STColumn[] = [
+    {
+      title: 'Action',
+      buttons: [
+        {
+          text: 'Select',
+          click: (item: any) => {
+            this.dataKasus.emit(item);
+          },
+          iif: () => this.parent,
+        },
+        {
+          text: 'View Kasus',
+          click: (item: any) => {
+            this.caseParam = item.id;
+            this.mode = 'edit';
+            this.edit(this.modalEl, 'View Kasus');
+          },
+        },
+      ],
+    },
+
+    {
+      title: 'Judul Kasus',
+      index: 'judulKasus',
+      sort: {
+        compare: (a, b) => {
+          const nameA = a.namaLengkap.toUpperCase();
+          const nameB = b.namaLengkap.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        },
+      },
+    },
+    {
+      title: 'Nomor Register',
+      index: 'application.noReg',
+    },
+    {
+      title: 'Tanggal Registrasi',
+      index: 'application.regDate',
+      type: 'date',
+      sort: {
+        compare: (a, b) => moment(a.application.regDate).unix() - moment(b.application.regDate).unix(),
+      },
+    },
+    {
+      title: 'Klien',
+      index: 'application.clients',
+      format: (item, col) => {
+        const formatText = item.application.clients.map(val => {
+          return val.personId.namaLengkap;
+        });
+        formatText.sort();
+        let concattedText = '';
+        for (const a of formatText) {
+          concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+        }
+        return concattedText;
+      },
+    },
+  ];
+  selectedRows: STData[] = [];
+  description = '';
+  totalCallNo = 0;
+  expandForm = false;
+
+  constructor(
+    private http: _HttpClient,
+    public msg: NzMessageService,
+    private modalSrv: NzModalService,
+    private cdr: ChangeDetectorRef,
+    private allPersonGQL: AllPersonGQL,
+    public mtVocab: MtVocabHelper,
+    private getCaseGQL: GetCaseGQL,
+  ) {}
+
+  ngOnInit() {
+    this.cases = this.getCaseGQL.watch(this.query ? this.query : this.searchGenerator(), {
+      fetchPolicy: 'network-only',
+    });
+    this.loading = true;
+    this.casesObs = this.cases.valueChanges
+      .pipe(
+        map(result => result.data.cases),
+        tap(() => (this.loading = false)),
+      )
+      .subscribe(res => {
+        console.log(res);
+        this.data = res;
+        this.cdr.detectChanges();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.casesObs.unsubscribe();
+  }
+
+  getData() {
+    this.loading = true;
+    this.cases
+      .refetch(this.searchGenerator())
+      .then(res => {
+        this.data = res.data.cases;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  searchGenerator(): GetCase.Variables {
+    if (this.q.namaLengkap || this.q.nomorId) {
+      return <GetCase.Variables>{
+        where: <CaseWhereInput>{
+          OR: <CaseWhereInput[]>[
+            {
+              namaLengkap_contains: this.q.namaLengkap === '' ? null : this.q.namaLengkap,
+            },
+            {
+              // nomorId_contains: this.q.nomorId === '' ? null : this.q.nomorId,
+            },
+          ],
+        },
+      };
+    }
+    return <GetCase.Variables>{
+      where: <CaseWhereInput>{},
+    };
+  }
+
+  stChange(e: STChange) {
+    // switch (e.type) {
+    //   // case 'checkbox':
+    //   //   this.selectedRows = e.checkbox!;
+    //   //   this.totalCallNo = this.selectedRows.reduce((total, cv) => total + cv.callNo, 0);
+    //   //   this.cdr.detectChanges();
+    //   //   break;
+    //   case 'filter':
+    //     // this.getData();
+    //     break;
+    // }
+  }
+
+  add(tpl: TemplateRef<{}>, title: string) {
+    this.mode = 'create';
+    this.dataSelected = <GetCase.Cases>{};
+    this.modalInstance = this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+
+  edit(tpl: TemplateRef<{}>, title: string) {
+    this.modalInstance = this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+
+  closeModal() {
+    this.modalInstance.close();
+    this.getData();
+  }
+
+  reset() {
+    setTimeout(() => this.getData());
+  }
 }

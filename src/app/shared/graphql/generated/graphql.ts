@@ -74,6 +74,14 @@ export type AggregateCaseProgressActivityNonlit = {
   count: Scalars['Int'],
 };
 
+export type AggregateCaseReferral = {
+  count: Scalars['Int'],
+};
+
+export type AggregateCaseTransfer = {
+  count: Scalars['Int'],
+};
+
 export type AggregateCaseTransferReferral = {
   count: Scalars['Int'],
 };
@@ -163,7 +171,7 @@ export type Application = {
   wakilId: Person,
   waktuPernahKlien?: Maybe<Scalars['String']>,
   whyLbh?: Maybe<Scalars['String']>,
-  case: Case,
+  case?: Maybe<Case>,
   clients?: Maybe<Array<Client>>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
@@ -209,7 +217,7 @@ export type ApplicationCreateInput = {
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
   wakilId: PersonCreateOneWithoutApplicationsInput,
-  case: CaseCreateOneWithoutApplicationInput,
+  case?: Maybe<CaseCreateOneWithoutApplicationInput>,
   clients?: Maybe<ClientCreateManyWithoutApplicationIdInput>,
 };
 
@@ -276,7 +284,7 @@ export type ApplicationCreateWithoutClientsInput = {
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
   wakilId: PersonCreateOneWithoutApplicationsInput,
-  case: CaseCreateOneWithoutApplicationInput,
+  case?: Maybe<CaseCreateOneWithoutApplicationInput>,
 };
 
 export type ApplicationCreateWithoutWakilIdInput = {
@@ -298,7 +306,7 @@ export type ApplicationCreateWithoutWakilIdInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  case: CaseCreateOneWithoutApplicationInput,
+  case?: Maybe<CaseCreateOneWithoutApplicationInput>,
   clients?: Maybe<ClientCreateManyWithoutApplicationIdInput>,
 };
 
@@ -892,7 +900,7 @@ export type ApplicationUpdateDataInput = {
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
   wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
-  case?: Maybe<CaseUpdateOneRequiredWithoutApplicationInput>,
+  case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
 
@@ -916,7 +924,7 @@ export type ApplicationUpdateInput = {
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
   wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
-  case?: Maybe<CaseUpdateOneRequiredWithoutApplicationInput>,
+  case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
 
@@ -1045,7 +1053,7 @@ export type ApplicationUpdateWithoutClientsDataInput = {
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
   wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
-  case?: Maybe<CaseUpdateOneRequiredWithoutApplicationInput>,
+  case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
 };
 
 export type ApplicationUpdateWithoutWakilIdDataInput = {
@@ -1067,7 +1075,7 @@ export type ApplicationUpdateWithoutWakilIdDataInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  case?: Maybe<CaseUpdateOneRequiredWithoutApplicationInput>,
+  case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
 
@@ -1605,12 +1613,14 @@ export type Case = {
   issues?: Maybe<Array<CaseIssue>>,
   korbans?: Maybe<Array<CaseKorban>>,
   pelakus?: Maybe<Array<CasePelaku>>,
-  pks?: Maybe<Array<CasePk>>,
-  progresses?: Maybe<Array<CaseProgress>>,
+  pk?: Maybe<CasePk>,
+  progresses?: Maybe<CaseProgress>,
   activities?: Maybe<Array<CaseProgressActivity>>,
   transferreferrals?: Maybe<Array<CaseTransferReferral>>,
   violatedrights?: Maybe<Array<CaseViolatedRight>>,
   logRequests?: Maybe<Array<LogRequest>>,
+  transfer?: Maybe<CaseTransfer>,
+  referrals?: Maybe<Array<CaseReferral>>,
 };
 
 
@@ -1680,28 +1690,6 @@ export type CasePelakusArgs = {
 };
 
 
-export type CasePksArgs = {
-  where?: Maybe<CasePkWhereInput>,
-  orderBy?: Maybe<CasePkOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type CaseProgressesArgs = {
-  where?: Maybe<CaseProgressWhereInput>,
-  orderBy?: Maybe<CaseProgressOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
 export type CaseActivitiesArgs = {
   where?: Maybe<CaseProgressActivityWhereInput>,
   orderBy?: Maybe<CaseProgressActivityOrderByInput>,
@@ -1738,6 +1726,17 @@ export type CaseViolatedrightsArgs = {
 export type CaseLogRequestsArgs = {
   where?: Maybe<LogRequestWhereInput>,
   orderBy?: Maybe<LogRequestOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type CaseReferralsArgs = {
+  where?: Maybe<CaseReferralWhereInput>,
+  orderBy?: Maybe<CaseReferralOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -1987,6 +1986,9 @@ export type CaseConsultation = {
   createdAt: Scalars['DateTime'],
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2008,7 +2010,7 @@ export type CaseConsultationAppsArgs = {
 
 export type CaseConsultationApp = {
   id: Scalars['Int'],
-  appConsultation?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<User>,
   caseConsultationId: CaseConsultation,
 };
 
@@ -2022,7 +2024,7 @@ export type CaseConsultationAppConnection = {
 };
 
 export type CaseConsultationAppCreateInput = {
-  appConsultation?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<UserCreateOneInput>,
   caseConsultationId: CaseConsultationCreateOneWithoutAppsInput,
 };
 
@@ -2032,7 +2034,7 @@ export type CaseConsultationAppCreateManyWithoutCaseConsultationIdInput = {
 };
 
 export type CaseConsultationAppCreateWithoutCaseConsultationIdInput = {
-  appConsultation?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<UserCreateOneInput>,
 };
 
 /** An edge in a connection. */
@@ -2045,14 +2047,11 @@ export type CaseConsultationAppEdge = {
 
 export enum CaseConsultationAppOrderByInput {
   IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC',
-  AppConsultationAsc = 'appConsultation_ASC',
-  AppConsultationDesc = 'appConsultation_DESC'
+  IdDesc = 'id_DESC'
 }
 
 export type CaseConsultationAppPreviousValues = {
   id: Scalars['Int'],
-  appConsultation?: Maybe<Scalars['String']>,
 };
 
 export type CaseConsultationAppScalarWhereInput = {
@@ -2077,33 +2076,6 @@ export type CaseConsultationAppScalarWhereInput = {
   id_gt?: Maybe<Scalars['Int']>,
   /** All values greater than or equal the given value. */
   id_gte?: Maybe<Scalars['Int']>,
-  appConsultation?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  appConsultation_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  appConsultation_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  appConsultation_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  appConsultation_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  appConsultation_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  appConsultation_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  appConsultation_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  appConsultation_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  appConsultation_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  appConsultation_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  appConsultation_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  appConsultation_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  appConsultation_not_ends_with?: Maybe<Scalars['String']>,
 };
 
 export type CaseConsultationAppSubscriptionPayload = {
@@ -2132,16 +2104,8 @@ export type CaseConsultationAppSubscriptionWhereInput = {
 };
 
 export type CaseConsultationAppUpdateInput = {
-  appConsultation?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<UserUpdateOneInput>,
   caseConsultationId?: Maybe<CaseConsultationUpdateOneRequiredWithoutAppsInput>,
-};
-
-export type CaseConsultationAppUpdateManyDataInput = {
-  appConsultation?: Maybe<Scalars['String']>,
-};
-
-export type CaseConsultationAppUpdateManyMutationInput = {
-  appConsultation?: Maybe<Scalars['String']>,
 };
 
 export type CaseConsultationAppUpdateManyWithoutCaseConsultationIdInput = {
@@ -2151,18 +2115,12 @@ export type CaseConsultationAppUpdateManyWithoutCaseConsultationIdInput = {
   disconnect?: Maybe<Array<CaseConsultationAppWhereUniqueInput>>,
   delete?: Maybe<Array<CaseConsultationAppWhereUniqueInput>>,
   update?: Maybe<Array<CaseConsultationAppUpdateWithWhereUniqueWithoutCaseConsultationIdInput>>,
-  updateMany?: Maybe<Array<CaseConsultationAppUpdateManyWithWhereNestedInput>>,
   deleteMany?: Maybe<Array<CaseConsultationAppScalarWhereInput>>,
   upsert?: Maybe<Array<CaseConsultationAppUpsertWithWhereUniqueWithoutCaseConsultationIdInput>>,
 };
 
-export type CaseConsultationAppUpdateManyWithWhereNestedInput = {
-  where: CaseConsultationAppScalarWhereInput,
-  data: CaseConsultationAppUpdateManyDataInput,
-};
-
 export type CaseConsultationAppUpdateWithoutCaseConsultationIdDataInput = {
-  appConsultation?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<UserUpdateOneInput>,
 };
 
 export type CaseConsultationAppUpdateWithWhereUniqueWithoutCaseConsultationIdInput = {
@@ -2198,33 +2156,7 @@ export type CaseConsultationAppWhereInput = {
   id_gt?: Maybe<Scalars['Int']>,
   /** All values greater than or equal the given value. */
   id_gte?: Maybe<Scalars['Int']>,
-  appConsultation?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  appConsultation_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  appConsultation_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  appConsultation_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  appConsultation_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  appConsultation_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  appConsultation_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  appConsultation_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  appConsultation_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  appConsultation_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  appConsultation_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  appConsultation_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  appConsultation_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  appConsultation_not_ends_with?: Maybe<Scalars['String']>,
+  appConsultation?: Maybe<UserWhereInput>,
   caseConsultationId?: Maybe<CaseConsultationWhereInput>,
 };
 
@@ -2245,6 +2177,9 @@ export type CaseConsultationCreateInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2267,6 +2202,9 @@ export type CaseConsultationCreateWithoutAppsInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2278,6 +2216,9 @@ export type CaseConsultationCreateWithoutCaseIdInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2304,6 +2245,12 @@ export enum CaseConsultationOrderByInput {
   CreatedByDesc = 'createdBy_DESC',
   IsiKonsulAsc = 'isiKonsul_ASC',
   IsiKonsulDesc = 'isiKonsul_DESC',
+  HarapanAsc = 'harapan_ASC',
+  HarapanDesc = 'harapan_DESC',
+  SaranHukumAsc = 'saranHukum_ASC',
+  SaranHukumDesc = 'saranHukum_DESC',
+  RencanaTindakLanjutAsc = 'rencanaTindakLanjut_ASC',
+  RencanaTindakLanjutDesc = 'rencanaTindakLanjut_DESC',
   JudulAktifitasAsc = 'judulAktifitas_ASC',
   JudulAktifitasDesc = 'judulAktifitas_DESC',
   PpKonsulAsc = 'ppKonsul_ASC',
@@ -2322,6 +2269,9 @@ export type CaseConsultationPreviousValues = {
   createdAt: Scalars['DateTime'],
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2447,6 +2397,87 @@ export type CaseConsultationScalarWhereInput = {
   isiKonsul_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   isiKonsul_not_ends_with?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  harapan_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  harapan_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  harapan_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  harapan_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  harapan_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  harapan_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  harapan_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  harapan_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  harapan_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  harapan_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  harapan_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  harapan_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  harapan_not_ends_with?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  saranHukum_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  saranHukum_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  saranHukum_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  saranHukum_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  saranHukum_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  saranHukum_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  saranHukum_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  saranHukum_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  saranHukum_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  saranHukum_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  saranHukum_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  saranHukum_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  saranHukum_not_ends_with?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  rencanaTindakLanjut_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  rencanaTindakLanjut_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  rencanaTindakLanjut_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  rencanaTindakLanjut_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  rencanaTindakLanjut_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  rencanaTindakLanjut_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  rencanaTindakLanjut_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  rencanaTindakLanjut_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  rencanaTindakLanjut_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  rencanaTindakLanjut_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  rencanaTindakLanjut_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  rencanaTindakLanjut_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  rencanaTindakLanjut_not_ends_with?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
   judulAktifitas_not?: Maybe<Scalars['String']>,
@@ -2589,6 +2620,9 @@ export type CaseConsultationUpdateInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2601,6 +2635,9 @@ export type CaseConsultationUpdateManyDataInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2611,6 +2648,9 @@ export type CaseConsultationUpdateManyMutationInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2645,6 +2685,9 @@ export type CaseConsultationUpdateWithoutAppsDataInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2656,6 +2699,9 @@ export type CaseConsultationUpdateWithoutCaseIdDataInput = {
   appKonsul?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
   isiKonsul?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   ppKonsul?: Maybe<Scalars['String']>,
   tglKonsul?: Maybe<Scalars['DateTime']>,
@@ -2797,6 +2843,87 @@ export type CaseConsultationWhereInput = {
   isiKonsul_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   isiKonsul_not_ends_with?: Maybe<Scalars['String']>,
+  harapan?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  harapan_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  harapan_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  harapan_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  harapan_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  harapan_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  harapan_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  harapan_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  harapan_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  harapan_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  harapan_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  harapan_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  harapan_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  harapan_not_ends_with?: Maybe<Scalars['String']>,
+  saranHukum?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  saranHukum_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  saranHukum_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  saranHukum_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  saranHukum_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  saranHukum_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  saranHukum_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  saranHukum_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  saranHukum_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  saranHukum_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  saranHukum_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  saranHukum_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  saranHukum_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  saranHukum_not_ends_with?: Maybe<Scalars['String']>,
+  rencanaTindakLanjut?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  rencanaTindakLanjut_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  rencanaTindakLanjut_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  rencanaTindakLanjut_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  rencanaTindakLanjut_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  rencanaTindakLanjut_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  rencanaTindakLanjut_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  rencanaTindakLanjut_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  rencanaTindakLanjut_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  rencanaTindakLanjut_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  rencanaTindakLanjut_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  rencanaTindakLanjut_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  rencanaTindakLanjut_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  rencanaTindakLanjut_not_ends_with?: Maybe<Scalars['String']>,
   judulAktifitas?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
   judulAktifitas_not?: Maybe<Scalars['String']>,
@@ -2941,12 +3068,14 @@ export type CaseCreateInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateOneWithoutActivitiesInput = {
@@ -2994,13 +3123,23 @@ export type CaseCreateOneWithoutPelakusInput = {
   connect?: Maybe<CaseWhereUniqueInput>,
 };
 
-export type CaseCreateOneWithoutPksInput = {
-  create?: Maybe<CaseCreateWithoutPksInput>,
+export type CaseCreateOneWithoutPkInput = {
+  create?: Maybe<CaseCreateWithoutPkInput>,
   connect?: Maybe<CaseWhereUniqueInput>,
 };
 
 export type CaseCreateOneWithoutProgressesInput = {
   create?: Maybe<CaseCreateWithoutProgressesInput>,
+  connect?: Maybe<CaseWhereUniqueInput>,
+};
+
+export type CaseCreateOneWithoutReferralsInput = {
+  create?: Maybe<CaseCreateWithoutReferralsInput>,
+  connect?: Maybe<CaseWhereUniqueInput>,
+};
+
+export type CaseCreateOneWithoutTransferInput = {
+  create?: Maybe<CaseCreateWithoutTransferInput>,
   connect?: Maybe<CaseWhereUniqueInput>,
 };
 
@@ -3037,11 +3176,13 @@ export type CaseCreateWithoutActivitiesInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutApplicationInput = {
@@ -3066,12 +3207,14 @@ export type CaseCreateWithoutApplicationInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutClassificationsInput = {
@@ -3096,12 +3239,14 @@ export type CaseCreateWithoutClassificationsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutConsultationsInput = {
@@ -3126,12 +3271,14 @@ export type CaseCreateWithoutConsultationsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutDocumentsInput = {
@@ -3156,12 +3303,14 @@ export type CaseCreateWithoutDocumentsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutIssuesInput = {
@@ -3186,12 +3335,14 @@ export type CaseCreateWithoutIssuesInput = {
   documents?: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutKorbansInput = {
@@ -3216,12 +3367,14 @@ export type CaseCreateWithoutKorbansInput = {
   documents?: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>,
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutLogRequestsInput = {
@@ -3247,11 +3400,13 @@ export type CaseCreateWithoutLogRequestsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutPelakusInput = {
@@ -3276,15 +3431,17 @@ export type CaseCreateWithoutPelakusInput = {
   documents?: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>,
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
-export type CaseCreateWithoutPksInput = {
+export type CaseCreateWithoutPkInput = {
   applicationId?: Maybe<Scalars['Int']>,
   caseClosed: Scalars['Boolean'],
   caseClosedJenis?: Maybe<Scalars['String']>,
@@ -3307,11 +3464,13 @@ export type CaseCreateWithoutPksInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutProgressesInput = {
@@ -3337,11 +3496,77 @@ export type CaseCreateWithoutProgressesInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
+};
+
+export type CaseCreateWithoutReferralsInput = {
+  applicationId?: Maybe<Scalars['Int']>,
+  caseClosed: Scalars['Boolean'],
+  caseClosedJenis?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  hakTerlanggar?: Maybe<Scalars['String']>,
+  issue?: Maybe<Scalars['String']>,
+  judulKasus?: Maybe<Scalars['String']>,
+  klasifikasiDok?: Maybe<Scalars['String']>,
+  kronologiKasus?: Maybe<Scalars['String']>,
+  lockDitolak: Scalars['Boolean'],
+  statusPendampingan?: Maybe<Scalars['String']>,
+  targetAdvokasi?: Maybe<Scalars['String']>,
+  unlockPk: Scalars['Boolean'],
+  unlockTransfer: Scalars['Boolean'],
+  updatedBy?: Maybe<Scalars['String']>,
+  application: ApplicationCreateOneWithoutCaseInput,
+  classifications?: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>,
+  consultations?: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>,
+  documents?: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>,
+  issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
+  korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
+  pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
+  activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
+  transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
+  violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
+  logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+};
+
+export type CaseCreateWithoutTransferInput = {
+  applicationId?: Maybe<Scalars['Int']>,
+  caseClosed: Scalars['Boolean'],
+  caseClosedJenis?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  hakTerlanggar?: Maybe<Scalars['String']>,
+  issue?: Maybe<Scalars['String']>,
+  judulKasus?: Maybe<Scalars['String']>,
+  klasifikasiDok?: Maybe<Scalars['String']>,
+  kronologiKasus?: Maybe<Scalars['String']>,
+  lockDitolak: Scalars['Boolean'],
+  statusPendampingan?: Maybe<Scalars['String']>,
+  targetAdvokasi?: Maybe<Scalars['String']>,
+  unlockPk: Scalars['Boolean'],
+  unlockTransfer: Scalars['Boolean'],
+  updatedBy?: Maybe<Scalars['String']>,
+  application: ApplicationCreateOneWithoutCaseInput,
+  classifications?: Maybe<CaseClassificationCreateManyWithoutCaseIdInput>,
+  consultations?: Maybe<CaseConsultationCreateManyWithoutCaseIdInput>,
+  documents?: Maybe<CaseDocumentCreateManyWithoutCaseIdInput>,
+  issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
+  korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
+  pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
+  activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
+  transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
+  violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
+  logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutTransferreferralsInput = {
@@ -3367,11 +3592,13 @@ export type CaseCreateWithoutTransferreferralsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseCreateWithoutViolatedrightsInput = {
@@ -3397,11 +3624,13 @@ export type CaseCreateWithoutViolatedrightsInput = {
   issues?: Maybe<CaseIssueCreateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanCreateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuCreateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkCreateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressCreateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkCreateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressCreateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityCreateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralCreateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferCreateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralCreateManyWithoutCaseIdInput>,
 };
 
 export type CaseDocument = {
@@ -4678,10 +4907,10 @@ export type CasePk = {
   caseId: Case,
   createdAt: Scalars['DateTime'],
   createdBy?: Maybe<Scalars['String']>,
-  didampingi: Scalars['Boolean'],
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
+  ppPendamping?: Maybe<User>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedAt: Scalars['DateTime'],
@@ -4699,30 +4928,30 @@ export type CasePkConnection = {
 
 export type CasePkCreateInput = {
   createdBy?: Maybe<Scalars['String']>,
-  didampingi: Scalars['Boolean'],
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
-  caseId: CaseCreateOneWithoutPksInput,
+  caseId: CaseCreateOneWithoutPkInput,
+  ppPendamping?: Maybe<UserCreateOneInput>,
 };
 
-export type CasePkCreateManyWithoutCaseIdInput = {
-  create?: Maybe<Array<CasePkCreateWithoutCaseIdInput>>,
-  connect?: Maybe<Array<CasePkWhereUniqueInput>>,
+export type CasePkCreateOneWithoutCaseIdInput = {
+  create?: Maybe<CasePkCreateWithoutCaseIdInput>,
+  connect?: Maybe<CasePkWhereUniqueInput>,
 };
 
 export type CasePkCreateWithoutCaseIdInput = {
   createdBy?: Maybe<Scalars['String']>,
-  didampingi: Scalars['Boolean'],
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
+  ppPendamping?: Maybe<UserCreateOneInput>,
 };
 
 /** An edge in a connection. */
@@ -4746,8 +4975,6 @@ export enum CasePkOrderByInput {
   LegalMemoDesc = 'legalMemo_DESC',
   NotulaRapatAsc = 'notulaRapat_ASC',
   NotulaRapatDesc = 'notulaRapat_DESC',
-  PpPendampingAsc = 'ppPendamping_ASC',
-  PpPendampingDesc = 'ppPendamping_DESC',
   StatusAlasanTdkAsc = 'statusAlasanTdk_ASC',
   StatusAlasanTdkDesc = 'statusAlasanTdk_DESC',
   TglRapatAsc = 'tglRapat_ASC',
@@ -4762,236 +4989,13 @@ export type CasePkPreviousValues = {
   id: Scalars['Int'],
   createdAt: Scalars['DateTime'],
   createdBy?: Maybe<Scalars['String']>,
-  didampingi: Scalars['Boolean'],
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedAt: Scalars['DateTime'],
   updatedBy?: Maybe<Scalars['String']>,
-};
-
-export type CasePkScalarWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: Maybe<Array<CasePkScalarWhereInput>>,
-  /** Logical OR on all given filters. */
-  OR?: Maybe<Array<CasePkScalarWhereInput>>,
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: Maybe<Array<CasePkScalarWhereInput>>,
-  id?: Maybe<Scalars['Int']>,
-  /** All values that are not equal to given value. */
-  id_not?: Maybe<Scalars['Int']>,
-  /** All values that are contained in given list. */
-  id_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values that are not contained in given list. */
-  id_not_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values less than the given value. */
-  id_lt?: Maybe<Scalars['Int']>,
-  /** All values less than or equal the given value. */
-  id_lte?: Maybe<Scalars['Int']>,
-  /** All values greater than the given value. */
-  id_gt?: Maybe<Scalars['Int']>,
-  /** All values greater than or equal the given value. */
-  id_gte?: Maybe<Scalars['Int']>,
-  createdAt?: Maybe<Scalars['DateTime']>,
-  /** All values that are not equal to given value. */
-  createdAt_not?: Maybe<Scalars['DateTime']>,
-  /** All values that are contained in given list. */
-  createdAt_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values less than the given value. */
-  createdAt_lt?: Maybe<Scalars['DateTime']>,
-  /** All values less than or equal the given value. */
-  createdAt_lte?: Maybe<Scalars['DateTime']>,
-  /** All values greater than the given value. */
-  createdAt_gt?: Maybe<Scalars['DateTime']>,
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: Maybe<Scalars['DateTime']>,
-  createdBy?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  createdBy_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  createdBy_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  createdBy_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  createdBy_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  createdBy_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  createdBy_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  createdBy_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  createdBy_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  createdBy_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  createdBy_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  createdBy_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  createdBy_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  createdBy_not_ends_with?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
-  /** All values that are not equal to given value. */
-  didampingi_not?: Maybe<Scalars['Boolean']>,
-  legalMemo?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  legalMemo_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  legalMemo_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  legalMemo_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  legalMemo_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  legalMemo_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  legalMemo_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  legalMemo_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  legalMemo_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  legalMemo_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  legalMemo_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  legalMemo_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  legalMemo_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  legalMemo_not_ends_with?: Maybe<Scalars['String']>,
-  notulaRapat?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  notulaRapat_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  notulaRapat_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  notulaRapat_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  notulaRapat_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  notulaRapat_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  notulaRapat_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  notulaRapat_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  notulaRapat_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  notulaRapat_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  notulaRapat_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  notulaRapat_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  notulaRapat_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  notulaRapat_not_ends_with?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
-  /** All values that are not equal to given value. */
-  ppPendamping_not?: Maybe<Scalars['Int']>,
-  /** All values that are contained in given list. */
-  ppPendamping_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values that are not contained in given list. */
-  ppPendamping_not_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values less than the given value. */
-  ppPendamping_lt?: Maybe<Scalars['Int']>,
-  /** All values less than or equal the given value. */
-  ppPendamping_lte?: Maybe<Scalars['Int']>,
-  /** All values greater than the given value. */
-  ppPendamping_gt?: Maybe<Scalars['Int']>,
-  /** All values greater than or equal the given value. */
-  ppPendamping_gte?: Maybe<Scalars['Int']>,
-  statusAlasanTdk?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  statusAlasanTdk_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  statusAlasanTdk_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  statusAlasanTdk_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  statusAlasanTdk_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  statusAlasanTdk_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  statusAlasanTdk_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  statusAlasanTdk_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  statusAlasanTdk_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  statusAlasanTdk_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  statusAlasanTdk_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  statusAlasanTdk_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  statusAlasanTdk_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  statusAlasanTdk_not_ends_with?: Maybe<Scalars['String']>,
-  tglRapat?: Maybe<Scalars['DateTime']>,
-  /** All values that are not equal to given value. */
-  tglRapat_not?: Maybe<Scalars['DateTime']>,
-  /** All values that are contained in given list. */
-  tglRapat_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values that are not contained in given list. */
-  tglRapat_not_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values less than the given value. */
-  tglRapat_lt?: Maybe<Scalars['DateTime']>,
-  /** All values less than or equal the given value. */
-  tglRapat_lte?: Maybe<Scalars['DateTime']>,
-  /** All values greater than the given value. */
-  tglRapat_gt?: Maybe<Scalars['DateTime']>,
-  /** All values greater than or equal the given value. */
-  tglRapat_gte?: Maybe<Scalars['DateTime']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  /** All values that are not equal to given value. */
-  updatedAt_not?: Maybe<Scalars['DateTime']>,
-  /** All values that are contained in given list. */
-  updatedAt_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values less than the given value. */
-  updatedAt_lt?: Maybe<Scalars['DateTime']>,
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: Maybe<Scalars['DateTime']>,
-  /** All values greater than the given value. */
-  updatedAt_gt?: Maybe<Scalars['DateTime']>,
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: Maybe<Scalars['DateTime']>,
-  updatedBy?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  updatedBy_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  updatedBy_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  updatedBy_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  updatedBy_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  updatedBy_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  updatedBy_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  updatedBy_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  updatedBy_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  updatedBy_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  updatedBy_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  updatedBy_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  updatedBy_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  updatedBy_not_ends_with?: Maybe<Scalars['String']>,
 };
 
 export type CasePkSubscriptionPayload = {
@@ -5021,73 +5025,47 @@ export type CasePkSubscriptionWhereInput = {
 
 export type CasePkUpdateInput = {
   createdBy?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
-  caseId?: Maybe<CaseUpdateOneRequiredWithoutPksInput>,
-};
-
-export type CasePkUpdateManyDataInput = {
-  createdBy?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
-  legalMemo?: Maybe<Scalars['String']>,
-  notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
-  statusAlasanTdk?: Maybe<Scalars['String']>,
-  tglRapat?: Maybe<Scalars['DateTime']>,
-  updatedBy?: Maybe<Scalars['String']>,
+  caseId?: Maybe<CaseUpdateOneRequiredWithoutPkInput>,
+  ppPendamping?: Maybe<UserUpdateOneInput>,
 };
 
 export type CasePkUpdateManyMutationInput = {
   createdBy?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
 };
 
-export type CasePkUpdateManyWithoutCaseIdInput = {
-  create?: Maybe<Array<CasePkCreateWithoutCaseIdInput>>,
-  connect?: Maybe<Array<CasePkWhereUniqueInput>>,
-  set?: Maybe<Array<CasePkWhereUniqueInput>>,
-  disconnect?: Maybe<Array<CasePkWhereUniqueInput>>,
-  delete?: Maybe<Array<CasePkWhereUniqueInput>>,
-  update?: Maybe<Array<CasePkUpdateWithWhereUniqueWithoutCaseIdInput>>,
-  updateMany?: Maybe<Array<CasePkUpdateManyWithWhereNestedInput>>,
-  deleteMany?: Maybe<Array<CasePkScalarWhereInput>>,
-  upsert?: Maybe<Array<CasePkUpsertWithWhereUniqueWithoutCaseIdInput>>,
-};
-
-export type CasePkUpdateManyWithWhereNestedInput = {
-  where: CasePkScalarWhereInput,
-  data: CasePkUpdateManyDataInput,
+export type CasePkUpdateOneWithoutCaseIdInput = {
+  create?: Maybe<CasePkCreateWithoutCaseIdInput>,
+  connect?: Maybe<CasePkWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<CasePkUpdateWithoutCaseIdDataInput>,
+  upsert?: Maybe<CasePkUpsertWithoutCaseIdInput>,
 };
 
 export type CasePkUpdateWithoutCaseIdDataInput = {
   createdBy?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
+  didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
+  ppPendamping?: Maybe<UserUpdateOneInput>,
 };
 
-export type CasePkUpdateWithWhereUniqueWithoutCaseIdInput = {
-  where: CasePkWhereUniqueInput,
-  data: CasePkUpdateWithoutCaseIdDataInput,
-};
-
-export type CasePkUpsertWithWhereUniqueWithoutCaseIdInput = {
-  where: CasePkWhereUniqueInput,
+export type CasePkUpsertWithoutCaseIdInput = {
   update: CasePkUpdateWithoutCaseIdDataInput,
   create: CasePkCreateWithoutCaseIdInput,
 };
@@ -5156,9 +5134,33 @@ export type CasePkWhereInput = {
   createdBy_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   createdBy_not_ends_with?: Maybe<Scalars['String']>,
-  didampingi?: Maybe<Scalars['Boolean']>,
+  didampingi?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
-  didampingi_not?: Maybe<Scalars['Boolean']>,
+  didampingi_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  didampingi_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  didampingi_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  didampingi_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  didampingi_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  didampingi_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  didampingi_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  didampingi_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  didampingi_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  didampingi_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  didampingi_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  didampingi_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  didampingi_not_ends_with?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
   legalMemo_not?: Maybe<Scalars['String']>,
@@ -5213,21 +5215,6 @@ export type CasePkWhereInput = {
   notulaRapat_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   notulaRapat_not_ends_with?: Maybe<Scalars['String']>,
-  ppPendamping?: Maybe<Scalars['Int']>,
-  /** All values that are not equal to given value. */
-  ppPendamping_not?: Maybe<Scalars['Int']>,
-  /** All values that are contained in given list. */
-  ppPendamping_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values that are not contained in given list. */
-  ppPendamping_not_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values less than the given value. */
-  ppPendamping_lt?: Maybe<Scalars['Int']>,
-  /** All values less than or equal the given value. */
-  ppPendamping_lte?: Maybe<Scalars['Int']>,
-  /** All values greater than the given value. */
-  ppPendamping_gt?: Maybe<Scalars['Int']>,
-  /** All values greater than or equal the given value. */
-  ppPendamping_gte?: Maybe<Scalars['Int']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
   statusAlasanTdk_not?: Maybe<Scalars['String']>,
@@ -5313,6 +5300,7 @@ export type CasePkWhereInput = {
   /** All values not ending with the given string. */
   updatedBy_not_ends_with?: Maybe<Scalars['String']>,
   caseId?: Maybe<CaseWhereInput>,
+  ppPendamping?: Maybe<UserWhereInput>,
 };
 
 export type CasePkWhereUniqueInput = {
@@ -6730,9 +6718,9 @@ export type CaseProgressCreateInput = {
   caseId: CaseCreateOneWithoutProgressesInput,
 };
 
-export type CaseProgressCreateManyWithoutCaseIdInput = {
-  create?: Maybe<Array<CaseProgressCreateWithoutCaseIdInput>>,
-  connect?: Maybe<Array<CaseProgressWhereUniqueInput>>,
+export type CaseProgressCreateOneWithoutCaseIdInput = {
+  create?: Maybe<CaseProgressCreateWithoutCaseIdInput>,
+  connect?: Maybe<CaseProgressWhereUniqueInput>,
 };
 
 export type CaseProgressCreateWithoutCaseIdInput = {
@@ -6777,168 +6765,6 @@ export type CaseProgressPreviousValues = {
   updatedBy?: Maybe<Scalars['String']>,
 };
 
-export type CaseProgressScalarWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: Maybe<Array<CaseProgressScalarWhereInput>>,
-  /** Logical OR on all given filters. */
-  OR?: Maybe<Array<CaseProgressScalarWhereInput>>,
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: Maybe<Array<CaseProgressScalarWhereInput>>,
-  id?: Maybe<Scalars['Int']>,
-  /** All values that are not equal to given value. */
-  id_not?: Maybe<Scalars['Int']>,
-  /** All values that are contained in given list. */
-  id_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values that are not contained in given list. */
-  id_not_in?: Maybe<Array<Scalars['Int']>>,
-  /** All values less than the given value. */
-  id_lt?: Maybe<Scalars['Int']>,
-  /** All values less than or equal the given value. */
-  id_lte?: Maybe<Scalars['Int']>,
-  /** All values greater than the given value. */
-  id_gt?: Maybe<Scalars['Int']>,
-  /** All values greater than or equal the given value. */
-  id_gte?: Maybe<Scalars['Int']>,
-  catatan?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  catatan_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  catatan_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  catatan_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  catatan_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  catatan_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  catatan_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  catatan_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  catatan_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  catatan_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  catatan_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  catatan_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  catatan_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  catatan_not_ends_with?: Maybe<Scalars['String']>,
-  createdAt?: Maybe<Scalars['DateTime']>,
-  /** All values that are not equal to given value. */
-  createdAt_not?: Maybe<Scalars['DateTime']>,
-  /** All values that are contained in given list. */
-  createdAt_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values less than the given value. */
-  createdAt_lt?: Maybe<Scalars['DateTime']>,
-  /** All values less than or equal the given value. */
-  createdAt_lte?: Maybe<Scalars['DateTime']>,
-  /** All values greater than the given value. */
-  createdAt_gt?: Maybe<Scalars['DateTime']>,
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: Maybe<Scalars['DateTime']>,
-  createdBy?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  createdBy_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  createdBy_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  createdBy_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  createdBy_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  createdBy_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  createdBy_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  createdBy_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  createdBy_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  createdBy_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  createdBy_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  createdBy_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  createdBy_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  createdBy_not_ends_with?: Maybe<Scalars['String']>,
-  jenisPeradilan?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  jenisPeradilan_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  jenisPeradilan_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  jenisPeradilan_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  jenisPeradilan_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  jenisPeradilan_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  jenisPeradilan_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  jenisPeradilan_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  jenisPeradilan_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  jenisPeradilan_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  jenisPeradilan_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  jenisPeradilan_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  jenisPeradilan_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  jenisPeradilan_not_ends_with?: Maybe<Scalars['String']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  /** All values that are not equal to given value. */
-  updatedAt_not?: Maybe<Scalars['DateTime']>,
-  /** All values that are contained in given list. */
-  updatedAt_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
-  /** All values less than the given value. */
-  updatedAt_lt?: Maybe<Scalars['DateTime']>,
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: Maybe<Scalars['DateTime']>,
-  /** All values greater than the given value. */
-  updatedAt_gt?: Maybe<Scalars['DateTime']>,
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: Maybe<Scalars['DateTime']>,
-  updatedBy?: Maybe<Scalars['String']>,
-  /** All values that are not equal to given value. */
-  updatedBy_not?: Maybe<Scalars['String']>,
-  /** All values that are contained in given list. */
-  updatedBy_in?: Maybe<Array<Scalars['String']>>,
-  /** All values that are not contained in given list. */
-  updatedBy_not_in?: Maybe<Array<Scalars['String']>>,
-  /** All values less than the given value. */
-  updatedBy_lt?: Maybe<Scalars['String']>,
-  /** All values less than or equal the given value. */
-  updatedBy_lte?: Maybe<Scalars['String']>,
-  /** All values greater than the given value. */
-  updatedBy_gt?: Maybe<Scalars['String']>,
-  /** All values greater than or equal the given value. */
-  updatedBy_gte?: Maybe<Scalars['String']>,
-  /** All values containing the given string. */
-  updatedBy_contains?: Maybe<Scalars['String']>,
-  /** All values not containing the given string. */
-  updatedBy_not_contains?: Maybe<Scalars['String']>,
-  /** All values starting with the given string. */
-  updatedBy_starts_with?: Maybe<Scalars['String']>,
-  /** All values not starting with the given string. */
-  updatedBy_not_starts_with?: Maybe<Scalars['String']>,
-  /** All values ending with the given string. */
-  updatedBy_ends_with?: Maybe<Scalars['String']>,
-  /** All values not ending with the given string. */
-  updatedBy_not_ends_with?: Maybe<Scalars['String']>,
-};
-
 export type CaseProgressSubscriptionPayload = {
   mutation: MutationType,
   node?: Maybe<CaseProgress>,
@@ -6972,13 +6798,6 @@ export type CaseProgressUpdateInput = {
   caseId?: Maybe<CaseUpdateOneRequiredWithoutProgressesInput>,
 };
 
-export type CaseProgressUpdateManyDataInput = {
-  catatan?: Maybe<Scalars['String']>,
-  createdBy?: Maybe<Scalars['String']>,
-  jenisPeradilan?: Maybe<Scalars['String']>,
-  updatedBy?: Maybe<Scalars['String']>,
-};
-
 export type CaseProgressUpdateManyMutationInput = {
   catatan?: Maybe<Scalars['String']>,
   createdBy?: Maybe<Scalars['String']>,
@@ -6986,21 +6805,13 @@ export type CaseProgressUpdateManyMutationInput = {
   updatedBy?: Maybe<Scalars['String']>,
 };
 
-export type CaseProgressUpdateManyWithoutCaseIdInput = {
-  create?: Maybe<Array<CaseProgressCreateWithoutCaseIdInput>>,
-  connect?: Maybe<Array<CaseProgressWhereUniqueInput>>,
-  set?: Maybe<Array<CaseProgressWhereUniqueInput>>,
-  disconnect?: Maybe<Array<CaseProgressWhereUniqueInput>>,
-  delete?: Maybe<Array<CaseProgressWhereUniqueInput>>,
-  update?: Maybe<Array<CaseProgressUpdateWithWhereUniqueWithoutCaseIdInput>>,
-  updateMany?: Maybe<Array<CaseProgressUpdateManyWithWhereNestedInput>>,
-  deleteMany?: Maybe<Array<CaseProgressScalarWhereInput>>,
-  upsert?: Maybe<Array<CaseProgressUpsertWithWhereUniqueWithoutCaseIdInput>>,
-};
-
-export type CaseProgressUpdateManyWithWhereNestedInput = {
-  where: CaseProgressScalarWhereInput,
-  data: CaseProgressUpdateManyDataInput,
+export type CaseProgressUpdateOneWithoutCaseIdInput = {
+  create?: Maybe<CaseProgressCreateWithoutCaseIdInput>,
+  connect?: Maybe<CaseProgressWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<CaseProgressUpdateWithoutCaseIdDataInput>,
+  upsert?: Maybe<CaseProgressUpsertWithoutCaseIdInput>,
 };
 
 export type CaseProgressUpdateWithoutCaseIdDataInput = {
@@ -7010,13 +6821,7 @@ export type CaseProgressUpdateWithoutCaseIdDataInput = {
   updatedBy?: Maybe<Scalars['String']>,
 };
 
-export type CaseProgressUpdateWithWhereUniqueWithoutCaseIdInput = {
-  where: CaseProgressWhereUniqueInput,
-  data: CaseProgressUpdateWithoutCaseIdDataInput,
-};
-
-export type CaseProgressUpsertWithWhereUniqueWithoutCaseIdInput = {
-  where: CaseProgressWhereUniqueInput,
+export type CaseProgressUpsertWithoutCaseIdInput = {
   update: CaseProgressUpdateWithoutCaseIdDataInput,
   create: CaseProgressCreateWithoutCaseIdInput,
 };
@@ -7188,6 +6993,412 @@ export type CaseProgressWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>,
 };
 
+export type CaseReferral = {
+  id: Scalars['Int'],
+  caseId: Case,
+  client: Person,
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  network?: Maybe<Network>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of items. */
+export type CaseReferralConnection = {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** A list of edges. */
+  edges: Array<Maybe<CaseReferralEdge>>,
+  aggregate: AggregateCaseReferral,
+};
+
+export type CaseReferralCreateInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  caseId: CaseCreateOneWithoutReferralsInput,
+  client: PersonCreateOneInput,
+  network?: Maybe<NetworkCreateOneInput>,
+};
+
+export type CaseReferralCreateManyWithoutCaseIdInput = {
+  create?: Maybe<Array<CaseReferralCreateWithoutCaseIdInput>>,
+  connect?: Maybe<Array<CaseReferralWhereUniqueInput>>,
+};
+
+export type CaseReferralCreateWithoutCaseIdInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  client: PersonCreateOneInput,
+  network?: Maybe<NetworkCreateOneInput>,
+};
+
+/** An edge in a connection. */
+export type CaseReferralEdge = {
+  /** The item at the end of the edge. */
+  node: CaseReferral,
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+};
+
+export enum CaseReferralOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  TglTransferAsc = 'tglTransfer_ASC',
+  TglTransferDesc = 'tglTransfer_DESC',
+  CatatanAsc = 'catatan_ASC',
+  CatatanDesc = 'catatan_DESC',
+  CreatedByAsc = 'createdBy_ASC',
+  CreatedByDesc = 'createdBy_DESC',
+  UpdatedByAsc = 'updatedBy_ASC',
+  UpdatedByDesc = 'updatedBy_DESC'
+}
+
+export type CaseReferralPreviousValues = {
+  id: Scalars['Int'],
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+export type CaseReferralScalarWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CaseReferralScalarWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CaseReferralScalarWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CaseReferralScalarWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  /** All values that are not equal to given value. */
+  tglTransfer_not?: Maybe<Scalars['DateTime']>,
+  /** All values that are contained in given list. */
+  tglTransfer_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values that are not contained in given list. */
+  tglTransfer_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values less than the given value. */
+  tglTransfer_lt?: Maybe<Scalars['DateTime']>,
+  /** All values less than or equal the given value. */
+  tglTransfer_lte?: Maybe<Scalars['DateTime']>,
+  /** All values greater than the given value. */
+  tglTransfer_gt?: Maybe<Scalars['DateTime']>,
+  /** All values greater than or equal the given value. */
+  tglTransfer_gte?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  catatan_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  catatan_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  catatan_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  catatan_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  catatan_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  catatan_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  catatan_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  catatan_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  catatan_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  catatan_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  catatan_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  catatan_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  catatan_not_ends_with?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  createdBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  createdBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  createdBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  createdBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  createdBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  createdBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  createdBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  createdBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  createdBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  createdBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  createdBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  createdBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  createdBy_not_ends_with?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  updatedBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  updatedBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  updatedBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  updatedBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  updatedBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  updatedBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  updatedBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  updatedBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  updatedBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  updatedBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  updatedBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  updatedBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  updatedBy_not_ends_with?: Maybe<Scalars['String']>,
+};
+
+export type CaseReferralSubscriptionPayload = {
+  mutation: MutationType,
+  node?: Maybe<CaseReferral>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<CaseReferralPreviousValues>,
+};
+
+export type CaseReferralSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CaseReferralSubscriptionWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CaseReferralSubscriptionWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CaseReferralSubscriptionWhereInput>>,
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>,
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<CaseReferralWhereInput>,
+};
+
+export type CaseReferralUpdateInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  caseId?: Maybe<CaseUpdateOneRequiredWithoutReferralsInput>,
+  client?: Maybe<PersonUpdateOneRequiredInput>,
+  network?: Maybe<NetworkUpdateOneInput>,
+};
+
+export type CaseReferralUpdateManyDataInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+export type CaseReferralUpdateManyMutationInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+export type CaseReferralUpdateManyWithoutCaseIdInput = {
+  create?: Maybe<Array<CaseReferralCreateWithoutCaseIdInput>>,
+  connect?: Maybe<Array<CaseReferralWhereUniqueInput>>,
+  set?: Maybe<Array<CaseReferralWhereUniqueInput>>,
+  disconnect?: Maybe<Array<CaseReferralWhereUniqueInput>>,
+  delete?: Maybe<Array<CaseReferralWhereUniqueInput>>,
+  update?: Maybe<Array<CaseReferralUpdateWithWhereUniqueWithoutCaseIdInput>>,
+  updateMany?: Maybe<Array<CaseReferralUpdateManyWithWhereNestedInput>>,
+  deleteMany?: Maybe<Array<CaseReferralScalarWhereInput>>,
+  upsert?: Maybe<Array<CaseReferralUpsertWithWhereUniqueWithoutCaseIdInput>>,
+};
+
+export type CaseReferralUpdateManyWithWhereNestedInput = {
+  where: CaseReferralScalarWhereInput,
+  data: CaseReferralUpdateManyDataInput,
+};
+
+export type CaseReferralUpdateWithoutCaseIdDataInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  client?: Maybe<PersonUpdateOneRequiredInput>,
+  network?: Maybe<NetworkUpdateOneInput>,
+};
+
+export type CaseReferralUpdateWithWhereUniqueWithoutCaseIdInput = {
+  where: CaseReferralWhereUniqueInput,
+  data: CaseReferralUpdateWithoutCaseIdDataInput,
+};
+
+export type CaseReferralUpsertWithWhereUniqueWithoutCaseIdInput = {
+  where: CaseReferralWhereUniqueInput,
+  update: CaseReferralUpdateWithoutCaseIdDataInput,
+  create: CaseReferralCreateWithoutCaseIdInput,
+};
+
+export type CaseReferralWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CaseReferralWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CaseReferralWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CaseReferralWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  /** All values that are not equal to given value. */
+  tglTransfer_not?: Maybe<Scalars['DateTime']>,
+  /** All values that are contained in given list. */
+  tglTransfer_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values that are not contained in given list. */
+  tglTransfer_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values less than the given value. */
+  tglTransfer_lt?: Maybe<Scalars['DateTime']>,
+  /** All values less than or equal the given value. */
+  tglTransfer_lte?: Maybe<Scalars['DateTime']>,
+  /** All values greater than the given value. */
+  tglTransfer_gt?: Maybe<Scalars['DateTime']>,
+  /** All values greater than or equal the given value. */
+  tglTransfer_gte?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  catatan_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  catatan_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  catatan_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  catatan_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  catatan_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  catatan_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  catatan_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  catatan_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  catatan_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  catatan_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  catatan_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  catatan_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  catatan_not_ends_with?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  createdBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  createdBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  createdBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  createdBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  createdBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  createdBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  createdBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  createdBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  createdBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  createdBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  createdBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  createdBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  createdBy_not_ends_with?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  updatedBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  updatedBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  updatedBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  updatedBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  updatedBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  updatedBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  updatedBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  updatedBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  updatedBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  updatedBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  updatedBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  updatedBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  updatedBy_not_ends_with?: Maybe<Scalars['String']>,
+  caseId?: Maybe<CaseWhereInput>,
+  client?: Maybe<PersonWhereInput>,
+  network?: Maybe<NetworkWhereInput>,
+};
+
+export type CaseReferralWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
 export type CaseSubscriptionPayload = {
   mutation: MutationType,
   node?: Maybe<Case>,
@@ -7211,6 +7422,76 @@ export type CaseSubscriptionWhereInput = {
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
   node?: Maybe<CaseWhereInput>,
+};
+
+export type CaseTransfer = {
+  id: Scalars['Int'],
+  caseId: Case,
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  network?: Maybe<Network>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of items. */
+export type CaseTransferConnection = {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** A list of edges. */
+  edges: Array<Maybe<CaseTransferEdge>>,
+  aggregate: AggregateCaseTransfer,
+};
+
+export type CaseTransferCreateInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  caseId: CaseCreateOneWithoutTransferInput,
+  network?: Maybe<NetworkCreateOneInput>,
+};
+
+export type CaseTransferCreateOneWithoutCaseIdInput = {
+  create?: Maybe<CaseTransferCreateWithoutCaseIdInput>,
+  connect?: Maybe<CaseTransferWhereUniqueInput>,
+};
+
+export type CaseTransferCreateWithoutCaseIdInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  network?: Maybe<NetworkCreateOneInput>,
+};
+
+/** An edge in a connection. */
+export type CaseTransferEdge = {
+  /** The item at the end of the edge. */
+  node: CaseTransfer,
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+};
+
+export enum CaseTransferOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  TglTransferAsc = 'tglTransfer_ASC',
+  TglTransferDesc = 'tglTransfer_DESC',
+  CatatanAsc = 'catatan_ASC',
+  CatatanDesc = 'catatan_DESC',
+  CreatedByAsc = 'createdBy_ASC',
+  CreatedByDesc = 'createdBy_DESC',
+  UpdatedByAsc = 'updatedBy_ASC',
+  UpdatedByDesc = 'updatedBy_DESC'
+}
+
+export type CaseTransferPreviousValues = {
+  id: Scalars['Int'],
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
 };
 
 export type CaseTransferReferral = {
@@ -7843,6 +8124,195 @@ export type CaseTransferReferralWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>,
 };
 
+export type CaseTransferSubscriptionPayload = {
+  mutation: MutationType,
+  node?: Maybe<CaseTransfer>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<CaseTransferPreviousValues>,
+};
+
+export type CaseTransferSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CaseTransferSubscriptionWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CaseTransferSubscriptionWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CaseTransferSubscriptionWhereInput>>,
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>,
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<CaseTransferWhereInput>,
+};
+
+export type CaseTransferUpdateInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  caseId?: Maybe<CaseUpdateOneRequiredWithoutTransferInput>,
+  network?: Maybe<NetworkUpdateOneInput>,
+};
+
+export type CaseTransferUpdateManyMutationInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+};
+
+export type CaseTransferUpdateOneWithoutCaseIdInput = {
+  create?: Maybe<CaseTransferCreateWithoutCaseIdInput>,
+  connect?: Maybe<CaseTransferWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<CaseTransferUpdateWithoutCaseIdDataInput>,
+  upsert?: Maybe<CaseTransferUpsertWithoutCaseIdInput>,
+};
+
+export type CaseTransferUpdateWithoutCaseIdDataInput = {
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  network?: Maybe<NetworkUpdateOneInput>,
+};
+
+export type CaseTransferUpsertWithoutCaseIdInput = {
+  update: CaseTransferUpdateWithoutCaseIdDataInput,
+  create: CaseTransferCreateWithoutCaseIdInput,
+};
+
+export type CaseTransferWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<CaseTransferWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<CaseTransferWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<CaseTransferWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  tglTransfer?: Maybe<Scalars['DateTime']>,
+  /** All values that are not equal to given value. */
+  tglTransfer_not?: Maybe<Scalars['DateTime']>,
+  /** All values that are contained in given list. */
+  tglTransfer_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values that are not contained in given list. */
+  tglTransfer_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values less than the given value. */
+  tglTransfer_lt?: Maybe<Scalars['DateTime']>,
+  /** All values less than or equal the given value. */
+  tglTransfer_lte?: Maybe<Scalars['DateTime']>,
+  /** All values greater than the given value. */
+  tglTransfer_gt?: Maybe<Scalars['DateTime']>,
+  /** All values greater than or equal the given value. */
+  tglTransfer_gte?: Maybe<Scalars['DateTime']>,
+  catatan?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  catatan_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  catatan_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  catatan_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  catatan_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  catatan_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  catatan_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  catatan_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  catatan_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  catatan_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  catatan_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  catatan_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  catatan_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  catatan_not_ends_with?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  createdBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  createdBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  createdBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  createdBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  createdBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  createdBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  createdBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  createdBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  createdBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  createdBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  createdBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  createdBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  createdBy_not_ends_with?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  updatedBy_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  updatedBy_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  updatedBy_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  updatedBy_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  updatedBy_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  updatedBy_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  updatedBy_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  updatedBy_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  updatedBy_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  updatedBy_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  updatedBy_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  updatedBy_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  updatedBy_not_ends_with?: Maybe<Scalars['String']>,
+  caseId?: Maybe<CaseWhereInput>,
+  network?: Maybe<NetworkWhereInput>,
+};
+
+export type CaseTransferWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
 export type CaseUpdateInput = {
   applicationId?: Maybe<Scalars['Int']>,
   caseClosed?: Maybe<Scalars['Boolean']>,
@@ -7866,12 +8336,14 @@ export type CaseUpdateInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateManyMutationInput = {
@@ -7897,13 +8369,6 @@ export type CaseUpdateOneRequiredWithoutActivitiesInput = {
   connect?: Maybe<CaseWhereUniqueInput>,
   update?: Maybe<CaseUpdateWithoutActivitiesDataInput>,
   upsert?: Maybe<CaseUpsertWithoutActivitiesInput>,
-};
-
-export type CaseUpdateOneRequiredWithoutApplicationInput = {
-  create?: Maybe<CaseCreateWithoutApplicationInput>,
-  connect?: Maybe<CaseWhereUniqueInput>,
-  update?: Maybe<CaseUpdateWithoutApplicationDataInput>,
-  upsert?: Maybe<CaseUpsertWithoutApplicationInput>,
 };
 
 export type CaseUpdateOneRequiredWithoutClassificationsInput = {
@@ -7948,11 +8413,11 @@ export type CaseUpdateOneRequiredWithoutPelakusInput = {
   upsert?: Maybe<CaseUpsertWithoutPelakusInput>,
 };
 
-export type CaseUpdateOneRequiredWithoutPksInput = {
-  create?: Maybe<CaseCreateWithoutPksInput>,
+export type CaseUpdateOneRequiredWithoutPkInput = {
+  create?: Maybe<CaseCreateWithoutPkInput>,
   connect?: Maybe<CaseWhereUniqueInput>,
-  update?: Maybe<CaseUpdateWithoutPksDataInput>,
-  upsert?: Maybe<CaseUpsertWithoutPksInput>,
+  update?: Maybe<CaseUpdateWithoutPkDataInput>,
+  upsert?: Maybe<CaseUpsertWithoutPkInput>,
 };
 
 export type CaseUpdateOneRequiredWithoutProgressesInput = {
@@ -7960,6 +8425,20 @@ export type CaseUpdateOneRequiredWithoutProgressesInput = {
   connect?: Maybe<CaseWhereUniqueInput>,
   update?: Maybe<CaseUpdateWithoutProgressesDataInput>,
   upsert?: Maybe<CaseUpsertWithoutProgressesInput>,
+};
+
+export type CaseUpdateOneRequiredWithoutReferralsInput = {
+  create?: Maybe<CaseCreateWithoutReferralsInput>,
+  connect?: Maybe<CaseWhereUniqueInput>,
+  update?: Maybe<CaseUpdateWithoutReferralsDataInput>,
+  upsert?: Maybe<CaseUpsertWithoutReferralsInput>,
+};
+
+export type CaseUpdateOneRequiredWithoutTransferInput = {
+  create?: Maybe<CaseCreateWithoutTransferInput>,
+  connect?: Maybe<CaseWhereUniqueInput>,
+  update?: Maybe<CaseUpdateWithoutTransferDataInput>,
+  upsert?: Maybe<CaseUpsertWithoutTransferInput>,
 };
 
 export type CaseUpdateOneRequiredWithoutTransferreferralsInput = {
@@ -7974,6 +8453,15 @@ export type CaseUpdateOneRequiredWithoutViolatedrightsInput = {
   connect?: Maybe<CaseWhereUniqueInput>,
   update?: Maybe<CaseUpdateWithoutViolatedrightsDataInput>,
   upsert?: Maybe<CaseUpsertWithoutViolatedrightsInput>,
+};
+
+export type CaseUpdateOneWithoutApplicationInput = {
+  create?: Maybe<CaseCreateWithoutApplicationInput>,
+  connect?: Maybe<CaseWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<CaseUpdateWithoutApplicationDataInput>,
+  upsert?: Maybe<CaseUpsertWithoutApplicationInput>,
 };
 
 export type CaseUpdateOneWithoutLogRequestsInput = {
@@ -8008,11 +8496,13 @@ export type CaseUpdateWithoutActivitiesDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutApplicationDataInput = {
@@ -8037,12 +8527,14 @@ export type CaseUpdateWithoutApplicationDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutClassificationsDataInput = {
@@ -8067,12 +8559,14 @@ export type CaseUpdateWithoutClassificationsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutConsultationsDataInput = {
@@ -8097,12 +8591,14 @@ export type CaseUpdateWithoutConsultationsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutDocumentsDataInput = {
@@ -8127,12 +8623,14 @@ export type CaseUpdateWithoutDocumentsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutIssuesDataInput = {
@@ -8157,12 +8655,14 @@ export type CaseUpdateWithoutIssuesDataInput = {
   documents?: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutKorbansDataInput = {
@@ -8187,12 +8687,14 @@ export type CaseUpdateWithoutKorbansDataInput = {
   documents?: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>,
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutLogRequestsDataInput = {
@@ -8218,11 +8720,13 @@ export type CaseUpdateWithoutLogRequestsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutPelakusDataInput = {
@@ -8247,15 +8751,17 @@ export type CaseUpdateWithoutPelakusDataInput = {
   documents?: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>,
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
-export type CaseUpdateWithoutPksDataInput = {
+export type CaseUpdateWithoutPkDataInput = {
   applicationId?: Maybe<Scalars['Int']>,
   caseClosed?: Maybe<Scalars['Boolean']>,
   caseClosedJenis?: Maybe<Scalars['String']>,
@@ -8278,11 +8784,13 @@ export type CaseUpdateWithoutPksDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutProgressesDataInput = {
@@ -8308,11 +8816,77 @@ export type CaseUpdateWithoutProgressesDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
+};
+
+export type CaseUpdateWithoutReferralsDataInput = {
+  applicationId?: Maybe<Scalars['Int']>,
+  caseClosed?: Maybe<Scalars['Boolean']>,
+  caseClosedJenis?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  hakTerlanggar?: Maybe<Scalars['String']>,
+  issue?: Maybe<Scalars['String']>,
+  judulKasus?: Maybe<Scalars['String']>,
+  klasifikasiDok?: Maybe<Scalars['String']>,
+  kronologiKasus?: Maybe<Scalars['String']>,
+  lockDitolak?: Maybe<Scalars['Boolean']>,
+  statusPendampingan?: Maybe<Scalars['String']>,
+  targetAdvokasi?: Maybe<Scalars['String']>,
+  unlockPk?: Maybe<Scalars['Boolean']>,
+  unlockTransfer?: Maybe<Scalars['Boolean']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  application?: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>,
+  classifications?: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>,
+  consultations?: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>,
+  documents?: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>,
+  issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
+  korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
+  pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
+  activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
+  transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
+  violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
+  logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+};
+
+export type CaseUpdateWithoutTransferDataInput = {
+  applicationId?: Maybe<Scalars['Int']>,
+  caseClosed?: Maybe<Scalars['Boolean']>,
+  caseClosedJenis?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  hakTerlanggar?: Maybe<Scalars['String']>,
+  issue?: Maybe<Scalars['String']>,
+  judulKasus?: Maybe<Scalars['String']>,
+  klasifikasiDok?: Maybe<Scalars['String']>,
+  kronologiKasus?: Maybe<Scalars['String']>,
+  lockDitolak?: Maybe<Scalars['Boolean']>,
+  statusPendampingan?: Maybe<Scalars['String']>,
+  targetAdvokasi?: Maybe<Scalars['String']>,
+  unlockPk?: Maybe<Scalars['Boolean']>,
+  unlockTransfer?: Maybe<Scalars['Boolean']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  application?: Maybe<ApplicationUpdateOneRequiredWithoutCaseInput>,
+  classifications?: Maybe<CaseClassificationUpdateManyWithoutCaseIdInput>,
+  consultations?: Maybe<CaseConsultationUpdateManyWithoutCaseIdInput>,
+  documents?: Maybe<CaseDocumentUpdateManyWithoutCaseIdInput>,
+  issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
+  korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
+  pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
+  activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
+  transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
+  violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
+  logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutTransferreferralsDataInput = {
@@ -8338,11 +8912,13 @@ export type CaseUpdateWithoutTransferreferralsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   violatedrights?: Maybe<CaseViolatedRightUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpdateWithoutViolatedrightsDataInput = {
@@ -8368,11 +8944,13 @@ export type CaseUpdateWithoutViolatedrightsDataInput = {
   issues?: Maybe<CaseIssueUpdateManyWithoutCaseIdInput>,
   korbans?: Maybe<CaseKorbanUpdateManyWithoutCaseIdInput>,
   pelakus?: Maybe<CasePelakuUpdateManyWithoutCaseIdInput>,
-  pks?: Maybe<CasePkUpdateManyWithoutCaseIdInput>,
-  progresses?: Maybe<CaseProgressUpdateManyWithoutCaseIdInput>,
+  pk?: Maybe<CasePkUpdateOneWithoutCaseIdInput>,
+  progresses?: Maybe<CaseProgressUpdateOneWithoutCaseIdInput>,
   activities?: Maybe<CaseProgressActivityUpdateManyWithoutCaseIdInput>,
   transferreferrals?: Maybe<CaseTransferReferralUpdateManyWithoutCaseIdInput>,
   logRequests?: Maybe<LogRequestUpdateManyWithoutCaseIdInput>,
+  transfer?: Maybe<CaseTransferUpdateOneWithoutCaseIdInput>,
+  referrals?: Maybe<CaseReferralUpdateManyWithoutCaseIdInput>,
 };
 
 export type CaseUpsertWithoutActivitiesInput = {
@@ -8420,14 +8998,24 @@ export type CaseUpsertWithoutPelakusInput = {
   create: CaseCreateWithoutPelakusInput,
 };
 
-export type CaseUpsertWithoutPksInput = {
-  update: CaseUpdateWithoutPksDataInput,
-  create: CaseCreateWithoutPksInput,
+export type CaseUpsertWithoutPkInput = {
+  update: CaseUpdateWithoutPkDataInput,
+  create: CaseCreateWithoutPkInput,
 };
 
 export type CaseUpsertWithoutProgressesInput = {
   update: CaseUpdateWithoutProgressesDataInput,
   create: CaseCreateWithoutProgressesInput,
+};
+
+export type CaseUpsertWithoutReferralsInput = {
+  update: CaseUpdateWithoutReferralsDataInput,
+  create: CaseCreateWithoutReferralsInput,
+};
+
+export type CaseUpsertWithoutTransferInput = {
+  update: CaseUpdateWithoutTransferDataInput,
+  create: CaseCreateWithoutTransferInput,
 };
 
 export type CaseUpsertWithoutTransferreferralsInput = {
@@ -9034,12 +9622,8 @@ export type CaseWhereInput = {
   pelakus_every?: Maybe<CasePelakuWhereInput>,
   pelakus_some?: Maybe<CasePelakuWhereInput>,
   pelakus_none?: Maybe<CasePelakuWhereInput>,
-  pks_every?: Maybe<CasePkWhereInput>,
-  pks_some?: Maybe<CasePkWhereInput>,
-  pks_none?: Maybe<CasePkWhereInput>,
-  progresses_every?: Maybe<CaseProgressWhereInput>,
-  progresses_some?: Maybe<CaseProgressWhereInput>,
-  progresses_none?: Maybe<CaseProgressWhereInput>,
+  pk?: Maybe<CasePkWhereInput>,
+  progresses?: Maybe<CaseProgressWhereInput>,
   activities_every?: Maybe<CaseProgressActivityWhereInput>,
   activities_some?: Maybe<CaseProgressActivityWhereInput>,
   activities_none?: Maybe<CaseProgressActivityWhereInput>,
@@ -9052,6 +9636,10 @@ export type CaseWhereInput = {
   logRequests_every?: Maybe<LogRequestWhereInput>,
   logRequests_some?: Maybe<LogRequestWhereInput>,
   logRequests_none?: Maybe<LogRequestWhereInput>,
+  transfer?: Maybe<CaseTransferWhereInput>,
+  referrals_every?: Maybe<CaseReferralWhereInput>,
+  referrals_some?: Maybe<CaseReferralWhereInput>,
+  referrals_none?: Maybe<CaseReferralWhereInput>,
 };
 
 export type CaseWhereUniqueInput = {
@@ -11651,6 +12239,7 @@ export type LogRequest = {
   requestBy?: Maybe<User>,
   requestTo?: Maybe<User>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11872,6 +12461,7 @@ export type LogRequestCreateInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11924,6 +12514,7 @@ export type LogRequestCreateWithoutCaseIdInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11940,6 +12531,7 @@ export type LogRequestCreateWithoutNetworkIdInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11956,6 +12548,7 @@ export type LogRequestCreateWithoutPersonIdInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11972,6 +12565,7 @@ export type LogRequestCreateWithoutPpInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -11988,6 +12582,7 @@ export type LogRequestCreateWithoutRequestByInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12004,6 +12599,7 @@ export type LogRequestCreateWithoutRequestToInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12034,6 +12630,8 @@ export enum LogRequestOrderByInput {
   StatusRequestDesc = 'statusRequest_DESC',
   TanggapanRequestAsc = 'tanggapanRequest_ASC',
   TanggapanRequestDesc = 'tanggapanRequest_DESC',
+  TanggapanRequestIsiAsc = 'tanggapanRequestIsi_ASC',
+  TanggapanRequestIsiDesc = 'tanggapanRequestIsi_DESC',
   TglExpiredAsc = 'tglExpired_ASC',
   TglExpiredDesc = 'tglExpired_DESC',
   TglRequestAsc = 'tglRequest_ASC',
@@ -12048,6 +12646,7 @@ export type LogRequestPreviousValues = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12183,6 +12782,33 @@ export type LogRequestScalarWhereInput = {
   tanggapanRequest_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   tanggapanRequest_not_ends_with?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  tanggapanRequestIsi_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  tanggapanRequestIsi_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  tanggapanRequestIsi_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  tanggapanRequestIsi_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  tanggapanRequestIsi_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  tanggapanRequestIsi_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  tanggapanRequestIsi_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  tanggapanRequestIsi_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  tanggapanRequestIsi_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  tanggapanRequestIsi_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  tanggapanRequestIsi_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  tanggapanRequestIsi_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  tanggapanRequestIsi_not_ends_with?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   /** All values that are not equal to given value. */
   tglExpired_not?: Maybe<Scalars['DateTime']>,
@@ -12260,6 +12886,7 @@ export type LogRequestUpdateDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12277,6 +12904,7 @@ export type LogRequestUpdateInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12294,6 +12922,7 @@ export type LogRequestUpdateManyDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12316,6 +12945,7 @@ export type LogRequestUpdateManyMutationInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12400,6 +13030,7 @@ export type LogRequestUpdateWithoutCaseIdDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12416,6 +13047,7 @@ export type LogRequestUpdateWithoutNetworkIdDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12432,6 +13064,7 @@ export type LogRequestUpdateWithoutPersonIdDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12448,6 +13081,7 @@ export type LogRequestUpdateWithoutPpDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12464,6 +13098,7 @@ export type LogRequestUpdateWithoutRequestByDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12480,6 +13115,7 @@ export type LogRequestUpdateWithoutRequestToDataInput = {
   jenisRequest?: Maybe<Scalars['String']>,
   statusRequest?: Maybe<Scalars['String']>,
   tanggapanRequest?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
@@ -12692,6 +13328,33 @@ export type LogRequestWhereInput = {
   tanggapanRequest_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   tanggapanRequest_not_ends_with?: Maybe<Scalars['String']>,
+  tanggapanRequestIsi?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  tanggapanRequestIsi_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  tanggapanRequestIsi_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  tanggapanRequestIsi_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  tanggapanRequestIsi_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  tanggapanRequestIsi_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  tanggapanRequestIsi_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  tanggapanRequestIsi_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  tanggapanRequestIsi_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  tanggapanRequestIsi_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  tanggapanRequestIsi_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  tanggapanRequestIsi_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  tanggapanRequestIsi_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  tanggapanRequestIsi_not_ends_with?: Maybe<Scalars['String']>,
   tglExpired?: Maybe<Scalars['DateTime']>,
   /** All values that are not equal to given value. */
   tglExpired_not?: Maybe<Scalars['DateTime']>,
@@ -13350,6 +14013,8 @@ export type Mutation = {
   createCaseProgressActivityLit: CaseProgressActivityLit,
   createCaseProgressActivityNonlit: CaseProgressActivityNonlit,
   createCaseTransferReferral: CaseTransferReferral,
+  createCaseTransfer: CaseTransfer,
+  createCaseReferral: CaseReferral,
   createCaseViolatedRight: CaseViolatedRight,
   createClient: Client,
   createDaftarPengacara: DaftarPengacara,
@@ -13358,15 +14023,15 @@ export type Mutation = {
   createLogRequestApp: LogRequestApp,
   createMtVocab: MtVocab,
   createMtVocabGroup: MtVocabGroup,
-  createNetwork: Network,
-  createPerson: Person,
   createPersonDocument: PersonDocument,
   createRole: Role,
-  createUser: User,
   createUserProfile: UserProfile,
   createApplication: Application,
   createLogRequest: LogRequest,
   createRolesType: RolesType,
+  createNetwork: Network,
+  createUser: User,
+  createPerson: Person,
   updateCase?: Maybe<Case>,
   updateCaseClassification?: Maybe<CaseClassification>,
   updateCaseConsultation?: Maybe<CaseConsultation>,
@@ -13381,6 +14046,8 @@ export type Mutation = {
   updateCaseProgressActivityLit?: Maybe<CaseProgressActivityLit>,
   updateCaseProgressActivityNonlit?: Maybe<CaseProgressActivityNonlit>,
   updateCaseTransferReferral?: Maybe<CaseTransferReferral>,
+  updateCaseTransfer?: Maybe<CaseTransfer>,
+  updateCaseReferral?: Maybe<CaseReferral>,
   updateCaseViolatedRight?: Maybe<CaseViolatedRight>,
   updateClient?: Maybe<Client>,
   updateDaftarPengacara?: Maybe<DaftarPengacara>,
@@ -13389,15 +14056,15 @@ export type Mutation = {
   updateLogRequestApp?: Maybe<LogRequestApp>,
   updateMtVocab?: Maybe<MtVocab>,
   updateMtVocabGroup?: Maybe<MtVocabGroup>,
-  updateNetwork?: Maybe<Network>,
-  updatePerson?: Maybe<Person>,
   updatePersonDocument?: Maybe<PersonDocument>,
   updateRole?: Maybe<Role>,
-  updateUser?: Maybe<User>,
   updateUserProfile?: Maybe<UserProfile>,
   updateApplication?: Maybe<Application>,
   updateLogRequest?: Maybe<LogRequest>,
   updateRolesType?: Maybe<RolesType>,
+  updateNetwork?: Maybe<Network>,
+  updateUser?: Maybe<User>,
+  updatePerson?: Maybe<Person>,
   deleteCase?: Maybe<Case>,
   deleteCaseClassification?: Maybe<CaseClassification>,
   deleteCaseConsultation?: Maybe<CaseConsultation>,
@@ -13412,6 +14079,8 @@ export type Mutation = {
   deleteCaseProgressActivityLit?: Maybe<CaseProgressActivityLit>,
   deleteCaseProgressActivityNonlit?: Maybe<CaseProgressActivityNonlit>,
   deleteCaseTransferReferral?: Maybe<CaseTransferReferral>,
+  deleteCaseTransfer?: Maybe<CaseTransfer>,
+  deleteCaseReferral?: Maybe<CaseReferral>,
   deleteCaseViolatedRight?: Maybe<CaseViolatedRight>,
   deleteClient?: Maybe<Client>,
   deleteDaftarPengacara?: Maybe<DaftarPengacara>,
@@ -13420,15 +14089,15 @@ export type Mutation = {
   deleteLogRequestApp?: Maybe<LogRequestApp>,
   deleteMtVocab?: Maybe<MtVocab>,
   deleteMtVocabGroup?: Maybe<MtVocabGroup>,
-  deleteNetwork?: Maybe<Network>,
-  deletePerson?: Maybe<Person>,
   deletePersonDocument?: Maybe<PersonDocument>,
   deleteRole?: Maybe<Role>,
-  deleteUser?: Maybe<User>,
   deleteUserProfile?: Maybe<UserProfile>,
   deleteApplication?: Maybe<Application>,
   deleteLogRequest?: Maybe<LogRequest>,
   deleteRolesType?: Maybe<RolesType>,
+  deleteNetwork?: Maybe<Network>,
+  deleteUser?: Maybe<User>,
+  deletePerson?: Maybe<Person>,
   upsertCase: Case,
   upsertCaseClassification: CaseClassification,
   upsertCaseConsultation: CaseConsultation,
@@ -13443,6 +14112,8 @@ export type Mutation = {
   upsertCaseProgressActivityLit: CaseProgressActivityLit,
   upsertCaseProgressActivityNonlit: CaseProgressActivityNonlit,
   upsertCaseTransferReferral: CaseTransferReferral,
+  upsertCaseTransfer: CaseTransfer,
+  upsertCaseReferral: CaseReferral,
   upsertCaseViolatedRight: CaseViolatedRight,
   upsertClient: Client,
   upsertDaftarPengacara: DaftarPengacara,
@@ -13451,19 +14122,18 @@ export type Mutation = {
   upsertLogRequestApp: LogRequestApp,
   upsertMtVocab: MtVocab,
   upsertMtVocabGroup: MtVocabGroup,
-  upsertNetwork: Network,
-  upsertPerson: Person,
   upsertPersonDocument: PersonDocument,
   upsertRole: Role,
-  upsertUser: User,
   upsertUserProfile: UserProfile,
   upsertApplication: Application,
   upsertLogRequest: LogRequest,
   upsertRolesType: RolesType,
+  upsertNetwork: Network,
+  upsertUser: User,
+  upsertPerson: Person,
   updateManyCases: BatchPayload,
   updateManyCaseClassifications: BatchPayload,
   updateManyCaseConsultations: BatchPayload,
-  updateManyCaseConsultationApps: BatchPayload,
   updateManyCaseDocuments: BatchPayload,
   updateManyCaseIssues: BatchPayload,
   updateManyCasePks: BatchPayload,
@@ -13472,6 +14142,8 @@ export type Mutation = {
   updateManyCaseProgressActivityLits: BatchPayload,
   updateManyCaseProgressActivityNonlits: BatchPayload,
   updateManyCaseTransferReferrals: BatchPayload,
+  updateManyCaseTransfers: BatchPayload,
+  updateManyCaseReferrals: BatchPayload,
   updateManyCaseViolatedRights: BatchPayload,
   updateManyClients: BatchPayload,
   updateManyDaftarPengacaras: BatchPayload,
@@ -13479,14 +14151,14 @@ export type Mutation = {
   updateManyDataDictLocals: BatchPayload,
   updateManyMtVocabs: BatchPayload,
   updateManyMtVocabGroups: BatchPayload,
-  updateManyNetworks: BatchPayload,
-  updateManyPersons: BatchPayload,
   updateManyPersonDocuments: BatchPayload,
-  updateManyUsers: BatchPayload,
   updateManyUserProfiles: BatchPayload,
   updateManyApplications: BatchPayload,
   updateManyLogRequests: BatchPayload,
   updateManyRolesTypes: BatchPayload,
+  updateManyNetworks: BatchPayload,
+  updateManyUsers: BatchPayload,
+  updateManyPersons: BatchPayload,
   deleteManyCases: BatchPayload,
   deleteManyCaseClassifications: BatchPayload,
   deleteManyCaseConsultations: BatchPayload,
@@ -13501,6 +14173,8 @@ export type Mutation = {
   deleteManyCaseProgressActivityLits: BatchPayload,
   deleteManyCaseProgressActivityNonlits: BatchPayload,
   deleteManyCaseTransferReferrals: BatchPayload,
+  deleteManyCaseTransfers: BatchPayload,
+  deleteManyCaseReferrals: BatchPayload,
   deleteManyCaseViolatedRights: BatchPayload,
   deleteManyClients: BatchPayload,
   deleteManyDaftarPengacaras: BatchPayload,
@@ -13509,15 +14183,15 @@ export type Mutation = {
   deleteManyLogRequestApps: BatchPayload,
   deleteManyMtVocabs: BatchPayload,
   deleteManyMtVocabGroups: BatchPayload,
-  deleteManyNetworks: BatchPayload,
-  deleteManyPersons: BatchPayload,
   deleteManyPersonDocuments: BatchPayload,
   deleteManyRoles: BatchPayload,
-  deleteManyUsers: BatchPayload,
   deleteManyUserProfiles: BatchPayload,
   deleteManyApplications: BatchPayload,
   deleteManyLogRequests: BatchPayload,
   deleteManyRolesTypes: BatchPayload,
+  deleteManyNetworks: BatchPayload,
+  deleteManyUsers: BatchPayload,
+  deleteManyPersons: BatchPayload,
 };
 
 
@@ -13591,6 +14265,16 @@ export type MutationCreateCaseTransferReferralArgs = {
 };
 
 
+export type MutationCreateCaseTransferArgs = {
+  data: CaseTransferCreateInput
+};
+
+
+export type MutationCreateCaseReferralArgs = {
+  data: CaseReferralCreateInput
+};
+
+
 export type MutationCreateCaseViolatedRightArgs = {
   data: CaseViolatedRightCreateInput
 };
@@ -13631,16 +14315,6 @@ export type MutationCreateMtVocabGroupArgs = {
 };
 
 
-export type MutationCreateNetworkArgs = {
-  data: NetworkCreateInput
-};
-
-
-export type MutationCreatePersonArgs = {
-  data: PersonCreateInput
-};
-
-
 export type MutationCreatePersonDocumentArgs = {
   data: PersonDocumentCreateInput
 };
@@ -13648,11 +14322,6 @@ export type MutationCreatePersonDocumentArgs = {
 
 export type MutationCreateRoleArgs = {
   data: RoleCreateInput
-};
-
-
-export type MutationCreateUserArgs = {
-  data: UserCreateInput
 };
 
 
@@ -13673,6 +14342,21 @@ export type MutationCreateLogRequestArgs = {
 
 export type MutationCreateRolesTypeArgs = {
   data: RolesTypeCreateInput
+};
+
+
+export type MutationCreateNetworkArgs = {
+  data: NetworkCreateInput
+};
+
+
+export type MutationCreateUserArgs = {
+  data: UserCreateInput
+};
+
+
+export type MutationCreatePersonArgs = {
+  data: PersonCreateInput
 };
 
 
@@ -13760,6 +14444,18 @@ export type MutationUpdateCaseTransferReferralArgs = {
 };
 
 
+export type MutationUpdateCaseTransferArgs = {
+  data: CaseTransferUpdateInput,
+  where: CaseTransferWhereUniqueInput
+};
+
+
+export type MutationUpdateCaseReferralArgs = {
+  data: CaseReferralUpdateInput,
+  where: CaseReferralWhereUniqueInput
+};
+
+
 export type MutationUpdateCaseViolatedRightArgs = {
   data: CaseViolatedRightUpdateInput,
   where: CaseViolatedRightWhereUniqueInput
@@ -13808,18 +14504,6 @@ export type MutationUpdateMtVocabGroupArgs = {
 };
 
 
-export type MutationUpdateNetworkArgs = {
-  data: NetworkUpdateInput,
-  where: NetworkWhereUniqueInput
-};
-
-
-export type MutationUpdatePersonArgs = {
-  data: PersonUpdateInput,
-  where: PersonWhereUniqueInput
-};
-
-
 export type MutationUpdatePersonDocumentArgs = {
   data: PersonDocumentUpdateInput,
   where: PersonDocumentWhereUniqueInput
@@ -13829,12 +14513,6 @@ export type MutationUpdatePersonDocumentArgs = {
 export type MutationUpdateRoleArgs = {
   data: RoleUpdateInput,
   where: RoleWhereUniqueInput
-};
-
-
-export type MutationUpdateUserArgs = {
-  data: UserUpdateInput,
-  where: UserWhereUniqueInput
 };
 
 
@@ -13859,6 +14537,24 @@ export type MutationUpdateLogRequestArgs = {
 export type MutationUpdateRolesTypeArgs = {
   data: RolesTypeUpdateInput,
   where: RolesTypeWhereUniqueInput
+};
+
+
+export type MutationUpdateNetworkArgs = {
+  data: NetworkUpdateInput,
+  where: NetworkWhereUniqueInput
+};
+
+
+export type MutationUpdateUserArgs = {
+  data: UserUpdateInput,
+  where: UserWhereUniqueInput
+};
+
+
+export type MutationUpdatePersonArgs = {
+  data: PersonUpdateInput,
+  where: PersonWhereUniqueInput
 };
 
 
@@ -13932,6 +14628,16 @@ export type MutationDeleteCaseTransferReferralArgs = {
 };
 
 
+export type MutationDeleteCaseTransferArgs = {
+  where: CaseTransferWhereUniqueInput
+};
+
+
+export type MutationDeleteCaseReferralArgs = {
+  where: CaseReferralWhereUniqueInput
+};
+
+
 export type MutationDeleteCaseViolatedRightArgs = {
   where: CaseViolatedRightWhereUniqueInput
 };
@@ -13972,16 +14678,6 @@ export type MutationDeleteMtVocabGroupArgs = {
 };
 
 
-export type MutationDeleteNetworkArgs = {
-  where: NetworkWhereUniqueInput
-};
-
-
-export type MutationDeletePersonArgs = {
-  where: PersonWhereUniqueInput
-};
-
-
 export type MutationDeletePersonDocumentArgs = {
   where: PersonDocumentWhereUniqueInput
 };
@@ -13989,11 +14685,6 @@ export type MutationDeletePersonDocumentArgs = {
 
 export type MutationDeleteRoleArgs = {
   where: RoleWhereUniqueInput
-};
-
-
-export type MutationDeleteUserArgs = {
-  where: UserWhereUniqueInput
 };
 
 
@@ -14014,6 +14705,21 @@ export type MutationDeleteLogRequestArgs = {
 
 export type MutationDeleteRolesTypeArgs = {
   where: RolesTypeWhereUniqueInput
+};
+
+
+export type MutationDeleteNetworkArgs = {
+  where: NetworkWhereUniqueInput
+};
+
+
+export type MutationDeleteUserArgs = {
+  where: UserWhereUniqueInput
+};
+
+
+export type MutationDeletePersonArgs = {
+  where: PersonWhereUniqueInput
 };
 
 
@@ -14115,6 +14821,20 @@ export type MutationUpsertCaseTransferReferralArgs = {
 };
 
 
+export type MutationUpsertCaseTransferArgs = {
+  where: CaseTransferWhereUniqueInput,
+  create: CaseTransferCreateInput,
+  update: CaseTransferUpdateInput
+};
+
+
+export type MutationUpsertCaseReferralArgs = {
+  where: CaseReferralWhereUniqueInput,
+  create: CaseReferralCreateInput,
+  update: CaseReferralUpdateInput
+};
+
+
 export type MutationUpsertCaseViolatedRightArgs = {
   where: CaseViolatedRightWhereUniqueInput,
   create: CaseViolatedRightCreateInput,
@@ -14171,20 +14891,6 @@ export type MutationUpsertMtVocabGroupArgs = {
 };
 
 
-export type MutationUpsertNetworkArgs = {
-  where: NetworkWhereUniqueInput,
-  create: NetworkCreateInput,
-  update: NetworkUpdateInput
-};
-
-
-export type MutationUpsertPersonArgs = {
-  where: PersonWhereUniqueInput,
-  create: PersonCreateInput,
-  update: PersonUpdateInput
-};
-
-
 export type MutationUpsertPersonDocumentArgs = {
   where: PersonDocumentWhereUniqueInput,
   create: PersonDocumentCreateInput,
@@ -14196,13 +14902,6 @@ export type MutationUpsertRoleArgs = {
   where: RoleWhereUniqueInput,
   create: RoleCreateInput,
   update: RoleUpdateInput
-};
-
-
-export type MutationUpsertUserArgs = {
-  where: UserWhereUniqueInput,
-  create: UserCreateInput,
-  update: UserUpdateInput
 };
 
 
@@ -14234,6 +14933,27 @@ export type MutationUpsertRolesTypeArgs = {
 };
 
 
+export type MutationUpsertNetworkArgs = {
+  where: NetworkWhereUniqueInput,
+  create: NetworkCreateInput,
+  update: NetworkUpdateInput
+};
+
+
+export type MutationUpsertUserArgs = {
+  where: UserWhereUniqueInput,
+  create: UserCreateInput,
+  update: UserUpdateInput
+};
+
+
+export type MutationUpsertPersonArgs = {
+  where: PersonWhereUniqueInput,
+  create: PersonCreateInput,
+  update: PersonUpdateInput
+};
+
+
 export type MutationUpdateManyCasesArgs = {
   data: CaseUpdateManyMutationInput,
   where?: Maybe<CaseWhereInput>
@@ -14249,12 +14969,6 @@ export type MutationUpdateManyCaseClassificationsArgs = {
 export type MutationUpdateManyCaseConsultationsArgs = {
   data: CaseConsultationUpdateManyMutationInput,
   where?: Maybe<CaseConsultationWhereInput>
-};
-
-
-export type MutationUpdateManyCaseConsultationAppsArgs = {
-  data: CaseConsultationAppUpdateManyMutationInput,
-  where?: Maybe<CaseConsultationAppWhereInput>
 };
 
 
@@ -14306,6 +15020,18 @@ export type MutationUpdateManyCaseTransferReferralsArgs = {
 };
 
 
+export type MutationUpdateManyCaseTransfersArgs = {
+  data: CaseTransferUpdateManyMutationInput,
+  where?: Maybe<CaseTransferWhereInput>
+};
+
+
+export type MutationUpdateManyCaseReferralsArgs = {
+  data: CaseReferralUpdateManyMutationInput,
+  where?: Maybe<CaseReferralWhereInput>
+};
+
+
 export type MutationUpdateManyCaseViolatedRightsArgs = {
   data: CaseViolatedRightUpdateManyMutationInput,
   where?: Maybe<CaseViolatedRightWhereInput>
@@ -14348,27 +15074,9 @@ export type MutationUpdateManyMtVocabGroupsArgs = {
 };
 
 
-export type MutationUpdateManyNetworksArgs = {
-  data: NetworkUpdateManyMutationInput,
-  where?: Maybe<NetworkWhereInput>
-};
-
-
-export type MutationUpdateManyPersonsArgs = {
-  data: PersonUpdateManyMutationInput,
-  where?: Maybe<PersonWhereInput>
-};
-
-
 export type MutationUpdateManyPersonDocumentsArgs = {
   data: PersonDocumentUpdateManyMutationInput,
   where?: Maybe<PersonDocumentWhereInput>
-};
-
-
-export type MutationUpdateManyUsersArgs = {
-  data: UserUpdateManyMutationInput,
-  where?: Maybe<UserWhereInput>
 };
 
 
@@ -14393,6 +15101,24 @@ export type MutationUpdateManyLogRequestsArgs = {
 export type MutationUpdateManyRolesTypesArgs = {
   data: RolesTypeUpdateManyMutationInput,
   where?: Maybe<RolesTypeWhereInput>
+};
+
+
+export type MutationUpdateManyNetworksArgs = {
+  data: NetworkUpdateManyMutationInput,
+  where?: Maybe<NetworkWhereInput>
+};
+
+
+export type MutationUpdateManyUsersArgs = {
+  data: UserUpdateManyMutationInput,
+  where?: Maybe<UserWhereInput>
+};
+
+
+export type MutationUpdateManyPersonsArgs = {
+  data: PersonUpdateManyMutationInput,
+  where?: Maybe<PersonWhereInput>
 };
 
 
@@ -14466,6 +15192,16 @@ export type MutationDeleteManyCaseTransferReferralsArgs = {
 };
 
 
+export type MutationDeleteManyCaseTransfersArgs = {
+  where?: Maybe<CaseTransferWhereInput>
+};
+
+
+export type MutationDeleteManyCaseReferralsArgs = {
+  where?: Maybe<CaseReferralWhereInput>
+};
+
+
 export type MutationDeleteManyCaseViolatedRightsArgs = {
   where?: Maybe<CaseViolatedRightWhereInput>
 };
@@ -14506,16 +15242,6 @@ export type MutationDeleteManyMtVocabGroupsArgs = {
 };
 
 
-export type MutationDeleteManyNetworksArgs = {
-  where?: Maybe<NetworkWhereInput>
-};
-
-
-export type MutationDeleteManyPersonsArgs = {
-  where?: Maybe<PersonWhereInput>
-};
-
-
 export type MutationDeleteManyPersonDocumentsArgs = {
   where?: Maybe<PersonDocumentWhereInput>
 };
@@ -14523,11 +15249,6 @@ export type MutationDeleteManyPersonDocumentsArgs = {
 
 export type MutationDeleteManyRolesArgs = {
   where?: Maybe<RoleWhereInput>
-};
-
-
-export type MutationDeleteManyUsersArgs = {
-  where?: Maybe<UserWhereInput>
 };
 
 
@@ -14548,6 +15269,21 @@ export type MutationDeleteManyLogRequestsArgs = {
 
 export type MutationDeleteManyRolesTypesArgs = {
   where?: Maybe<RolesTypeWhereInput>
+};
+
+
+export type MutationDeleteManyNetworksArgs = {
+  where?: Maybe<NetworkWhereInput>
+};
+
+
+export type MutationDeleteManyUsersArgs = {
+  where?: Maybe<UserWhereInput>
+};
+
+
+export type MutationDeleteManyPersonsArgs = {
+  where?: Maybe<PersonWhereInput>
 };
 
 export enum MutationType {
@@ -14601,6 +15337,11 @@ export type NetworkCreateInput = {
   regencyId?: Maybe<Scalars['Int']>,
   type?: Maybe<Scalars['String']>,
   logRequests?: Maybe<LogRequestCreateManyWithoutNetworkIdInput>,
+};
+
+export type NetworkCreateOneInput = {
+  create?: Maybe<NetworkCreateInput>,
+  connect?: Maybe<NetworkWhereUniqueInput>,
 };
 
 export type NetworkCreateOneWithoutLogRequestsInput = {
@@ -14691,6 +15432,18 @@ export type NetworkSubscriptionWhereInput = {
   node?: Maybe<NetworkWhereInput>,
 };
 
+export type NetworkUpdateDataInput = {
+  address?: Maybe<Scalars['String']>,
+  contactPerson?: Maybe<Scalars['String']>,
+  email?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
+  noContact?: Maybe<Scalars['String']>,
+  provinceId?: Maybe<Scalars['Int']>,
+  regencyId?: Maybe<Scalars['Int']>,
+  type?: Maybe<Scalars['String']>,
+  logRequests?: Maybe<LogRequestUpdateManyWithoutNetworkIdInput>,
+};
+
 export type NetworkUpdateInput = {
   address?: Maybe<Scalars['String']>,
   contactPerson?: Maybe<Scalars['String']>,
@@ -14714,6 +15467,15 @@ export type NetworkUpdateManyMutationInput = {
   type?: Maybe<Scalars['String']>,
 };
 
+export type NetworkUpdateOneInput = {
+  create?: Maybe<NetworkCreateInput>,
+  connect?: Maybe<NetworkWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<NetworkUpdateDataInput>,
+  upsert?: Maybe<NetworkUpsertNestedInput>,
+};
+
 export type NetworkUpdateOneWithoutLogRequestsInput = {
   create?: Maybe<NetworkCreateWithoutLogRequestsInput>,
   connect?: Maybe<NetworkWhereUniqueInput>,
@@ -14732,6 +15494,11 @@ export type NetworkUpdateWithoutLogRequestsDataInput = {
   provinceId?: Maybe<Scalars['Int']>,
   regencyId?: Maybe<Scalars['Int']>,
   type?: Maybe<Scalars['String']>,
+};
+
+export type NetworkUpsertNestedInput = {
+  update: NetworkUpdateDataInput,
+  create: NetworkCreateInput,
 };
 
 export type NetworkUpsertWithoutLogRequestsInput = {
@@ -15160,6 +15927,11 @@ export type PersonCreateInput = {
   clients?: Maybe<ClientCreateManyWithoutPersonIdInput>,
   documents?: Maybe<PersonDocumentCreateManyWithoutPersonIdInput>,
   logRequests?: Maybe<LogRequestCreateManyWithoutPersonIdInput>,
+};
+
+export type PersonCreateOneInput = {
+  create?: Maybe<PersonCreateInput>,
+  connect?: Maybe<PersonWhereUniqueInput>,
 };
 
 export type PersonCreateOneWithoutApplicationsInput = {
@@ -15890,6 +16662,43 @@ export type PersonSubscriptionWhereInput = {
   node?: Maybe<PersonWhereInput>,
 };
 
+export type PersonUpdateDataInput = {
+  agama?: Maybe<Scalars['String']>,
+  alamatDomisili?: Maybe<Scalars['String']>,
+  alamatId?: Maybe<Scalars['String']>,
+  alatBantu?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+  createdBy?: Maybe<Scalars['String']>,
+  disabilitas?: Maybe<Scalars['Boolean']>,
+  distrikDomisili?: Maybe<Scalars['String']>,
+  distrikId?: Maybe<Scalars['String']>,
+  domisiliSama?: Maybe<Scalars['Boolean']>,
+  email?: Maybe<Scalars['String']>,
+  golDarah?: Maybe<Scalars['String']>,
+  jenisDisabilitas?: Maybe<Scalars['String']>,
+  jenisDomisili?: Maybe<Scalars['String']>,
+  jenisId?: Maybe<Scalars['String']>,
+  jenisKelamin?: Maybe<Scalars['String']>,
+  jmlAnggota?: Maybe<Scalars['Int']>,
+  namaLengkap?: Maybe<Scalars['String']>,
+  nomorId?: Maybe<Scalars['String']>,
+  pekerjaan?: Maybe<Scalars['String']>,
+  pendidikan?: Maybe<Scalars['String']>,
+  statusPernikahan?: Maybe<Scalars['String']>,
+  telepon?: Maybe<Scalars['String']>,
+  tglLahir?: Maybe<Scalars['DateTime']>,
+  tmpLahir?: Maybe<Scalars['String']>,
+  unitSatuan?: Maybe<Scalars['String']>,
+  updatedBy?: Maybe<Scalars['String']>,
+  wargaNegara?: Maybe<Scalars['String']>,
+  applications?: Maybe<ApplicationUpdateManyWithoutWakilIdInput>,
+  casekorbans?: Maybe<CaseKorbanUpdateManyWithoutPersonIdInput>,
+  casepelakus?: Maybe<CasePelakuUpdateManyWithoutPersonIdInput>,
+  clients?: Maybe<ClientUpdateManyWithoutPersonIdInput>,
+  documents?: Maybe<PersonDocumentUpdateManyWithoutPersonIdInput>,
+  logRequests?: Maybe<LogRequestUpdateManyWithoutPersonIdInput>,
+};
+
 export type PersonUpdateInput = {
   agama?: Maybe<Scalars['String']>,
   alamatDomisili?: Maybe<Scalars['String']>,
@@ -15956,6 +16765,13 @@ export type PersonUpdateManyMutationInput = {
   unitSatuan?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
   wargaNegara?: Maybe<Scalars['String']>,
+};
+
+export type PersonUpdateOneRequiredInput = {
+  create?: Maybe<PersonCreateInput>,
+  connect?: Maybe<PersonWhereUniqueInput>,
+  update?: Maybe<PersonUpdateDataInput>,
+  upsert?: Maybe<PersonUpsertNestedInput>,
 };
 
 export type PersonUpdateOneRequiredWithoutApplicationsInput = {
@@ -16220,6 +17036,11 @@ export type PersonUpdateWithoutLogRequestsDataInput = {
   casepelakus?: Maybe<CasePelakuUpdateManyWithoutPersonIdInput>,
   clients?: Maybe<ClientUpdateManyWithoutPersonIdInput>,
   documents?: Maybe<PersonDocumentUpdateManyWithoutPersonIdInput>,
+};
+
+export type PersonUpsertNestedInput = {
+  update: PersonUpdateDataInput,
+  create: PersonCreateInput,
 };
 
 export type PersonUpsertWithoutApplicationsInput = {
@@ -17027,6 +17848,8 @@ export type Query = {
   caseProgressActivityLits: Array<Maybe<CaseProgressActivityLit>>,
   caseProgressActivityNonlits: Array<Maybe<CaseProgressActivityNonlit>>,
   caseTransferReferrals: Array<Maybe<CaseTransferReferral>>,
+  caseTransfers: Array<Maybe<CaseTransfer>>,
+  caseReferrals: Array<Maybe<CaseReferral>>,
   caseViolatedRights: Array<Maybe<CaseViolatedRight>>,
   clients: Array<Maybe<Client>>,
   daftarPengacaras: Array<Maybe<DaftarPengacara>>,
@@ -17035,15 +17858,15 @@ export type Query = {
   logRequestApps: Array<Maybe<LogRequestApp>>,
   mtVocabs: Array<Maybe<MtVocab>>,
   mtVocabGroups: Array<Maybe<MtVocabGroup>>,
-  networks: Array<Maybe<Network>>,
-  persons: Array<Maybe<Person>>,
   personDocuments: Array<Maybe<PersonDocument>>,
   roles: Array<Maybe<Role>>,
-  users: Array<Maybe<User>>,
   userProfiles: Array<Maybe<UserProfile>>,
   applications: Array<Maybe<Application>>,
   logRequests: Array<Maybe<LogRequest>>,
   rolesTypes: Array<Maybe<RolesType>>,
+  networks: Array<Maybe<Network>>,
+  users: Array<Maybe<User>>,
+  persons: Array<Maybe<Person>>,
   case?: Maybe<Case>,
   caseClassification?: Maybe<CaseClassification>,
   caseConsultation?: Maybe<CaseConsultation>,
@@ -17058,6 +17881,8 @@ export type Query = {
   caseProgressActivityLit?: Maybe<CaseProgressActivityLit>,
   caseProgressActivityNonlit?: Maybe<CaseProgressActivityNonlit>,
   caseTransferReferral?: Maybe<CaseTransferReferral>,
+  caseTransfer?: Maybe<CaseTransfer>,
+  caseReferral?: Maybe<CaseReferral>,
   caseViolatedRight?: Maybe<CaseViolatedRight>,
   client?: Maybe<Client>,
   daftarPengacara?: Maybe<DaftarPengacara>,
@@ -17066,15 +17891,15 @@ export type Query = {
   logRequestApp?: Maybe<LogRequestApp>,
   mtVocab?: Maybe<MtVocab>,
   mtVocabGroup?: Maybe<MtVocabGroup>,
-  network?: Maybe<Network>,
-  person?: Maybe<Person>,
   personDocument?: Maybe<PersonDocument>,
   role?: Maybe<Role>,
-  user?: Maybe<User>,
   userProfile?: Maybe<UserProfile>,
   application?: Maybe<Application>,
   logRequest?: Maybe<LogRequest>,
   rolesType?: Maybe<RolesType>,
+  network?: Maybe<Network>,
+  user?: Maybe<User>,
+  person?: Maybe<Person>,
   casesConnection: CaseConnection,
   caseClassificationsConnection: CaseClassificationConnection,
   caseConsultationsConnection: CaseConsultationConnection,
@@ -17089,6 +17914,8 @@ export type Query = {
   caseProgressActivityLitsConnection: CaseProgressActivityLitConnection,
   caseProgressActivityNonlitsConnection: CaseProgressActivityNonlitConnection,
   caseTransferReferralsConnection: CaseTransferReferralConnection,
+  caseTransfersConnection: CaseTransferConnection,
+  caseReferralsConnection: CaseReferralConnection,
   caseViolatedRightsConnection: CaseViolatedRightConnection,
   clientsConnection: ClientConnection,
   daftarPengacarasConnection: DaftarPengacaraConnection,
@@ -17097,15 +17924,15 @@ export type Query = {
   logRequestAppsConnection: LogRequestAppConnection,
   mtVocabsConnection: MtVocabConnection,
   mtVocabGroupsConnection: MtVocabGroupConnection,
-  networksConnection: NetworkConnection,
-  personsConnection: PersonConnection,
   personDocumentsConnection: PersonDocumentConnection,
   rolesConnection: RoleConnection,
-  usersConnection: UserConnection,
   userProfilesConnection: UserProfileConnection,
   applicationsConnection: ApplicationConnection,
   logRequestsConnection: LogRequestConnection,
   rolesTypesConnection: RolesTypeConnection,
+  networksConnection: NetworkConnection,
+  usersConnection: UserConnection,
+  personsConnection: PersonConnection,
   /** Fetches an object given its ID */
   node?: Maybe<Node>,
 };
@@ -17265,6 +18092,28 @@ export type QueryCaseTransferReferralsArgs = {
 };
 
 
+export type QueryCaseTransfersArgs = {
+  where?: Maybe<CaseTransferWhereInput>,
+  orderBy?: Maybe<CaseTransferOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryCaseReferralsArgs = {
+  where?: Maybe<CaseReferralWhereInput>,
+  orderBy?: Maybe<CaseReferralOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
 export type QueryCaseViolatedRightsArgs = {
   where?: Maybe<CaseViolatedRightWhereInput>,
   orderBy?: Maybe<CaseViolatedRightOrderByInput>,
@@ -17353,28 +18202,6 @@ export type QueryMtVocabGroupsArgs = {
 };
 
 
-export type QueryNetworksArgs = {
-  where?: Maybe<NetworkWhereInput>,
-  orderBy?: Maybe<NetworkOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryPersonsArgs = {
-  where?: Maybe<PersonWhereInput>,
-  orderBy?: Maybe<PersonOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
 export type QueryPersonDocumentsArgs = {
   where?: Maybe<PersonDocumentWhereInput>,
   orderBy?: Maybe<PersonDocumentOrderByInput>,
@@ -17389,17 +18216,6 @@ export type QueryPersonDocumentsArgs = {
 export type QueryRolesArgs = {
   where?: Maybe<RoleWhereInput>,
   orderBy?: Maybe<RoleOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryUsersArgs = {
-  where?: Maybe<UserWhereInput>,
-  orderBy?: Maybe<UserOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -17444,6 +18260,39 @@ export type QueryLogRequestsArgs = {
 export type QueryRolesTypesArgs = {
   where?: Maybe<RolesTypeWhereInput>,
   orderBy?: Maybe<RolesTypeOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryNetworksArgs = {
+  where?: Maybe<NetworkWhereInput>,
+  orderBy?: Maybe<NetworkOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryUsersArgs = {
+  where?: Maybe<UserWhereInput>,
+  orderBy?: Maybe<UserOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryPersonsArgs = {
+  where?: Maybe<PersonWhereInput>,
+  orderBy?: Maybe<PersonOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -17522,6 +18371,16 @@ export type QueryCaseTransferReferralArgs = {
 };
 
 
+export type QueryCaseTransferArgs = {
+  where: CaseTransferWhereUniqueInput
+};
+
+
+export type QueryCaseReferralArgs = {
+  where: CaseReferralWhereUniqueInput
+};
+
+
 export type QueryCaseViolatedRightArgs = {
   where: CaseViolatedRightWhereUniqueInput
 };
@@ -17562,16 +18421,6 @@ export type QueryMtVocabGroupArgs = {
 };
 
 
-export type QueryNetworkArgs = {
-  where: NetworkWhereUniqueInput
-};
-
-
-export type QueryPersonArgs = {
-  where: PersonWhereUniqueInput
-};
-
-
 export type QueryPersonDocumentArgs = {
   where: PersonDocumentWhereUniqueInput
 };
@@ -17579,11 +18428,6 @@ export type QueryPersonDocumentArgs = {
 
 export type QueryRoleArgs = {
   where: RoleWhereUniqueInput
-};
-
-
-export type QueryUserArgs = {
-  where: UserWhereUniqueInput
 };
 
 
@@ -17604,6 +18448,21 @@ export type QueryLogRequestArgs = {
 
 export type QueryRolesTypeArgs = {
   where: RolesTypeWhereUniqueInput
+};
+
+
+export type QueryNetworkArgs = {
+  where: NetworkWhereUniqueInput
+};
+
+
+export type QueryUserArgs = {
+  where: UserWhereUniqueInput
+};
+
+
+export type QueryPersonArgs = {
+  where: PersonWhereUniqueInput
 };
 
 
@@ -17761,6 +18620,28 @@ export type QueryCaseTransferReferralsConnectionArgs = {
 };
 
 
+export type QueryCaseTransfersConnectionArgs = {
+  where?: Maybe<CaseTransferWhereInput>,
+  orderBy?: Maybe<CaseTransferOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryCaseReferralsConnectionArgs = {
+  where?: Maybe<CaseReferralWhereInput>,
+  orderBy?: Maybe<CaseReferralOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
 export type QueryCaseViolatedRightsConnectionArgs = {
   where?: Maybe<CaseViolatedRightWhereInput>,
   orderBy?: Maybe<CaseViolatedRightOrderByInput>,
@@ -17849,28 +18730,6 @@ export type QueryMtVocabGroupsConnectionArgs = {
 };
 
 
-export type QueryNetworksConnectionArgs = {
-  where?: Maybe<NetworkWhereInput>,
-  orderBy?: Maybe<NetworkOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryPersonsConnectionArgs = {
-  where?: Maybe<PersonWhereInput>,
-  orderBy?: Maybe<PersonOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
 export type QueryPersonDocumentsConnectionArgs = {
   where?: Maybe<PersonDocumentWhereInput>,
   orderBy?: Maybe<PersonDocumentOrderByInput>,
@@ -17885,17 +18744,6 @@ export type QueryPersonDocumentsConnectionArgs = {
 export type QueryRolesConnectionArgs = {
   where?: Maybe<RoleWhereInput>,
   orderBy?: Maybe<RoleOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryUsersConnectionArgs = {
-  where?: Maybe<UserWhereInput>,
-  orderBy?: Maybe<UserOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -17940,6 +18788,39 @@ export type QueryLogRequestsConnectionArgs = {
 export type QueryRolesTypesConnectionArgs = {
   where?: Maybe<RolesTypeWhereInput>,
   orderBy?: Maybe<RolesTypeOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryNetworksConnectionArgs = {
+  where?: Maybe<NetworkWhereInput>,
+  orderBy?: Maybe<NetworkOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryUsersConnectionArgs = {
+  where?: Maybe<UserWhereInput>,
+  orderBy?: Maybe<UserOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryPersonsConnectionArgs = {
+  where?: Maybe<PersonWhereInput>,
+  orderBy?: Maybe<PersonOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -18336,6 +19217,8 @@ export type Subscription = {
   caseProgressActivityLit?: Maybe<CaseProgressActivityLitSubscriptionPayload>,
   caseProgressActivityNonlit?: Maybe<CaseProgressActivityNonlitSubscriptionPayload>,
   caseTransferReferral?: Maybe<CaseTransferReferralSubscriptionPayload>,
+  caseTransfer?: Maybe<CaseTransferSubscriptionPayload>,
+  caseReferral?: Maybe<CaseReferralSubscriptionPayload>,
   caseViolatedRight?: Maybe<CaseViolatedRightSubscriptionPayload>,
   client?: Maybe<ClientSubscriptionPayload>,
   daftarPengacara?: Maybe<DaftarPengacaraSubscriptionPayload>,
@@ -18344,15 +19227,15 @@ export type Subscription = {
   logRequestApp?: Maybe<LogRequestAppSubscriptionPayload>,
   mtVocab?: Maybe<MtVocabSubscriptionPayload>,
   mtVocabGroup?: Maybe<MtVocabGroupSubscriptionPayload>,
-  network?: Maybe<NetworkSubscriptionPayload>,
-  person?: Maybe<PersonSubscriptionPayload>,
   personDocument?: Maybe<PersonDocumentSubscriptionPayload>,
   role?: Maybe<RoleSubscriptionPayload>,
-  user?: Maybe<UserSubscriptionPayload>,
   userProfile?: Maybe<UserProfileSubscriptionPayload>,
   application?: Maybe<ApplicationSubscriptionPayload>,
   logRequest?: Maybe<LogRequestSubscriptionPayload>,
   rolesType?: Maybe<RolesTypeSubscriptionPayload>,
+  network?: Maybe<NetworkSubscriptionPayload>,
+  user?: Maybe<UserSubscriptionPayload>,
+  person?: Maybe<PersonSubscriptionPayload>,
 };
 
 
@@ -18426,6 +19309,16 @@ export type SubscriptionCaseTransferReferralArgs = {
 };
 
 
+export type SubscriptionCaseTransferArgs = {
+  where?: Maybe<CaseTransferSubscriptionWhereInput>
+};
+
+
+export type SubscriptionCaseReferralArgs = {
+  where?: Maybe<CaseReferralSubscriptionWhereInput>
+};
+
+
 export type SubscriptionCaseViolatedRightArgs = {
   where?: Maybe<CaseViolatedRightSubscriptionWhereInput>
 };
@@ -18466,16 +19359,6 @@ export type SubscriptionMtVocabGroupArgs = {
 };
 
 
-export type SubscriptionNetworkArgs = {
-  where?: Maybe<NetworkSubscriptionWhereInput>
-};
-
-
-export type SubscriptionPersonArgs = {
-  where?: Maybe<PersonSubscriptionWhereInput>
-};
-
-
 export type SubscriptionPersonDocumentArgs = {
   where?: Maybe<PersonDocumentSubscriptionWhereInput>
 };
@@ -18483,11 +19366,6 @@ export type SubscriptionPersonDocumentArgs = {
 
 export type SubscriptionRoleArgs = {
   where?: Maybe<RoleSubscriptionWhereInput>
-};
-
-
-export type SubscriptionUserArgs = {
-  where?: Maybe<UserSubscriptionWhereInput>
 };
 
 
@@ -18508,6 +19386,21 @@ export type SubscriptionLogRequestArgs = {
 
 export type SubscriptionRolesTypeArgs = {
   where?: Maybe<RolesTypeSubscriptionWhereInput>
+};
+
+
+export type SubscriptionNetworkArgs = {
+  where?: Maybe<NetworkSubscriptionWhereInput>
+};
+
+
+export type SubscriptionUserArgs = {
+  where?: Maybe<UserSubscriptionWhereInput>
+};
+
+
+export type SubscriptionPersonArgs = {
+  where?: Maybe<PersonSubscriptionWhereInput>
 };
 
 export type User = {
@@ -18609,6 +19502,11 @@ export type UserCreateInput = {
 export type UserCreateManyWithoutRoles_TypeInput = {
   create?: Maybe<Array<UserCreateWithoutRoles_TypeInput>>,
   connect?: Maybe<Array<UserWhereUniqueInput>>,
+};
+
+export type UserCreateOneInput = {
+  create?: Maybe<UserCreateInput>,
+  connect?: Maybe<UserWhereUniqueInput>,
 };
 
 export type UserCreateOneWithoutAppConsultationInput = {
@@ -19441,6 +20339,26 @@ export type UserSubscriptionWhereInput = {
   node?: Maybe<UserWhereInput>,
 };
 
+export type UserUpdateDataInput = {
+  address?: Maybe<Scalars['String']>,
+  avatar?: Maybe<Scalars['String']>,
+  deletedAt?: Maybe<Scalars['DateTime']>,
+  email?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
+  password?: Maybe<Scalars['String']>,
+  phone?: Maybe<Scalars['String']>,
+  position?: Maybe<Scalars['String']>,
+  rememberToken?: Maybe<Scalars['String']>,
+  roles?: Maybe<Scalars['String']>,
+  status?: Maybe<Scalars['String']>,
+  username?: Maybe<Scalars['String']>,
+  profile?: Maybe<UserProfileUpdateOneRequiredWithoutUserIdInput>,
+  roles_type?: Maybe<RoleUpdateManyWithoutUserIdInput>,
+  logRequestBy?: Maybe<LogRequestUpdateManyWithoutRequestByInput>,
+  logRequestTo?: Maybe<LogRequestUpdateManyWithoutRequestToInput>,
+  appConsultation?: Maybe<LogRequestAppUpdateManyWithoutAppConsultationInput>,
+};
+
 export type UserUpdateInput = {
   address?: Maybe<Scalars['String']>,
   avatar?: Maybe<Scalars['String']>,
@@ -19506,6 +20424,15 @@ export type UserUpdateManyWithoutRoles_TypeInput = {
 export type UserUpdateManyWithWhereNestedInput = {
   where: UserScalarWhereInput,
   data: UserUpdateManyDataInput,
+};
+
+export type UserUpdateOneInput = {
+  create?: Maybe<UserCreateInput>,
+  connect?: Maybe<UserWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<UserUpdateDataInput>,
+  upsert?: Maybe<UserUpsertNestedInput>,
 };
 
 export type UserUpdateOneRequiredWithoutAppConsultationInput = {
@@ -19638,6 +20565,11 @@ export type UserUpdateWithoutRoles_TypeDataInput = {
 export type UserUpdateWithWhereUniqueWithoutRoles_TypeInput = {
   where: UserWhereUniqueInput,
   data: UserUpdateWithoutRoles_TypeDataInput,
+};
+
+export type UserUpsertNestedInput = {
+  update: UserUpdateDataInput,
+  create: UserCreateInput,
 };
 
 export type UserUpsertWithoutAppConsultationInput = {
@@ -20062,12 +20994,19 @@ export type DestroyLogMutationVariables = {
 
 export type DestroyLogMutation = { deleteManyLogRequests: Pick<BatchPayload, 'count'> };
 
+export type DestroyCaseProgressActivityMutationVariables = {
+  where: CaseProgressActivityWhereInput
+};
+
+
+export type DestroyCaseProgressActivityMutation = { deleteManyCaseProgressActivities: Pick<BatchPayload, 'count'> };
+
 export type PostLogRequestMutationVariables = {
   data: LogRequestCreateInput
 };
 
 
-export type PostLogRequestMutation = { createLogRequest: (Pick<LogRequest, 'ID' | 'isiRequest' | 'jenisRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id'>>, applicationId: Maybe<Pick<Application, 'id'>>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<Pick<LogRequestApp, 'id'>>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> }) };
+export type PostLogRequestMutation = { createLogRequest: (Pick<LogRequest, 'ID' | 'isiRequest' | 'jenisRequest' | 'tanggapanRequest' | 'tanggapanRequestIsi' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id'>>, applicationId: Maybe<Pick<Application, 'id' | 'tahap'>>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<Pick<LogRequestApp, 'id'>>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> }) };
 
 export type PostUserMutationVariables = {
   data: UserCreateInput
@@ -20088,7 +21027,15 @@ export type PostApplicationMutationVariables = {
 };
 
 
-export type PostApplicationMutation = { createApplication: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Pick<Case, 'id'>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }) };
+export type PostApplicationMutation = { createApplication: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }) };
+
+export type PutCaseMutationVariables = {
+  data: CaseUpdateInput,
+  where: CaseWhereUniqueInput
+};
+
+
+export type PutCaseMutation = { updateCase: Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>, clients: Maybe<Array<{ personId: Pick<Person, 'namaLengkap'> }>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'tglKonsul' | 'updatedAt' | 'updatedBy'> & { apps: Maybe<Array<{ appConsultation: Maybe<Pick<User, 'name' | 'id'>> }>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>> })> };
 
 export type PutLogRequestMutationVariables = {
   data: LogRequestUpdateInput,
@@ -20096,7 +21043,7 @@ export type PutLogRequestMutationVariables = {
 };
 
 
-export type PutLogRequestMutation = { updateLogRequest: Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'jenisRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id'>>, applicationId: Maybe<Pick<Application, 'id'>>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<Pick<LogRequestApp, 'id'>>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })> };
+export type PutLogRequestMutation = { updateLogRequest: Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'jenisRequest' | 'tanggapanRequest' | 'tanggapanRequestIsi' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id'>>, applicationId: Maybe<Pick<Application, 'id'>>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<Pick<LogRequestApp, 'id'>>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })> };
 
 export type PutUserMutationVariables = {
   data: UserUpdateInput,
@@ -20112,7 +21059,7 @@ export type PutApplicationMutationVariables = {
 };
 
 
-export type PutApplicationMutation = { updateApplication: Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Pick<Case, 'id'>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })> };
+export type PutApplicationMutation = { updateApplication: Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })> };
 
 export type PutPersonMutationVariables = {
   data: PersonUpdateInput,
@@ -20140,7 +21087,7 @@ export type GetLogRequestQueryVariables = {
 };
 
 
-export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name'> })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
+export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
 
 export type GetRolesTypeQueryVariables = {
   where?: Maybe<RolesTypeWhereInput>,
@@ -20155,6 +21102,19 @@ export type GetRolesTypeQueryVariables = {
 
 export type GetRolesTypeQuery = { rolesTypes: Array<Maybe<Pick<RolesType, 'id' | 'description'>>> };
 
+export type GetNetworksQueryVariables = {
+  where?: Maybe<NetworkWhereInput>,
+  orderBy?: Maybe<NetworkOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type GetNetworksQuery = { networks: Array<Maybe<Pick<Network, 'address' | 'contactPerson' | 'createdAt' | 'email' | 'id' | 'name' | 'noContact' | 'provinceId' | 'regencyId' | 'type' | 'updatedAt'>>> };
+
 export type GetUserQueryVariables = {
   where?: Maybe<UserWhereInput>,
   orderBy?: Maybe<UserOrderByInput>,
@@ -20167,6 +21127,19 @@ export type GetUserQueryVariables = {
 
 
 export type GetUserQuery = { users: Array<Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'>, roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id' | 'description'> })>> })>> };
+
+export type GetCaseQueryVariables = {
+  where?: Maybe<CaseWhereInput>,
+  orderBy?: Maybe<CaseOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type GetCaseQuery = { cases: Array<Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, referrals: Maybe<Array<(Pick<CaseReferral, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { client: Pick<Person, 'id' | 'namaLengkap'>, network: Maybe<Pick<Network, 'id' | 'name'>> })>>, application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>, clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'tglKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'updatedAt' | 'updatedBy'> & { caseId: (Pick<Case, 'id'> & { application: Pick<Application, 'id' | 'noReg'> }), apps: Maybe<Array<(Pick<CaseConsultationApp, 'id'> & { appConsultation: Maybe<(Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> })> })>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'id' | 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'tglAktifitas' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>>, logRequests: Maybe<Array<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: (Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> }) })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> })>> };
 
 export type GetClientQueryVariables = {
   where?: Maybe<ClientWhereInput>,
@@ -20192,7 +21165,7 @@ export type GetApplicationsQueryVariables = {
 };
 
 
-export type GetApplicationsQuery = { applications: Array<Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Pick<Case, 'id'>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>> };
+export type GetApplicationsQuery = { applications: Array<Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>> };
 
 export type GetMtVocabsQueryVariables = {
   where?: Maybe<MtVocabWhereInput>,
@@ -20250,6 +21223,21 @@ export const DestroyLogDocument = gql`
     document = DestroyLogDocument;
     
   }
+export const DestroyCaseProgressActivityDocument = gql`
+    mutation destroyCaseProgressActivity($where: CaseProgressActivityWhereInput!) {
+  deleteManyCaseProgressActivities(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyCaseProgressActivityGQL extends Apollo.Mutation<DestroyCaseProgressActivityMutation, DestroyCaseProgressActivityMutationVariables> {
+    document = DestroyCaseProgressActivityDocument;
+    
+  }
 export const PostLogRequestDocument = gql`
     mutation postLogRequest($data: LogRequestCreateInput!) {
   createLogRequest(data: $data) {
@@ -20260,6 +21248,7 @@ export const PostLogRequestDocument = gql`
     isiRequest
     applicationId {
       id
+      tahap
     }
     jenisRequest
     networkId {
@@ -20278,6 +21267,7 @@ export const PostLogRequestDocument = gql`
       id
     }
     tanggapanRequest
+    tanggapanRequestIsi
     tglExpired
     tglRequest
     tglRespon
@@ -20441,6 +21431,209 @@ export const PostApplicationDocument = gql`
     document = PostApplicationDocument;
     
   }
+export const PutCaseDocument = gql`
+    mutation putCase($data: CaseUpdateInput!, $where: CaseWhereUniqueInput!) {
+  updateCase(data: $data, where: $where) {
+    id
+    applicationId
+    caseClosed
+    caseClosedJenis
+    createdAt
+    createdBy
+    hakTerlanggar
+    issue
+    judulKasus
+    klasifikasiDok
+    klasifikasiDok
+    kronologiKasus
+    lockDitolak
+    statusPendampingan
+    targetAdvokasi
+    unlockPk
+    unlockTransfer
+    updatedAt
+    updatedBy
+    application {
+      id
+      createdAt
+      createdBy
+      dudukPerara
+      infoLbh
+      jumlahPenerimaManfaat
+      konfirmasiData
+      noReg
+      pernahKlien
+      pernahPpLain
+      ppLain
+      regDate
+      relasiWakilClient
+      setujuAdvokasi
+      statusPerwakilan
+      updatedAt
+      updatedBy
+      wakilId {
+        id
+        agama
+        alamatDomisili
+        alamatId
+        alatBantu
+        alias
+        createdAt
+        createdBy
+        disabilitas
+        distrikDomisili
+        distrikId
+        domisiliSama
+        email
+        golDarah
+        jenisDisabilitas
+        jenisDomisili
+        jenisId
+        jenisKelamin
+        jmlAnggota
+        namaLengkap
+        nomorId
+        pekerjaan
+        pendidikan
+        statusPernikahan
+        telepon
+      }
+      waktuPernahKlien
+      whyLbh
+      clients {
+        personId {
+          namaLengkap
+        }
+      }
+      tahap
+      status
+    }
+    classifications {
+      id
+      kodeMt
+    }
+    consultations {
+      id
+      appKonsul
+      createdAt
+      createdBy
+      isiKonsul
+      judulAktifitas
+      ppKonsul
+      harapan
+      saranHukum
+      rencanaTindakLanjut
+      tglKonsul
+      updatedAt
+      updatedBy
+      apps {
+        appConsultation {
+          name
+          id
+        }
+      }
+    }
+    documents {
+      jenisDokumen
+      judulDokumen
+      keterangan
+      link
+    }
+    issues {
+      id
+      kodeMt
+    }
+    korbans {
+      id
+      personId {
+        namaLengkap
+        id
+      }
+    }
+    pelakus {
+      id
+      personId {
+        namaLengkap
+        id
+      }
+    }
+    pk {
+      id
+      createdAt
+      createdBy
+      didampingi
+      legalMemo
+      notulaRapat
+      ppPendamping {
+        address
+        avatar
+        createdAt
+        deletedAt
+        email
+        id
+        name
+        password
+        phone
+        position
+        rememberToken
+        roles
+        status
+        updatedAt
+        username
+        profile {
+          id
+          noContact
+        }
+      }
+      statusAlasanTdk
+      tglRapat
+    }
+    progresses {
+      id
+      catatan
+      jenisPeradilan
+    }
+    activities {
+      id
+      capaian
+      hambatan
+      judulAktifitas
+      position
+      rencanaStrategi
+      targetAdvokasi
+      activitieslit {
+        id
+        kodeMt
+      }
+      activitiesnonlit {
+        id
+        kodeMt
+      }
+    }
+    transferreferrals {
+      id
+      catatan
+      document
+      jenisTransferReferral
+      networkId
+      updatedAt
+      updatedBy
+    }
+    violatedrights {
+      id
+      kodeMt
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PutCaseGQL extends Apollo.Mutation<PutCaseMutation, PutCaseMutationVariables> {
+    document = PutCaseDocument;
+    
+  }
 export const PutLogRequestDocument = gql`
     mutation putLogRequest($data: LogRequestUpdateInput!, $where: LogRequestWhereUniqueInput!) {
   updateLogRequest(data: $data, where: $where) {
@@ -20469,6 +21662,7 @@ export const PutLogRequestDocument = gql`
       id
     }
     tanggapanRequest
+    tanggapanRequestIsi
     tglExpired
     tglRequest
     tglRespon
@@ -20720,8 +21914,25 @@ export const GetLogRequestDocument = gql`
     caseId {
       id
       judulKasus
+      application {
+        id
+        noReg
+        clients {
+          id
+          personId {
+            id
+            namaLengkap
+          }
+        }
+      }
+      kronologiKasus
+      pk {
+        id
+        tglRapat
+      }
     }
     isiRequest
+    tanggapanRequestIsi
     applicationId {
       id
       tahap
@@ -20730,6 +21941,7 @@ export const GetLogRequestDocument = gql`
       clients {
         id
         personId {
+          id
           namaLengkap
         }
       }
@@ -20745,10 +21957,12 @@ export const GetLogRequestDocument = gql`
       id
       appConsultation {
         name
+        id
       }
     }
     requestBy {
       id
+      name
     }
     requestTo {
       id
@@ -20783,6 +21997,31 @@ export const GetRolesTypeDocument = gql`
   })
   export class GetRolesTypeGQL extends Apollo.Query<GetRolesTypeQuery, GetRolesTypeQueryVariables> {
     document = GetRolesTypeDocument;
+    
+  }
+export const GetNetworksDocument = gql`
+    query getNetworks($where: NetworkWhereInput, $orderBy: NetworkOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  networks(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    address
+    contactPerson
+    createdAt
+    email
+    id
+    name
+    noContact
+    provinceId
+    regencyId
+    type
+    updatedAt
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetNetworksGQL extends Apollo.Query<GetNetworksQuery, GetNetworksQueryVariables> {
+    document = GetNetworksDocument;
     
   }
 export const GetUserDocument = gql`
@@ -20823,6 +22062,306 @@ export const GetUserDocument = gql`
   })
   export class GetUserGQL extends Apollo.Query<GetUserQuery, GetUserQueryVariables> {
     document = GetUserDocument;
+    
+  }
+export const GetCaseDocument = gql`
+    query getCase($where: CaseWhereInput, $orderBy: CaseOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  cases(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+    applicationId
+    caseClosed
+    caseClosedJenis
+    createdAt
+    createdBy
+    hakTerlanggar
+    issue
+    judulKasus
+    klasifikasiDok
+    klasifikasiDok
+    kronologiKasus
+    lockDitolak
+    statusPendampingan
+    targetAdvokasi
+    unlockPk
+    unlockTransfer
+    updatedAt
+    updatedBy
+    transfer {
+      id
+      tglTransfer
+      catatan
+      network {
+        id
+        name
+      }
+      createdBy
+      updatedBy
+    }
+    referrals {
+      id
+      client {
+        id
+        namaLengkap
+      }
+      tglTransfer
+      catatan
+      network {
+        id
+        name
+      }
+      createdBy
+      updatedBy
+    }
+    application {
+      id
+      createdAt
+      createdBy
+      dudukPerara
+      infoLbh
+      jumlahPenerimaManfaat
+      konfirmasiData
+      noReg
+      pernahKlien
+      pernahPpLain
+      ppLain
+      regDate
+      relasiWakilClient
+      setujuAdvokasi
+      statusPerwakilan
+      updatedAt
+      updatedBy
+      wakilId {
+        id
+        agama
+        alamatDomisili
+        alamatId
+        alatBantu
+        alias
+        createdAt
+        createdBy
+        disabilitas
+        distrikDomisili
+        distrikId
+        domisiliSama
+        email
+        golDarah
+        jenisDisabilitas
+        jenisDomisili
+        jenisId
+        jenisKelamin
+        jmlAnggota
+        namaLengkap
+        nomorId
+        pekerjaan
+        pendidikan
+        statusPernikahan
+        telepon
+      }
+      waktuPernahKlien
+      whyLbh
+      clients {
+        id
+        personId {
+          id
+          namaLengkap
+        }
+      }
+      tahap
+      status
+    }
+    classifications {
+      id
+      kodeMt
+    }
+    consultations {
+      id
+      caseId {
+        id
+        application {
+          id
+          noReg
+        }
+      }
+      appKonsul
+      createdAt
+      createdBy
+      isiKonsul
+      judulAktifitas
+      ppKonsul
+      tglKonsul
+      harapan
+      saranHukum
+      rencanaTindakLanjut
+      updatedAt
+      updatedBy
+      apps {
+        id
+        appConsultation {
+          name
+          id
+          roles_type {
+            id
+            type {
+              id
+            }
+          }
+        }
+      }
+    }
+    documents {
+      id
+      jenisDokumen
+      judulDokumen
+      keterangan
+      link
+    }
+    issues {
+      id
+      kodeMt
+    }
+    korbans {
+      id
+      personId {
+        namaLengkap
+        id
+      }
+    }
+    pelakus {
+      id
+      personId {
+        namaLengkap
+        id
+      }
+    }
+    pk {
+      id
+      createdAt
+      createdBy
+      didampingi
+      legalMemo
+      notulaRapat
+      ppPendamping {
+        address
+        avatar
+        createdAt
+        deletedAt
+        email
+        id
+        name
+        password
+        phone
+        position
+        rememberToken
+        roles
+        status
+        updatedAt
+        username
+        profile {
+          id
+          noContact
+        }
+      }
+      statusAlasanTdk
+      tglRapat
+    }
+    progresses {
+      id
+      catatan
+      jenisPeradilan
+    }
+    activities {
+      id
+      capaian
+      hambatan
+      tglAktifitas
+      judulAktifitas
+      position
+      rencanaStrategi
+      targetAdvokasi
+      activitieslit {
+        id
+        kodeMt
+      }
+      activitiesnonlit {
+        id
+        kodeMt
+      }
+    }
+    transferreferrals {
+      id
+      catatan
+      document
+      jenisTransferReferral
+      networkId
+      updatedAt
+      updatedBy
+    }
+    violatedrights {
+      id
+      kodeMt
+    }
+    logRequests {
+      ID
+      caseId {
+        id
+        judulKasus
+      }
+      isiRequest
+      tanggapanRequestIsi
+      applicationId {
+        id
+        tahap
+        noReg
+        dudukPerara
+        clients {
+          id
+          personId {
+            id
+            namaLengkap
+          }
+        }
+      }
+      jenisRequest
+      networkId {
+        id
+      }
+      personId {
+        id
+      }
+      pp {
+        id
+        appConsultation {
+          name
+          id
+          roles_type {
+            id
+            type {
+              id
+            }
+          }
+        }
+      }
+      requestBy {
+        id
+      }
+      requestTo {
+        id
+      }
+      statusRequest
+      tanggapanRequest
+      tglExpired
+      tglRequest
+      tglRespon
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetCaseGQL extends Apollo.Query<GetCaseQuery, GetCaseQueryVariables> {
+    document = GetCaseDocument;
     
   }
 export const GetClientDocument = gql`
@@ -21035,6 +22574,12 @@ export namespace DestroyLog {
   export type DeleteManyLogRequests = DestroyLogMutation['deleteManyLogRequests'];
 }
 
+export namespace DestroyCaseProgressActivity {
+  export type Variables = DestroyCaseProgressActivityMutationVariables;
+  export type Mutation = DestroyCaseProgressActivityMutation;
+  export type DeleteManyCaseProgressActivities = DestroyCaseProgressActivityMutation['deleteManyCaseProgressActivities'];
+}
+
 export namespace PostLogRequest {
   export type Variables = PostLogRequestMutationVariables;
   export type Mutation = PostLogRequestMutation;
@@ -21071,6 +22616,35 @@ export namespace PostApplication {
   export type Case = PostApplicationMutation['createApplication']['case'];
   export type Clients = PostApplicationMutation['createApplication']['clients'][0];
   export type PersonId = PostApplicationMutation['createApplication']['clients'][0]['personId'];
+}
+
+export namespace PutCase {
+  export type Variables = PutCaseMutationVariables;
+  export type Mutation = PutCaseMutation;
+  export type UpdateCase = PutCaseMutation['updateCase'];
+  export type Application = PutCaseMutation['updateCase']['application'];
+  export type WakilId = PutCaseMutation['updateCase']['application']['wakilId'];
+  export type Clients = PutCaseMutation['updateCase']['application']['clients'][0];
+  export type PersonId = PutCaseMutation['updateCase']['application']['clients'][0]['personId'];
+  export type Classifications = PutCaseMutation['updateCase']['classifications'][0];
+  export type Consultations = PutCaseMutation['updateCase']['consultations'][0];
+  export type Apps = PutCaseMutation['updateCase']['consultations'][0]['apps'][0];
+  export type AppConsultation = PutCaseMutation['updateCase']['consultations'][0]['apps'][0]['appConsultation'];
+  export type Documents = PutCaseMutation['updateCase']['documents'][0];
+  export type Issues = PutCaseMutation['updateCase']['issues'][0];
+  export type Korbans = PutCaseMutation['updateCase']['korbans'][0];
+  export type _PersonId = PutCaseMutation['updateCase']['korbans'][0]['personId'];
+  export type Pelakus = PutCaseMutation['updateCase']['pelakus'][0];
+  export type __PersonId = PutCaseMutation['updateCase']['pelakus'][0]['personId'];
+  export type Pk = PutCaseMutation['updateCase']['pk'];
+  export type PpPendamping = PutCaseMutation['updateCase']['pk']['ppPendamping'];
+  export type Profile = PutCaseMutation['updateCase']['pk']['ppPendamping']['profile'];
+  export type Progresses = PutCaseMutation['updateCase']['progresses'];
+  export type Activities = PutCaseMutation['updateCase']['activities'][0];
+  export type Activitieslit = PutCaseMutation['updateCase']['activities'][0]['activitieslit'][0];
+  export type Activitiesnonlit = PutCaseMutation['updateCase']['activities'][0]['activitiesnonlit'][0];
+  export type Transferreferrals = PutCaseMutation['updateCase']['transferreferrals'][0];
+  export type Violatedrights = PutCaseMutation['updateCase']['violatedrights'][0];
 }
 
 export namespace PutLogRequest {
@@ -21128,11 +22702,15 @@ export namespace GetLogRequest {
   export type Query = GetLogRequestQuery;
   export type LogRequests = GetLogRequestQuery['logRequests'][0];
   export type CaseId = GetLogRequestQuery['logRequests'][0]['caseId'];
+  export type Application = GetLogRequestQuery['logRequests'][0]['caseId']['application'];
+  export type Clients = GetLogRequestQuery['logRequests'][0]['caseId']['application']['clients'][0];
+  export type PersonId = GetLogRequestQuery['logRequests'][0]['caseId']['application']['clients'][0]['personId'];
+  export type Pk = GetLogRequestQuery['logRequests'][0]['caseId']['pk'];
   export type ApplicationId = GetLogRequestQuery['logRequests'][0]['applicationId'];
-  export type Clients = GetLogRequestQuery['logRequests'][0]['applicationId']['clients'][0];
-  export type PersonId = GetLogRequestQuery['logRequests'][0]['applicationId']['clients'][0]['personId'];
+  export type _Clients = GetLogRequestQuery['logRequests'][0]['applicationId']['clients'][0];
+  export type _PersonId = GetLogRequestQuery['logRequests'][0]['applicationId']['clients'][0]['personId'];
   export type NetworkId = GetLogRequestQuery['logRequests'][0]['networkId'];
-  export type _PersonId = GetLogRequestQuery['logRequests'][0]['personId'];
+  export type __PersonId = GetLogRequestQuery['logRequests'][0]['personId'];
   export type Pp = GetLogRequestQuery['logRequests'][0]['pp'][0];
   export type AppConsultation = GetLogRequestQuery['logRequests'][0]['pp'][0]['appConsultation'];
   export type RequestBy = GetLogRequestQuery['logRequests'][0]['requestBy'];
@@ -21145,6 +22723,12 @@ export namespace GetRolesType {
   export type RolesTypes = GetRolesTypeQuery['rolesTypes'][0];
 }
 
+export namespace GetNetworks {
+  export type Variables = GetNetworksQueryVariables;
+  export type Query = GetNetworksQuery;
+  export type Networks = GetNetworksQuery['networks'][0];
+}
+
 export namespace GetUser {
   export type Variables = GetUserQueryVariables;
   export type Query = GetUserQuery;
@@ -21152,6 +22736,57 @@ export namespace GetUser {
   export type Profile = GetUserQuery['users'][0]['profile'];
   export type Roles_Type = GetUserQuery['users'][0]['roles_type'][0];
   export type Type = GetUserQuery['users'][0]['roles_type'][0]['type'];
+}
+
+export namespace GetCase {
+  export type Variables = GetCaseQueryVariables;
+  export type Query = GetCaseQuery;
+  export type Cases = GetCaseQuery['cases'][0];
+  export type Transfer = GetCaseQuery['cases'][0]['transfer'];
+  export type Network = GetCaseQuery['cases'][0]['transfer']['network'];
+  export type Referrals = GetCaseQuery['cases'][0]['referrals'][0];
+  export type Client = GetCaseQuery['cases'][0]['referrals'][0]['client'];
+  export type _Network = GetCaseQuery['cases'][0]['referrals'][0]['network'];
+  export type Application = GetCaseQuery['cases'][0]['application'];
+  export type WakilId = GetCaseQuery['cases'][0]['application']['wakilId'];
+  export type Clients = GetCaseQuery['cases'][0]['application']['clients'][0];
+  export type PersonId = GetCaseQuery['cases'][0]['application']['clients'][0]['personId'];
+  export type Classifications = GetCaseQuery['cases'][0]['classifications'][0];
+  export type Consultations = GetCaseQuery['cases'][0]['consultations'][0];
+  export type CaseId = GetCaseQuery['cases'][0]['consultations'][0]['caseId'];
+  export type _Application = GetCaseQuery['cases'][0]['consultations'][0]['caseId']['application'];
+  export type Apps = GetCaseQuery['cases'][0]['consultations'][0]['apps'][0];
+  export type AppConsultation = GetCaseQuery['cases'][0]['consultations'][0]['apps'][0]['appConsultation'];
+  export type Roles_Type = GetCaseQuery['cases'][0]['consultations'][0]['apps'][0]['appConsultation']['roles_type'][0];
+  export type Type = GetCaseQuery['cases'][0]['consultations'][0]['apps'][0]['appConsultation']['roles_type'][0]['type'];
+  export type Documents = GetCaseQuery['cases'][0]['documents'][0];
+  export type Issues = GetCaseQuery['cases'][0]['issues'][0];
+  export type Korbans = GetCaseQuery['cases'][0]['korbans'][0];
+  export type _PersonId = GetCaseQuery['cases'][0]['korbans'][0]['personId'];
+  export type Pelakus = GetCaseQuery['cases'][0]['pelakus'][0];
+  export type __PersonId = GetCaseQuery['cases'][0]['pelakus'][0]['personId'];
+  export type Pk = GetCaseQuery['cases'][0]['pk'];
+  export type PpPendamping = GetCaseQuery['cases'][0]['pk']['ppPendamping'];
+  export type Profile = GetCaseQuery['cases'][0]['pk']['ppPendamping']['profile'];
+  export type Progresses = GetCaseQuery['cases'][0]['progresses'];
+  export type Activities = GetCaseQuery['cases'][0]['activities'][0];
+  export type Activitieslit = GetCaseQuery['cases'][0]['activities'][0]['activitieslit'][0];
+  export type Activitiesnonlit = GetCaseQuery['cases'][0]['activities'][0]['activitiesnonlit'][0];
+  export type Transferreferrals = GetCaseQuery['cases'][0]['transferreferrals'][0];
+  export type Violatedrights = GetCaseQuery['cases'][0]['violatedrights'][0];
+  export type LogRequests = GetCaseQuery['cases'][0]['logRequests'][0];
+  export type _CaseId = GetCaseQuery['cases'][0]['logRequests'][0]['caseId'];
+  export type ApplicationId = GetCaseQuery['cases'][0]['logRequests'][0]['applicationId'];
+  export type _Clients = GetCaseQuery['cases'][0]['logRequests'][0]['applicationId']['clients'][0];
+  export type ___PersonId = GetCaseQuery['cases'][0]['logRequests'][0]['applicationId']['clients'][0]['personId'];
+  export type NetworkId = GetCaseQuery['cases'][0]['logRequests'][0]['networkId'];
+  export type ____PersonId = GetCaseQuery['cases'][0]['logRequests'][0]['personId'];
+  export type Pp = GetCaseQuery['cases'][0]['logRequests'][0]['pp'][0];
+  export type _AppConsultation = GetCaseQuery['cases'][0]['logRequests'][0]['pp'][0]['appConsultation'];
+  export type _Roles_Type = GetCaseQuery['cases'][0]['logRequests'][0]['pp'][0]['appConsultation']['roles_type'][0];
+  export type _Type = GetCaseQuery['cases'][0]['logRequests'][0]['pp'][0]['appConsultation']['roles_type'][0]['type'];
+  export type RequestBy = GetCaseQuery['cases'][0]['logRequests'][0]['requestBy'];
+  export type RequestTo = GetCaseQuery['cases'][0]['logRequests'][0]['requestTo'];
 }
 
 export namespace GetClient {

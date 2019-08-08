@@ -13,6 +13,7 @@ import { ListUserComponent } from './user/list-user/list-user.component';
 import { ConsultationQueueComponent } from './consultation-queue/consultation-queue.component';
 import { ListCaseComponent } from './case/list-case/list-case.component';
 import { ViewCaseComponent } from './case/view-case/view-case.component';
+import { RapatQueueComponent } from './rapat-queue/rapat-queue.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'consultation-queue',
     component: ConsultationQueueComponent,
+  },
+  {
+    path: 'rapat-queue',
+    component: RapatQueueComponent,
   },
   {
     path: 'case',

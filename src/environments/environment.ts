@@ -7,7 +7,7 @@ export const environment = {
   production: true,
   useHash: true,
   hmr: false,
-  API_URL: `http://localhost:3000/`,
+  API_URL: `http://192.168.1.7:3000/`,
 };
 
 /*

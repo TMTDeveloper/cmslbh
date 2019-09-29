@@ -45,7 +45,6 @@ export class ListUserComponent implements OnInit, OnDestroy {
   modalInstance: NzModalRef;
   @ViewChild('st')
   st: STComponent;
-
   columns: STColumn[] = [
     {
       title: 'Action',
@@ -66,6 +65,8 @@ export class ListUserComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      fixed: 'left',
+      width: '120px',
     },
 
     {
@@ -137,7 +138,7 @@ export class ListUserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.users = this.getUserGQL.watch(this.searchGenerator(), {
-      fetchPolicy: 'cache-first',
+      fetchPolicy: 'no-cache',
     });
     console.log('sampe sini');
     this.loading = true;

@@ -43,7 +43,15 @@
         <span>New</span>
       </button>
     </div>
-    <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
+    <st
+      #st
+      [columns]="columns"
+      [data]="data"
+      [loading]="loading"
+      [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }"
+      (change)="stChange($event)"
+      [scroll]="{ x: '1064px' }"
+    >
       <ng-template st-row="status" let-i>
         <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
       </ng-template>

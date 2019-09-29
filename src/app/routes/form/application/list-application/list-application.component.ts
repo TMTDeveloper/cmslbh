@@ -19,6 +19,7 @@ import {
   ApplicationWhereInput,
   PostLogRequestGQL,
   PostLogRequestMutationVariables,
+  GetLogRequestGQL,
 } from '@shared';
 import { QueryRef } from 'apollo-angular';
 import { Subscription } from 'rxjs';
@@ -58,6 +59,8 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     {
       title: 'Action',
+      fixed: 'left',
+      width: '120px',
       buttons: [
         {
           text: 'Select',
@@ -145,11 +148,12 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
     public aclSrv: ACLService,
     private postLogRequestGQL: PostLogRequestGQL,
     private settingService: SettingsService,
+    private getLogRequestGQL: GetLogRequestGQL,
   ) {}
 
   ngOnInit() {
     this.applications = this.getApplicationGQL.watch(this.searchGenerator(), {
-      fetchPolicy: 'cache-first',
+      fetchPolicy: 'no-cache',
     });
     this.loading = true;
     this.personsObs = this.applications.valueChanges
@@ -246,7 +250,34 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
     setTimeout(() => this.getData());
   }
 
-  queueConsultation(dataApplication) {
+  checkAlreadyQueue(item) {
+    return this.getLogRequestGQL
+      .fetch(
+        {
+          where: {
+            applicationId: { id: item.id },
+            jenisRequest: '1011',
+            tglRequest_gte: moment()
+              .hour(0)
+              .toDate(),
+            tglRequest_lte: moment()
+              .hour(23)
+              .toDate(),
+          },
+        },
+        { fetchPolicy: 'network-only' },
+      )
+      .pipe(map(res => res.data.logRequests))
+      .toPromise();
+  }
+
+  async queueConsultation(dataApplication) {
+    const alreadyQueue = await this.checkAlreadyQueue(dataApplication);
+    console.log(alreadyQueue);
+    if (alreadyQueue.length !== 0) {
+      this.msg.info('Antrian Konsultasi Sudah Ada Untuk Aplikasi ' + dataApplication.noReg);
+      return;
+    }
     const dataLog = <PostLogRequestMutationVariables>{
       data: {
         applicationId: { connect: { id: dataApplication.id } },

@@ -14,6 +14,7 @@ import { ConsultationQueueComponent } from './consultation-queue/consultation-qu
 import { ListCaseComponent } from './case/list-case/list-case.component';
 import { ViewCaseComponent } from './case/view-case/view-case.component';
 import { RapatQueueComponent } from './rapat-queue/rapat-queue.component';
+import { ReferralQueueComponent } from './referral-queue/referral-queue.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path: 'rapat-queue',
     component: RapatQueueComponent,
+  },
+  {
+    path: 'referral-queue',
+    component: ReferralQueueComponent,
   },
   {
     path: 'case',

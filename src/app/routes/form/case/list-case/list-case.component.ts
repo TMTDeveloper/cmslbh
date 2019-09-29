@@ -49,6 +49,8 @@ export class ListCaseComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     {
       title: 'Action',
+      fixed: 'left',
+      width: '200px',
       buttons: [
         {
           text: 'Select',
@@ -130,7 +132,7 @@ export class ListCaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cases = this.getCaseGQL.watch(this.query ? this.query : this.searchGenerator(), {
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'no-cache',
     });
     this.loading = true;
     this.casesObs = this.cases.valueChanges

@@ -7,6 +7,10 @@
           <strong>{{ settings.user.name }}</strong>
         </p>
         <p class="text-nowrap mb0">{{ settings.user.email }}</p>
+        <p class="text-nowrap mb0"><strong>Roles:</strong></p>
+        <div *ngFor="let a of roles_type">
+          <p class="text-nowrap mb0">{{ a.type.description }}</p>
+        </div>
       </div>
     </div>
     <ul nz-menu>

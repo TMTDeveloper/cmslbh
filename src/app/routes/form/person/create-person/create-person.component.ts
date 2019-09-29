@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { NzMessageService, CascaderOption } from 'ng-zorro-antd';
+import { NzMessageService, CascaderOption, NzTreeNode } from 'ng-zorro-antd';
 import { SettingsService } from '@delon/theme';
-import { SFSchema, CascaderWidget, SFComponent } from '@delon/form';
+import { SFSchema, CascaderWidget, SFComponent, SFSchemaEnum, SFSchemaEnumType } from '@delon/form';
 import {
   GetMtVocabsGQL,
   GetMtVocabs,
@@ -44,16 +44,158 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   set editData(editData: any) {
     (async () => {
       this.loading = true;
-      if (!Array.isArray(editData.distrikId) && editData.distrikId) {
-        editData.distrikId = (await this.mtVocabHelper.findParent(editData.distrikId)).reverse();
+      // if (!Array.isArray(editData.distrikId) && editData.distrikId) {
+      //   editData.distrikId = (await this.mtVocabHelper.findParent(editData.distrikId)).reverse();
+      // }
+      // if (!Array.isArray(editData.distrikDomisili) && editData.distrikDomisili) {
+      // editData.distrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
+      // }
+      // if (!Array.isArray(editData.pekerjaan) && editData.pekerjaan) {
+      //   editData.pekerjaan = (await this.mtVocabHelper.findParentPekerjaan(editData.pekerjaan)).reverse();
+      // }
+      // distrikID
+      if (editData.distrikId) {
+        const arrDistrikId = (await this.mtVocabHelper.findParent(editData.distrikId)).reverse();
+
+        let longEnumDistrikId: any;
+        let indDistrikId = -1;
+        for (const b of arrDistrikId) {
+          const titleAsync = await this.mtVocabHelper.translateMtVocab(b);
+          indDistrikId++;
+          switch (indDistrikId) {
+            case 0:
+              longEnumDistrikId = {
+                title: titleAsync,
+                key: b,
+                children: [],
+              };
+              break;
+            case 1:
+              longEnumDistrikId.children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 2:
+              longEnumDistrikId.children[0].children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 3:
+              longEnumDistrikId.children[0].children[0].children.push({
+                title: titleAsync,
+                key: b,
+              });
+              break;
+
+            default:
+              break;
+          }
+        }
+        console.log(longEnumDistrikId);
+        editData.distrikIdEnum = longEnumDistrikId;
       }
-      if (!Array.isArray(editData.distrikDomisili) && editData.distrikDomisili) {
-        editData.distrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
+      if (editData.distrikDomisili) {
+        const arrDistrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
+        console.log(arrDistrikDomisili);
+        let longEnumDistrikDomisili: any;
+        let ind = -1;
+        for (const b of arrDistrikDomisili) {
+          const titleAsync = await this.mtVocabHelper.translateMtVocab(b);
+          ind++;
+          switch (ind) {
+            case 0:
+              longEnumDistrikDomisili = {
+                title: titleAsync,
+                key: b,
+                children: [],
+              };
+              break;
+            case 1:
+              longEnumDistrikDomisili.children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 2:
+              longEnumDistrikDomisili.children[0].children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 3:
+              longEnumDistrikDomisili.children[0].children[0].children.push({
+                title: titleAsync,
+                key: b,
+              });
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        editData.distrikDomisiliEnum = longEnumDistrikDomisili;
       }
-      if (!Array.isArray(editData.pekerjaan) && editData.pekerjaan) {
-        editData.pekerjaan = (await this.mtVocabHelper.findParentPekerjaan(editData.pekerjaan)).reverse();
+
+      if (editData.pekerjaan) {
+        const arrPekerjaan = (await this.mtVocabHelper.findParent(editData.pekerjaan)).reverse();
+        console.log(arrPekerjaan);
+        let longEnumPekerjaan: any;
+        let ind = -1;
+        for (const b of arrPekerjaan) {
+          const titleAsync = await this.mtVocabHelper.translateMtVocab(b);
+          ind++;
+          switch (ind) {
+            case 0:
+              longEnumPekerjaan = {
+                title: titleAsync,
+                key: b,
+                children: [],
+              };
+              break;
+            case 1:
+              longEnumPekerjaan.children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 2:
+              longEnumPekerjaan.children[0].children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+            case 3:
+              longEnumPekerjaan.children[0].children[0].children.push({
+                title: titleAsync,
+                key: b,
+              });
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        editData.pekerjaanEnum = longEnumPekerjaan;
+      }
+
+      const jenisDomisili: any[] = await this.mtVocabHelper.getMtVocabEnum(71, 'teks').toPromise();
+
+      if (!jenisDomisili.find(res => res.value === editData.jenisDomisili)) {
+        editData.jenisDomisiliDescription = editData.jenisDomisili;
+        editData.jenisDomisili = 'Lainnya (sebutkan)';
       }
       this._editData = editData;
+      console.log(editData);
       this.loading = false;
     })();
   }
@@ -83,49 +225,89 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
       data.jenisDisabilitas = null;
       data.alatBantu = null;
     }
-    data.distrikId = Array.isArray(data.distrikId) ? data.distrikId.slice(-1)[0] : null;
-    data.distrikDomisili = Array.isArray(data.distrikDomisili) ? data.distrikDomisili.slice(-1)[0] : null;
-    data.pekerjaan = Array.isArray(data.pekerjaan) ? data.pekerjaan.slice(-1)[0] : null;
+    if (data.jenisDomisili === 'Lainnya (sebutkan)') {
+      data.jenisDomisili = data.jenisDomisiliDescription;
+    }
+
+    if (!('disabilitas' in data)) {
+      data.disabilitas = false;
+    }
+    if (!('domisiliSama' in data)) {
+      data.domisiliSama = true;
+    }
+    // data.distrikId = Array.isArray(data.distrikId) ? data.distrikId.slice(-1)[0] : null;
+    // data.distrikDomisili = Array.isArray(data.distrikDomisili) ? data.distrikDomisili.slice(-1)[0] : null;
+    // data.pekerjaan = Array.isArray(data.pekerjaan) ? data.pekerjaan.slice(-1)[0] : null;
+    // data.tglLahir = moment(data.tglLahir, 'YYYY-MM-DD HH:mm:ss').toDate() || null;
     data.tglLahir = moment(data.tglLahir, 'YYYY-MM-DD HH:mm:ss').toDate() || null;
 
     if (this.mode === 'edit') {
       data.updatedBy = this.settingService.user.name;
-      const { id, createdAt, updatedAt, __typename, _values, documents, clients, applications, ...newData } = data;
+      const {
+        id,
+        createdAt,
+        updatedAt,
+        __typename,
+        _values,
+        documents,
+        clients,
+        applications,
+        jenisDomisiliDescription,
+        distrikIdEnum,
+        distrikDomisiliEnum,
+        pekerjaanEnum,
+        ...newData
+      } = data;
       return <PersonUpdateInput>{ ...newData };
     } else {
       data.createdBy = this.settingService.user.name;
-      const { documents, clients, applications, ...createData } = data;
+      const {
+        documents,
+        clients,
+        applications,
+        jenisDomisiliDescription,
+        distrikIdEnum,
+        distrikDomisiliEnum,
+        pekerjaanEnum,
+        ...createData
+      } = data;
       return <PersonCreateInput>{ ...createData };
     }
   }
 
   dataMutationCreate(data: PersonCreateInput) {
+    this.loading = true;
     this.postPersonGQL
       .mutate({ data })
       .pipe(take(1))
       .subscribe(
         () => {
+          this.loading = false;
           this.msg.success('Data Sukses Dibuat');
           this.sf.refreshSchema(this.schema);
           if (this.parent) this.saveDone.emit(true);
         },
         error => {
+          this.loading = false;
           this.msg.error(JSON.stringify(error));
         },
       );
   }
 
   dataMutationUpdate(data: PersonUpdateInput, id: PersonWhereUniqueInput) {
+    this.loading = true;
     this.putPersonGQL
       .mutate({ where: id, data: data })
       .pipe(take(1))
       .subscribe(
         () => {
+          this.loading = false;
           this.msg.success('Data Sukses Dirubah');
           this.sf.refreshSchema(this.schema);
           if (this.parent) this.saveDone.emit(true);
         },
         error => {
+          this.loading = false;
           this.msg.error(JSON.stringify(error));
         },
       );
@@ -139,14 +321,6 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           hidden: true,
         },
       },
-      namaLengkap: {
-        type: 'string',
-        title: 'Nama Lengkap',
-      },
-      alias: {
-        type: 'string',
-        title: 'Alias',
-      },
       unitSatuan: {
         type: 'string',
         title: 'Unit Satuan',
@@ -154,6 +328,14 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(7, 'kode'),
         },
+      },
+      namaLengkap: {
+        type: 'string',
+        title: 'Nama Lengkap',
+      },
+      alias: {
+        type: 'string',
+        title: 'Alias',
       },
       jmlAnggota: {
         type: 'number',
@@ -170,16 +352,31 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'radio',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(74, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       tmpLahir: {
         type: 'string',
         title: 'Tempat Lahir',
+        ui: {
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
+        },
       },
       tglLahir: {
         type: 'string',
         title: 'Tanggal Lahir',
-        ui: { widget: 'date', mode: 'date', displayFormat: 'dd-MM-yyyy' },
+        ui: {
+          widget: 'date',
+          mode: 'date',
+          displayFormat: 'dd-MM-yyyy',
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
+        },
       },
       agama: {
         type: 'string',
@@ -187,6 +384,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(75, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       wargaNegara: {
@@ -195,7 +395,11 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(77, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
+        default: 'INDONESIA',
       },
       golDarah: {
         type: 'string',
@@ -205,6 +409,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           widget: 'radio',
           styleType: 'button',
           buttonStyle: 'solid',
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       telepon: {
@@ -221,11 +428,19 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(76, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       nomorId: {
         type: 'string',
         title: 'Nomor Id',
+        ui: {
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
+        },
       },
       alamatId: {
         type: 'string',
@@ -233,25 +448,77 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'textarea',
           autosize: { minRows: 2, maxRows: 6 },
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
+      // distrikId: {
+      //   type: 'string',
+      //   title: 'Distrik ID',
+      //   ui: {
+      //     widget: 'cascader',
+      //     asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
+      //       return new Promise(async resolve => {
+      //         const data = await this.getTreeData(
+      //           node.value === undefined ? '00030424000063' : node.value.toString(),
+      //           63,
+      //         );
+
+      //         (node as any).children = data;
+      //         resolve();
+      //         me.detectChanges(true);
+      //       });
+      //     }) as any,
+      //     visibleIf: {
+      //       unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+      //     },
+      //   },
+      // },
       distrikId: {
         type: 'string',
         title: 'Distrik ID',
         ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(
-                node.value === undefined ? '00030424000063' : node.value.toString(),
-                63,
-              );
+          widget: 'tree-select',
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          displayWith: (node: NzTreeNode) => {
+            let currentNode: any;
+            let displayText = '';
+            for (let i = node.level; i >= 0; i--) {
+              if (!currentNode) currentNode = node;
+              displayText === ''
+                ? (displayText = currentNode.title)
+                : (displayText = currentNode.title + ' / ' + displayText);
+              currentNode = currentNode.parentNode;
+            }
 
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
+            return displayText;
+          },
+          asyncData: () => {
+            this.loading = true;
+            if (this.mode === 'edit') {
+              console.log(this.editData);
+              return this.mtVocabHelper.getMtVocabWithChildren(63, this.editData.distrikIdEnum).pipe(res => {
+                this.loading = false;
+                return res;
+              });
+            }
+            return this.mtVocabHelper.getMtVocabParentTree(63).pipe(res => {
+              this.loading = false;
+              return res;
             });
-          }) as any,
+          },
+          expandChange: e => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(63, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       domisiliSama: {
@@ -260,6 +527,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         description: 'Checklist Jika Domisili sama',
         ui: {
           widget: 'checkbox',
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
         default: true,
       },
@@ -274,35 +544,93 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           },
         },
       },
-
       distrikDomisili: {
         type: 'string',
         title: 'Distrik Domisili',
         ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(
-                node.value === undefined ? '00030424000063' : node.value.toString(),
-                63,
-              );
+          widget: 'tree-select',
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          displayWith: (node: NzTreeNode) => {
+            let currentNode: any;
+            let displayText = '';
+            for (let i = node.level; i >= 0; i--) {
+              if (!currentNode) currentNode = node;
+              displayText === ''
+                ? (displayText = currentNode.title)
+                : (displayText = currentNode.title + ' / ' + displayText);
+              currentNode = currentNode.parentNode;
+            }
 
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
+            return displayText;
+          },
+          asyncData: () => {
+            this.loading = true;
+            if (this.mode === 'edit') {
+              console.log(this.editData);
+              return this.mtVocabHelper.getMtVocabWithChildren(63, this.editData.distrikDomisiliEnum).pipe(res => {
+                this.loading = false;
+                return res;
+              });
+            }
+            return this.mtVocabHelper.getMtVocabParentTree(63).pipe(res => {
+              this.loading = false;
+              return res;
             });
-          }) as any,
+          },
+          expandChange: e => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(63, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
           visibleIf: {
             domisiliSama: (value: any) => value === false,
           },
         },
       },
+      // distrikDomisili: {
+      //   type: 'string',
+      //   title: 'Distrik Domisili',
+      //   ui: {
+      //     widget: 'cascader',
+      //     asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
+      //       return new Promise(async resolve => {
+      //         const data = await this.getTreeData(
+      //           node.value === undefined ? '00030424000063' : node.value.toString(),
+      //           63,
+      //         );
+
+      //         (node as any).children = data;
+      //         resolve();
+      //         me.detectChanges(true);
+      //       });
+      //     }) as any,
+      //     visibleIf: {
+      //       domisiliSama: (value: any) => value === false,
+      //       unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+      //     },
+      //   },
+      // },
       jenisDomisili: {
         type: 'string',
         title: 'Jenis Domisili',
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(71, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
+        },
+      },
+      jenisDomisiliDescription: {
+        type: 'string',
+        title: 'Jenis Domisili Lainnya',
+        ui: {
+          visibleIf: {
+            jenisDomisili: (value: any) => value === 'Lainnya (sebutkan)' && value !== null,
+          },
         },
       },
       pendidikan: {
@@ -311,25 +639,65 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(78, 'kode'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
+      // pekerjaan: {
+      //   type: 'string',
+      //   title: 'Pekerjaan',
+      //   ui: {
+      //     widget: 'cascader',
+      //     asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
+      //       return new Promise(async resolve => {
+      //         const data = await this.getTreeData(node.value === undefined ? '0' : node.value.toString(), 10);
+      //         for (const item in data) {
+      //           const child = await this.mtVocabHelper.isThereAChild(data[item].value);
+      //           data[item].isLeaf = child.length === 0;
+      //         }
+      //         (node as any).children = data;
+      //         resolve();
+      //         me.detectChanges(true);
+      //       });
+      //     }) as any,
+      //     visibleIf: {
+      //       unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+      //     },
+      //   },
+      // },pekerjaanEnum
       pekerjaan: {
         type: 'string',
         title: 'Pekerjaan',
         ui: {
-          widget: 'cascader',
-          asyncData: ((node: CascaderOption, index: number, me: CascaderWidget) => {
-            return new Promise(async resolve => {
-              const data = await this.getTreeData(node.value === undefined ? '0' : node.value.toString(), 10);
-              for (const item in data) {
-                const child = await this.mtVocabHelper.isThereAChild(data[item].value);
-                data[item].isLeaf = child.length === 0;
-              }
-              (node as any).children = data;
-              resolve();
-              me.detectChanges(true);
+          widget: 'tree-select',
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          asyncData: () => {
+            this.loading = true;
+            if (this.mode === 'edit') {
+              console.log(this.editData);
+              return this.mtVocabHelper.getMtVocabWithChildren(10, this.editData.pekerjaanEnum).pipe(res => {
+                this.loading = false;
+                return res;
+              });
+            }
+            return this.mtVocabHelper.getMtVocabParentTree(10).pipe(res => {
+              this.loading = false;
+              return res;
             });
-          }) as any,
+          },
+          expandChange: e => {
+            console.log(e);
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(10, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       statusPernikahan: {
@@ -338,6 +706,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getMtVocabEnum(79, 'teks'),
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
       },
       disabilitas: {
@@ -346,6 +717,9 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         description: 'Checklist jika mempunyai disabilitas',
         ui: {
           widget: 'checkbox',
+          visibleIf: {
+            unitSatuan: (value: any) => value === '01000000000007' && value !== null,
+          },
         },
         default: false,
       },

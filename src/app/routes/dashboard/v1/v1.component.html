@@ -1,108 +1,91 @@
 <div class="alain-default__content-title">
   <h1>
     Dashboard
-    <small>Welcome !</small>
+
+    <small>On Progress ;)</small>
   </h1>
 </div>
-<app-list-person [parent]="true"></app-list-person>
-<!-- <quick-menu>
-  <nz-list [nzBordered]="false" [nzSplit]="false">
-    <nz-list-item>
-      <a routerLink="/">Home</a>
-    </nz-list-item>
-    <nz-list-item>
-      <a routerLink="/widgets">Widgets</a>
-    </nz-list-item>
-    <nz-list-item>
-      <a routerLink="/style/typography">typography</a>
-    </nz-list-item>
-    <nz-list-item>
-      <a routerLink="/style/gridmasonry">gridmasonry</a>
-    </nz-list-item>
-    <nz-list-item>
-      <a routerLink="/pro/result/success">success result</a>
-    </nz-list-item>
-  </nz-list>
-</quick-menu> -->
-<div nz-row nzGutter="16">
-  <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
-    <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md">
-      <div nz-col nzSpan="12" class="p-md text-white">
-        <div class="h2 mt0">123,456</div>
-        <p class="text-nowrap mb0">Website Traffics</p>
+<nz-card [nzBordered]="false">
+  <div nz-row nzGutter="16">
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+      <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md">
+        <div nz-col nzSpan="12" class="p-md text-white">
+          <div class="h2 mt0">150</div>
+          <p class="text-nowrap mb0">Total Kasus</p>
+        </div>
+        <div nz-col nzSpan="12">
+          <g2-mini-bar
+            *ngIf="webSite"
+            height="35"
+            color="#fff"
+            borderWidth="3"
+            [padding]="[36, 30, 30, 30]"
+            [data]="webSite"
+            tooltipType="mini"
+          ></g2-mini-bar>
+        </div>
       </div>
-      <div nz-col nzSpan="12">
-        <g2-mini-bar
-          *ngIf="webSite"
-          height="35"
-          color="#fff"
-          borderWidth="3"
-          [padding]="[36, 30, 30, 30]"
-          [data]="webSite"
-          tooltipType="mini"
-        ></g2-mini-bar>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+      <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md">
+        <div nz-col nzSpan="12" class="p-md text-white">
+          <div class="h2 mt0">80</div>
+          <p class="text-nowrap mb0">Klien Baru Bulan Ini</p>
+        </div>
+        <div nz-col nzSpan="12">
+          <g2-mini-bar
+            *ngIf="webSite"
+            height="35"
+            color="#fff"
+            borderWidth="3"
+            [padding]="[36, 30, 30, 30]"
+            [data]="webSite"
+            tooltipType="mini"
+          ></g2-mini-bar>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+      <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md">
+        <div nz-col nzSpan="12" class="p-md text-white">
+          <div class="h2 mt0">100</div>
+          <p class="text-nowrap mb0">Kasus Selesai</p>
+        </div>
+        <div nz-col nzSpan="12">
+          <g2-mini-bar
+            *ngIf="webSite"
+            height="35"
+            color="#fff"
+            borderWidth="3"
+            [padding]="[36, 30, 30, 30]"
+            [data]="webSite"
+            tooltipType="mini"
+          ></g2-mini-bar>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+      <div nz-row nzType="flex" nzAlign="middle" class="bg-magenta rounded-md">
+        <div nz-col nzSpan="12" class="p-md text-white">
+          <div class="h2 mt0">150</div>
+          <p class="text-nowrap mb0">Total Klien</p>
+        </div>
+        <div nz-col nzSpan="12">
+          <g2-mini-bar
+            *ngIf="webSite"
+            height="35"
+            color="#fff"
+            borderWidth="3"
+            [padding]="[36, 30, 30, 30]"
+            [data]="webSite"
+            tooltipType="mini"
+          ></g2-mini-bar>
+        </div>
       </div>
     </div>
   </div>
-  <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
-    <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md">
-      <div nz-col nzSpan="12" class="p-md text-white">
-        <div class="h2 mt0">234,567K</div>
-        <p class="text-nowrap mb0">Website Impressions</p>
-      </div>
-      <div nz-col nzSpan="12">
-        <g2-mini-bar
-          *ngIf="webSite"
-          height="35"
-          color="#fff"
-          borderWidth="3"
-          [padding]="[36, 30, 30, 30]"
-          [data]="webSite"
-          tooltipType="mini"
-        ></g2-mini-bar>
-      </div>
-    </div>
-  </div>
-  <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
-    <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md">
-      <div nz-col nzSpan="12" class="p-md text-white">
-        <div class="h2 mt0">$458,778</div>
-        <p class="text-nowrap mb0">Total Sales</p>
-      </div>
-      <div nz-col nzSpan="12">
-        <g2-mini-bar
-          *ngIf="webSite"
-          height="35"
-          color="#fff"
-          borderWidth="3"
-          [padding]="[36, 30, 30, 30]"
-          [data]="webSite"
-          tooltipType="mini"
-        ></g2-mini-bar>
-      </div>
-    </div>
-  </div>
-  <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
-    <div nz-row nzType="flex" nzAlign="middle" class="bg-magenta rounded-md">
-      <div nz-col nzSpan="12" class="p-md text-white">
-        <div class="h2 mt0">456</div>
-        <p class="text-nowrap mb0">Support Tickets</p>
-      </div>
-      <div nz-col nzSpan="12">
-        <g2-mini-bar
-          *ngIf="webSite"
-          height="35"
-          color="#fff"
-          borderWidth="3"
-          [padding]="[36, 30, 30, 30]"
-          [data]="webSite"
-          tooltipType="mini"
-        ></g2-mini-bar>
-      </div>
-    </div>
-  </div>
-</div>
-<div nz-row nzGutter="16">
+</nz-card>
+<!-- <div nz-row nzGutter="16">
   <div nz-col nzXs="24" nzMd="12">
     <nz-card [nzBordered]="false" [nzTitle]="salesTitle">
       <ng-template #salesTitle>
@@ -202,4 +185,4 @@
       </div>
     </nz-card>
   </div>
-</div>
+</div> -->

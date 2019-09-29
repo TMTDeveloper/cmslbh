@@ -100,12 +100,16 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     // createmode
     const arrClient = <ClientCreateWithoutApplicationIdInput[]>[];
     for (const obj of this.clientData) {
-      if (obj.fileList.length > 0) obj.sktmUpload = obj.fileList[0].name;
+      if (obj.sktmPilihan !== 'Dokumen Lain Sebagai Pengganti Surat Keterangan Miskin') {
+        obj.stmKeterangan = obj.sktmPilihan;
+      }
+      if (!obj.sktm) {
+        obj.stmKeterangan = '';
+      }
       const personId = obj.personId.id;
       obj.personId = undefined;
       data.createdBy = this.settingService.user.name;
-      data.updatedBy = this.settingService.user.name;
-      const { fileList, _values, ...newData } = obj;
+      const { fileList, _values, sktmPilihan, ...newData } = obj;
       newData.personId = { connect: { id: personId } };
       arrClient.push(newData);
     }
@@ -120,14 +124,15 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     // });
     data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
     // data.case = caseCreate;
-    const wakilId = data.wakilId.id;
+    let wakilIdTemp: any;
+    if (data.statusPerwakilan !== '01000000000070') wakilIdTemp = data.wakilId.id;
     data.wakilId = undefined;
     data.tahap = '1012';
     data.clients = clients;
     data.createdBy = this.settingService.user.name;
     data.updatedBy = this.settingService.user.name;
-    const { ...applicationCreateInput } = data;
-    applicationCreateInput.wakilId = { connect: { id: wakilId } };
+    const { wakilId, ...applicationCreateInput } = data;
+    if (data.statusPerwakilan !== '01000000000070') applicationCreateInput.wakilId = { connect: { id: wakilIdTemp } };
 
     return <ApplicationCreateInput>{ ...applicationCreateInput };
   }
@@ -136,13 +141,29 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     // updatemode
     const clients = this.processUpdateClientData(data);
     data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
-    const wakilId = data.wakilId.id;
+    let wakilIdTemp: any;
+    if (data.statusPerwakilan !== '01000000000070') wakilIdTemp = data.wakilId.id;
     data.wakilId = undefined;
     data.clients = clients;
     data.updatedBy = this.settingService.user.name;
     // delete data.case;
-    const { id, fileList, createdAt, createdBy, updatedAt, __typename, _values, ...applicationUpdateInput } = data;
-    applicationUpdateInput.wakilId = { connect: { id: wakilId } };
+    const {
+      id,
+      fileList,
+      createdAt,
+      createdBy,
+      updatedAt,
+      __typename,
+      _values,
+      wakilId,
+      ...applicationUpdateInput
+    } = data;
+    if (data.statusPerwakilan !== '01000000000070') {
+      applicationUpdateInput.wakilId = { connect: { id: wakilIdTemp } };
+    } else {
+      if (wakilIdTemp) applicationUpdateInput.wakilId = { disconnect: true };
+      applicationUpdateInput.relasiWakilClient = '';
+    }
 
     return <ApplicationUpdateInput>{ ...applicationUpdateInput };
   }
@@ -154,29 +175,42 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     const arrClientDelete = <ClientWhereUniqueInput[]>[...this.deletedClient];
     for (const obj of this.clientData) {
       if (obj.id) {
-        if (obj.fileList) if (obj.fileList.length > 0) obj.sktmUpload = obj.fileList[0].name;
-        let personId;
-        if (obj.personId.id) {
-          personId = obj.personId.id;
-        } else {
-          personId = obj.personId;
+        if (obj.sktmPilihan !== 'Dokumen Lain Sebagai Pengganti Surat Keterangan Miskin') {
+          obj.stmKeterangan = obj.sktmPilihan;
         }
-        obj.personId = undefined;
+        if (!obj.sktm) {
+          obj.stmKeterangan = '';
+        }
         data.updatedBy = this.settingService.user.name;
-        const { fileList, createdBy, id, createdAt, updatedAt, __typename, _values, ...newData } = obj;
-        newData.personId = { connect: { id: personId } };
+        const {
+          fileList,
+          createdBy,
+          id,
+          createdAt,
+          updatedAt,
+          __typename,
+          _values,
+          sktmPilihan,
+          personId,
+          ...newData
+        } = obj;
         arrClientUpdate.push(<ClientUpdateWithWhereUniqueWithoutApplicationIdInput>{
           where: { id: obj.id },
           data: newData,
         });
       } else {
-        if (obj.fileList.length > 0) obj.sktmUpload = obj.fileList[0].name;
-        const personId = obj.personId.id;
-        obj.personId = undefined;
+        if (obj.sktmPilihan !== 'Dokumen Lain Sebagai Pengganti Surat Keterangan Miskin') {
+          obj.stmKeterangan = obj.sktmPilihan;
+        }
+        if (!obj.sktm) {
+          obj.stmKeterangan = '';
+        }
+        console.log(obj);
+        const personIdTemp = obj.personId.id;
         data.createdBy = this.settingService.user.name;
         data.updatedBy = this.settingService.user.name;
-        const { fileList, _values, ...newData } = obj;
-        newData.personId = { connect: { id: personId } };
+        const { fileList, _values, sktmPilihan, personId, __typename, id, ...newData } = obj;
+        newData.personId = { connect: { id: personIdTemp } };
         arrClientCreate.push(newData);
       }
     }
@@ -187,6 +221,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
   }
 
   dataMutationCreate(data: ApplicationCreateInput) {
+    this.loading = true;
     this.postApplicationGQL
       .mutate({ data })
       .pipe(take(1))
@@ -197,8 +232,10 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
           setTimeout(() => this.st.reset());
           setTimeout(() => this.sf.refreshSchema());
           if (this.parent) this.saveDone.emit(true);
+          this.loading = false;
         },
         error => {
+          this.loading = false;
           this.msg.error(JSON.stringify(error));
         },
       );
@@ -234,6 +271,8 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Action',
+      fixed: 'left',
+      width: '120px',
       buttons: [
         {
           text: 'Delete',
@@ -250,7 +289,16 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         },
         {
           text: 'Edit',
-          click: (item: any) => {
+          click: async (item: any) => {
+            const listStmKeterangan: any = await this.mtVocabHelper.getMtVocabEnum(81, 'teks').toPromise();
+
+            if (listStmKeterangan.find(res => res.value === item.stmKeterangan)) {
+              item.sktmPilihan = item.stmKeterangan;
+              item.stmKeterangan = null;
+            } else {
+              item.sktmPilihan = 'Dokumen Lain Sebagai Pengganti Surat Keterangan Miskin';
+            }
+
             this.modalEditData = item;
             this.createModal(this.modalClient, 'Edit Client', 'edit');
           },
@@ -297,14 +345,23 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         readOnly: true,
         ui: {
           widget: 'custom',
+          visibleIf: {
+            statusPerwakilan: value => value !== '01000000000070' && value !== null,
+          },
         },
       },
       relasiWakilClient: {
         type: 'string',
         title: 'Hubungan wakil dengan klien',
+        ui: {
+          visibleIf: {
+            statusPerwakilan: value => value !== '01000000000070' && value !== null,
+          },
+        },
       },
       jumlahPenerimaManfaat: {
         type: 'number',
+        minimum: 0,
         title: 'Jumlah Penerima Manfaat',
       },
       pernahKlien: {
@@ -349,8 +406,8 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         type: 'string',
         title: 'Tahu informasi LBH dari mana?',
         ui: {
-          widget: 'textarea',
-          autosize: { minRows: 2, maxRows: 6 },
+          widget: 'select',
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(51, 'teks'),
         },
       },
       whyLbh: {
@@ -366,7 +423,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         title: 'Jelaskan duduk perkara yang sedang dihadapi',
         ui: {
           widget: 'textarea',
-          autosize: { minRows: 2, maxRows: 6 },
+          autosize: { minRows: 6, maxRows: 8 },
         },
       },
       konfirmasiData: {
@@ -389,16 +446,20 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         description: 'Pilih jika setuju untuk advokasi',
         ui: {
           widget: 'checkbox',
-          validator: (value: any): ErrorData[] => {
-            if (value === false) {
-              return <ErrorData[]>[{ message: 'Harus Setuju Advokasi' }];
-            }
-          },
         },
         default: false,
       },
     },
-    required: ['statusPerwakilan', 'noReg', 'regDate', 'konfirmasiData', 'setujuAdvokasi', 'wakilId', 'clients'],
+    required: [
+      'statusPerwakilan',
+      'jumlahPenerimaManfaat',
+      'noReg',
+      'regDate',
+      'konfirmasiData',
+      'clients',
+      'dudukPerara',
+      'wakilId',
+    ],
 
     ui: {
       size: 'large',

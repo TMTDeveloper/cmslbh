@@ -1,7 +1,7 @@
 <page-header *ngIf="!parent" [title]="'Daftar Kasus'"></page-header>
 <div #card>
   <nz-card [nzBordered]="false">
-    <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+    <!-- <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
       <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
         <div nz-col nzMd="8" nzSm="24">
           <nz-form-item>
@@ -36,9 +36,17 @@
           </a>
         </div>
       </div>
-    </form>
+    </form> -->
 
-    <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
+    <st
+      #st
+      [columns]="columns"
+      [data]="data"
+      [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }"
+      [loading]="loading"
+      (change)="stChange($event)"
+      [scroll]="{ x: '1064px' }"
+    >
       <ng-template st-row="status" let-i>
         <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
       </ng-template>

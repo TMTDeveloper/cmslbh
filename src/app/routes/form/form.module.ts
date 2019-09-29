@@ -18,6 +18,7 @@ import { CasePkComponent } from './case/case-pk/case-pk.component';
 import { CaseDocumentComponent } from './case/case-document/case-document.component';
 import { CaseConsultationComponent } from './case/case-consultation/case-consultation.component';
 import { RapatQueueComponent } from './rapat-queue/rapat-queue.component';
+import { ReferralQueueComponent } from './referral-queue/referral-queue.component';
 
 const COMPONENTS = [ListPersonComponent, CreatePersonComponent];
 
@@ -38,6 +39,7 @@ const COMPONENTS = [ListPersonComponent, CreatePersonComponent];
     CaseDocumentComponent,
     CaseConsultationComponent,
     RapatQueueComponent,
+    ReferralQueueComponent,
   ],
   entryComponents: [],
   exports: [...COMPONENTS],

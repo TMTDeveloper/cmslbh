@@ -14,7 +14,7 @@
             <span>New</span>
           </button>
         </div>
-        <st #st [columns]="columns" [data]="clientData"> </st>
+        <st #st [columns]="columns" [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }" [data]="clientData"> </st>
       </ng-template>
       <ng-template sf-template="wakilId" let-me let-ui="ui" let-schema="schema">
         <button

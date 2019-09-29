@@ -60,7 +60,7 @@ export class StartupService {
             // 用户信息：包括姓名、头像、邮箱地址
             // this.settingService.setUser(res.user);
             // // ACL：设置权限为全量
-            console.log(this.settingService.user.roles_type);
+            // console.log(this.settingService.user.roles_type);
             if (this.settingService.user.roles_type) {
               if (this.settingService.user.roles_type.find(el => el.type.id === 8)) {
                 this.aclService.setFull(true);

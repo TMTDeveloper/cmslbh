@@ -21,7 +21,7 @@
           <nz-form-item>
             <nz-form-label nzFor="nomorId">Nomor Registrasi</nz-form-label>
             <nz-form-control>
-              <input nz-input [(ngModel)]="q.noReg" name="noReg" placeholder="no Registrasi" id="noReg" />
+              <input nz-input [(ngModel)]="q.noReg" name="noReg" placeholder="No Registrasi" id="noReg" />
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -41,7 +41,14 @@
         <span>New</span>
       </button>
     </div>
-    <st #st [columns]="columns" [data]="data" [loading]="loading">
+    <st
+      #st
+      [columns]="columns"
+      [data]="data"
+      [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }"
+      [loading]="loading"
+      [scroll]="{ x: '1064px' }"
+    >
       <ng-template st-row="status" let-i>
         <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
       </ng-template>

@@ -62,8 +62,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   @Input()
   set editData(editData: any) {
     this.loading = true;
-    this.cobajing(editData);
-    if (editData.fileList) this.fileList = editData.fileList;
+    // this.cobajing(editData);
+    // if (editData.fileList) this.fileList = editData.fileList;
     this._editData = editData;
     this.loading = false;
   }
@@ -81,8 +81,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
 
   submit(value: any) {
     console.log(value);
-    console.log(this.sf.getValue('/sktmUpload'));
-    value.fileList = this.fileList;
+    // console.log(this.sf.getValue('/sktmUpload'));
+    // value.fileList = this.fileList;
     this.saveData.emit({ value: value, mode: this.mode });
     // const processedData = this.processData(value);
     // !this.create
@@ -131,6 +131,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       },
       usiaSaatKlien: {
         type: 'number',
+        minimum: 0,
         title: 'Usia Saat Ini',
       },
       sktm: {
@@ -142,12 +143,26 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         },
         default: false,
       },
-      stmKeterangan: {
+      sktmPilihan: {
         type: 'string',
         title: 'Keterangan SKTM',
         ui: {
+          widget: 'select',
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(81, 'teks'),
+          visibleIf: {
+            sktm: value => value,
+          },
+        },
+      },
+      stmKeterangan: {
+        type: 'string',
+        title: 'Dokumen Pengganti Surat Keterangan Miskin',
+        ui: {
           widget: 'textarea',
           autosize: { minRows: 2, maxRows: 6 },
+          visibleIf: {
+            sktmPilihan: value => value === 'Dokumen Lain Sebagai Pengganti Surat Keterangan Miskin',
+          },
         },
       },
       pendapatan: {
@@ -160,7 +175,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       },
       alamatLokasi: {
         type: 'string',
-        title: 'Alamat Sekarang',
+        title: 'Posisi Persis',
         ui: {
           widget: 'textarea',
           autosize: { minRows: 2, maxRows: 6 },
@@ -168,18 +183,22 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       },
       tanggunganPasangan: {
         type: 'number',
+        minimum: 0,
         title: 'Jumlah tanggungan istri/suami',
       },
       tanggunganAnak: {
         type: 'number',
+        minimum: 0,
         title: 'Jumlah tanggungan anak',
       },
       tanggunganFamili: {
         type: 'number',
+        minimum: 0,
         title: 'Jumlah tanggungan famili',
       },
       tanggunganLain: {
         type: 'number',
+        minimum: 0,
         title: 'Jumlah tanggungan lainnya',
       },
       asetRumah: {
@@ -262,16 +281,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
           autosize: { minRows: 2, maxRows: 6 },
         },
       },
-      sktmUpload: {
-        type: 'string',
-        title: 'SKTM Upload',
-        ui: {
-          widget: 'custom',
-          visibleIf: {
-            sktm: (value: any) => value,
-          },
-        },
-      },
     },
     required: ['personId'],
 
@@ -296,6 +305,9 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   closeModalAndSaveData(event: AllPerson.Persons) {
     this.modalInstance.close();
     this.sf.setValue('/personId', event);
+    const umur = moment().diff(moment(event.tglLahir), 'years');
+    console.log(umur);
+    if (umur) this.sf.setValue('/usiaSaatKlien', umur);
   }
 
   beforeUpload = (file: UploadFile, fileList: UploadFile[]) => {

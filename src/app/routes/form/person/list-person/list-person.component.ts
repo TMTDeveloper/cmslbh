@@ -64,6 +64,8 @@ export class ListPersonComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      fixed: 'left',
+      width: '120px',
     },
 
     {
@@ -129,7 +131,7 @@ export class ListPersonComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.persons = this.allPersonGQL.watch(this.searchGenerator(), {
-      fetchPolicy: 'cache-first',
+      fetchPolicy: 'no-cache',
     });
     this.loading = true;
     this.personsObs = this.persons.valueChanges
@@ -138,7 +140,6 @@ export class ListPersonComponent implements OnInit, OnDestroy {
         tap(() => (this.loading = false)),
       )
       .subscribe(res => {
-        console.log(res);
         this.data = res;
         this.cdr.detectChanges();
       });

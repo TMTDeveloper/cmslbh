@@ -73,6 +73,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           click: (item: any) => {
             this.router.navigateByUrl('form/case/view/' + item.caseId.id);
           },
+          iif: (item: any) => item.caseId,
         },
         {
           text: 'Batalkan',
@@ -135,6 +136,8 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      fixed: 'left',
+      width: '120px',
     },
     {
       title: 'Tgl Request',
@@ -294,43 +297,109 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
   }
 
   searchGenerator(): GetLogRequest.Variables {
-    if (this.aclService.data.roles.find(el => el === '2'))
+    if (this.aclService.data.roles.find(el => el === '2' || el === '1'))
       return <GetLogRequest.Variables>{
-        where: { jenisRequest: '1011' },
-      };
-    if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
-    if (this.q.ppName || this.q.clientName || this.q.noReg) {
-      return <GetLogRequest.Variables>{
-        where: <LogRequestWhereInput>{
-          OR: <LogRequestWhereInput[]>[
-            this.aclService.data.roles.find(el => el === '3' || el === '4')
-              ? { pp_some: { appConsultation: { id: this.settingService.user.id } } }
+        where: {
+          jenisRequest: '1011',
+          AND: [
+            this.q.ppName !== null
+              ? {
+                  pp_some: {
+                    appConsultation: {
+                      name_contains: this.q.ppName,
+                    },
+                  },
+                }
               : {},
-            {
-              pp_some: { appConsultation: { name_contains: this.q.ppName === '' ? null : this.q.ppName } },
-            },
-            {
-              jenisRequest: '1011',
-            },
-            {
-              applicationId: {
-                clients_some: {
-                  personId: { namaLengkap_contains: this.q.clientName === '' ? null : this.q.clientName },
-                },
-              },
-            },
-            {
-              applicationId: {
-                noReg_contains: this.q.noReg === '' ? null : this.q.noReg,
-              },
-            },
+            this.q.clientName !== null
+              ? {
+                  applicationId: {
+                    clients_some: {
+                      personId: { namaLengkap_contains: this.q.clientName },
+                    },
+                  },
+                }
+              : {},
+            this.q.noReg !== null
+              ? {
+                  applicationId: {
+                    noReg_contains: this.q.noReg,
+                  },
+                }
+              : {},
           ],
         },
       };
-    }
+    if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
+    // if (this.q.ppName || this.q.clientName || this.q.noReg) {
+    //   return <GetLogRequest.Variables>{
+    //     where: <LogRequestWhereInput>{
+    //       OR: <LogRequestWhereInput[]>[
+    //         this.aclService.data.roles.find(el => el === '3' || el === '4')
+    //           ? { pp_some: { appConsultation: { id: this.settingService.user.id } } }
+    //           : {},
+    //         {
+    //           pp_some: { appConsultation: { name_contains: this.q.ppName === '' ? null : this.q.ppName } },
+    //         },
+    //         {
+    //           jenisRequest: '1011',
+    //         },
+    //         {
+    //           applicationId: {
+    //             clients_some: {
+    //               personId: { namaLengkap_contains: this.q.clientName === '' ? null : this.q.clientName },
+    //             },
+    //           },
+    //         },
+    //         {
+    //           applicationId: {
+    //             noReg_contains: this.q.noReg === '' ? null : this.q.noReg,
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   };
+    // }
+    console.log('masuk sini');
     return <GetLogRequest.Variables>{
       where: <LogRequestWhereInput>this.aclService.data.roles.find(el => el === '3' || el === '4')
-        ? { pp_some: { appConsultation: { id: this.settingService.user.id } }, jenisRequest: '1011' }
+        ? {
+            jenisRequest: '1011',
+            AND: [
+              {
+                pp_some: {
+                  appConsultation: {
+                    id: Number(this.settingService.user.id),
+                  },
+                },
+              },
+              this.q.ppName !== null
+                ? {
+                    pp_some: {
+                      appConsultation: {
+                        name_contains: this.q.ppName,
+                      },
+                    },
+                  }
+                : {},
+              this.q.clientName !== null
+                ? {
+                    applicationId: {
+                      clients_some: {
+                        personId: { namaLengkap_contains: this.q.clientName },
+                      },
+                    },
+                  }
+                : {},
+              this.q.noReg !== null
+                ? {
+                    applicationId: {
+                      noReg_contains: this.q.noReg,
+                    },
+                  }
+                : {},
+            ],
+          }
         : {},
     };
   }
@@ -401,7 +470,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           },
           listAPP: {
             type: 'string',
-            title: 'APP',
+            title: 'APBH',
             ui: {
               widget: 'select',
               mode: 'tags',
@@ -489,7 +558,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
       },
       listAPP: {
         type: 'string',
-        title: 'APP',
+        title: 'APBH',
         ui: {
           widget: 'select',
           mode: 'tags',

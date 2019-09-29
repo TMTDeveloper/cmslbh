@@ -8,7 +8,7 @@ import {
   ElementRef,
   Input,
 } from '@angular/core';
-import { STColumn } from '@delon/abc';
+import { STColumn, STComponent } from '@delon/abc';
 import { NzMessageService, NzTabChangeEvent, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient, SettingsService } from '@delon/theme';
 import {
@@ -28,11 +28,23 @@ import {
   CaseProgressActivityLitCreateWithoutCaseProgressActivityIdInput,
   DestroyCaseProgressActivity,
   DestroyCaseProgressActivityGQL,
+  AllPerson,
+  CaseKorbanCreateWithoutCaseIdInput,
+  CasePelakuCreateWithoutCaseIdInput,
+  CaseViolatedRightCreateWithoutCaseIdInput,
+  DestroyKorbanGQL,
+  DestroyPelakuGQL,
+  DestroyCaseViolatedRightGQL,
+  DestroyCaseClassificationGQL,
+  CaseClassificationWhereInput,
+  CaseClassificationCreateWithoutCaseIdInput,
+  DestroyLitGQL,
+  DestroyNonlitGQL,
 } from '@shared';
 import { QueryRef } from 'apollo-angular';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { switchMap, map, tap, take } from 'rxjs/operators';
-import { Subscription, Observable } from 'rxjs';
+import { switchMap, map, tap, take, delay } from 'rxjs/operators';
+import { Subscription, Observable, of } from 'rxjs';
 import { ApolloQueryResult } from 'apollo-client';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { MtVocabHelper } from '@shared/helper';
@@ -47,12 +59,26 @@ import { SFSchema, SFComponent } from '@delon/form';
 export class ViewCaseComponent implements OnInit, OnDestroy {
   @ViewChild('card') card: ElementRef;
   @ViewChild('sfUmum') sfUmum: SFComponent;
+  @ViewChild('sfListPerson') sfListPerson: SFComponent;
+  @ViewChild('stKorban') stKorban: STComponent;
+  @ViewChild('stPelaku') stPelaku: STComponent;
+  @ViewChild('stAktifitasPendampingan') stAktifitasPendampingan: STComponent;
+  @ViewChild('stLampiranDokumen') stLampiranDokumen: STComponent;
   @ViewChild('modalContentKonsultasi') modalContentKonsultasi: TemplateRef<{}>;
+  @ViewChild('modalContentAktifitasPendampingan') modalContentAktifitasPendampingan: TemplateRef<{}>;
+  @ViewChild('modalLampiranDokumenView') modalLampiranDokumenView: TemplateRef<{}>;
+  @ViewChild('modalLampiranDokumen') modalLampiranDokumen: TemplateRef<{}>;
   @ViewChild('modalContentKonsultasiView') modalContentKonsultasiView: TemplateRef<{}>;
   @ViewChild('modalContentAktifitasView') modalContentAktifitasView: TemplateRef<{}>;
+  @ViewChild('listPerson') listPerson: TemplateRef<{}>;
   @Input() parent: boolean;
   @Input() caseParam: string;
   list: any[] = [];
+  korbanData: any[] = [];
+  pelakuData: any[] = [];
+  deletedKorban: any[] = [];
+  deletedPelaku: any[] = [];
+  korbanOrPelaku: string;
 
   opColumns: STColumn[] = [
     { title: '操作类型', index: 'type' },
@@ -90,6 +116,12 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     private putCaseGQL: PutCaseGQL,
     private settingService: SettingsService,
     private destoryCaseProgressActivity: DestroyCaseProgressActivityGQL,
+    private destroyKorban: DestroyKorbanGQL,
+    private destroyPelaku: DestroyPelakuGQL,
+    private destroyCaseViolatedRight: DestroyCaseViolatedRightGQL,
+    private destroyCaseClassification: DestroyCaseClassificationGQL,
+    private destroyLitGQL: DestroyLitGQL,
+    private destroyNonlitGQL: DestroyNonlitGQL,
   ) {
     if ((this.kabid = this.settingService.user.roles_type.find(el => el.type.id === 5))) {
       this.kabid = true;
@@ -238,16 +270,60 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     this.list = this.data[`advancedOperation${args.index + 1}`];
   }
 
-  translateMtVocab() {
+  async translateMtVocab() {
     this.data.application.statusPerwakilanTeks = this.mtVocabHelper.translateMtVocab(
       this.data.application.statusPerwakilan,
     );
+    this.data.application.tahapteks = this.mtVocabHelper.translateMtVocab(this.data.application.tahap);
     if ('progresses' in this.data) {
       if (this.data.progresses) {
         if ('jenisPeradilan' in this.data.progresses) {
           this.data.progresses.jenisPeradilanTeks = this.mtVocabHelper.translateMtVocab(
             this.data.progresses.jenisPeradilan,
           );
+        }
+      }
+    }
+    if ('caseClosedJenis' in this.data) {
+      if (this.data.caseClosedJenis) {
+        this.data.caseClosedJenisTeks = this.mtVocabHelper.translateMtVocab(this.data.caseClosedJenis);
+      }
+    }
+    if ('violatedrights' in this.data) {
+      if (this.data.violatedrights) {
+        this.data.violatedrights.forEach(async element => {
+          element.mtvocabteks = await this.mtVocabHelper.translateMtVocab(element.kodeMt);
+        });
+      }
+    }
+    if ('classifications' in this.data) {
+      if (this.data.classifications) {
+        this.data.classifications.forEach(async element => {
+          element.mtvocabteks = await this.mtVocabHelper.translateMtVocab(element.kodeMt);
+        });
+      }
+    }
+
+    if ('documents' in this.data) {
+      if (this.data.documents) {
+        this.data.documents.forEach(element => {
+          element.mtvocabteks = this.mtVocabHelper.translateMtVocab(element.jenisDokumen);
+        });
+      }
+    }
+    if ('activities' in this.data) {
+      if (this.data.activities) {
+        for (const a of this.data.activities) {
+          if (a.activitieslit.length > 0) {
+            a.activitieslit.forEach(element => {
+              element.mtvocabteks = this.mtVocabHelper.translateMtVocab(element.kodeMt);
+            });
+          }
+          if (a.activitiesnonlit.length > 0) {
+            a.activitiesnonlit.forEach(element => {
+              element.mtvocabteks = this.mtVocabHelper.translateMtVocab(element.kodeMt);
+            });
+          }
         }
       }
     }
@@ -264,6 +340,60 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
     }
     return concattedText;
+  }
+
+  translateHakTerdampak() {
+    if (!this.data.violatedrights) return '';
+    const formatText = this.data.violatedrights.map(val => {
+      return val.mtvocabteks;
+    });
+
+    formatText.sort();
+    let concattedText = '';
+    for (const a of formatText) {
+      concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+    }
+    return concattedText;
+  }
+
+  translateKlasifikasiDokumen() {
+    if (!this.data.classifications) return '';
+    const formatText = this.data.classifications.map(val => {
+      return val.mtvocabteks;
+    });
+
+    formatText.sort();
+    let concattedText = '';
+    for (const a of formatText) {
+      concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+    }
+    return concattedText;
+  }
+
+  translateKorbanPelaku(type: string) {
+    if (type === 'korban') {
+      if (!this.data.korbans) return '';
+      const formatText = this.data.korbans.map(val => {
+        return val.personId.namaLengkap;
+      });
+      formatText.sort();
+      let concattedText = '';
+      for (const a of formatText) {
+        concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+      }
+      return concattedText;
+    } else {
+      if (!this.data.pelakus) return '';
+      const formatText = this.data.pelakus.map(val => {
+        return val.personId.namaLengkap;
+      });
+      formatText.sort();
+      let concattedText = '';
+      for (const a of formatText) {
+        concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+      }
+      return concattedText;
+    }
   }
 
   translateStatusPk(data) {
@@ -309,15 +439,44 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       },
       kronologiKasus: {
         type: 'string',
-        title: 'Kronologi',
+        title: 'Deskripsi Kasus',
         ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
       },
-      targetAdvokasi: {
+      // targetAdvokasi: {
+      //   type: 'string',
+      //   title: 'Target Akhir Advokasi',
+      //   ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+      // },
+    },
+    ui: {
+      size: 'large',
+    },
+  };
+
+  schemaTerminasi: SFSchema = {
+    properties: {
+      caseClosed: {
+        type: 'boolean',
+        title: 'Apakah Kasus Sudah Ditutup',
+        description: 'Checklist jika kasus sudah ditutup',
+        ui: {
+          widget: 'checkbox',
+        },
+        default: false,
+      },
+      caseClosedJenis: {
         type: 'string',
-        title: 'Target Akhir Advokasi',
-        ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
+        title: 'Jenis Terminasi',
+        ui: {
+          visibleIf: {
+            caseClosed: (value: any) => value,
+          },
+          widget: 'select',
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(93, 'kode'),
+        },
       },
     },
+    required: ['caseClosedJenis'],
     ui: {
       size: 'large',
     },
@@ -332,8 +491,6 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           { value: '0111', label: 'Belum diputuskan' },
           { value: '4111', label: 'Tidak Didampingi' },
           { value: '5111', label: 'Transfer' },
-          { value: '6111', label: 'Didampingi' },
-          { value: '7111', label: 'Didampingi sebagai ghost lawyer' },
         ],
         ui: {
           widget: 'select',
@@ -350,9 +507,35 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       jenisPeradilan: {
         type: 'string',
         title: 'Jenis Peradilan',
+        // ui: {
+        //   widget: 'select',
+        //   asyncData: () => this.mtVocabHelper.getMtVocabEnum(89, 'kode'),
+        // },
         ui: {
-          widget: 'select',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(89, 'kode'),
+          widget: 'tree-select',
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          asyncData: () => {
+            this.loading = true;
+            if (this.dataModalTemp.jenisPeradilan) {
+              return this.mtVocabHelper.getMtVocabWithChildren(89, this.dataModalTemp.jenisPeradilanEnum).pipe(res => {
+                this.loading = false;
+                return res;
+              });
+            }
+            return this.mtVocabHelper.getMtVocabParentTree(89).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+          expandChange: e => {
+            console.log(e);
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(89, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
         },
       },
       catatan: {
@@ -371,12 +554,34 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     properties: {
       judulAktifitas: {
         type: 'string',
-        title: 'Judul',
+        title: 'Judul Aktifitas',
       },
       tglAktifitas: {
         type: 'string',
-        title: 'Tanggal',
+        title: 'Tanggal Aktifitas',
         ui: { widget: 'date', mode: 'date', displayFormat: 'dd-MM-yyyy' },
+      },
+      activitieslit: {
+        type: 'string',
+        title: 'Aktifitas Litigasi',
+        ui: {
+          widget: 'select',
+          mode: 'tags',
+          allowClear: true,
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(83, 'kode'),
+        },
+        default: null,
+      },
+      activitiesnonlit: {
+        type: 'string',
+        title: 'Aktifitas Non-Litigasi',
+        ui: {
+          widget: 'select',
+          mode: 'tags',
+          allowClear: true,
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(84, 'kode'),
+        },
+        default: null,
       },
       position: {
         type: 'string',
@@ -385,7 +590,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       },
       targetAdvokasi: {
         type: 'string',
-        title: 'Target Advokasi',
+        title: 'Target',
         ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
       },
       capaian: {
@@ -403,26 +608,38 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
         title: 'Rencana Strategi',
         ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
       },
-      activitieslit: {
+    },
+    required: ['judulAktifitas', 'tglAktifitas'],
+    ui: {
+      size: 'large',
+    },
+  };
+
+  schemaLampiranDokumen: SFSchema = {
+    properties: {
+      jenisDokumen: {
         type: 'string',
-        title: 'Aktifitas Litigasi',
+        title: 'Jenis Dokumen',
         ui: {
           widget: 'select',
-          mode: 'tags',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(83, 'kode'),
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(91, 'kode'),
         },
       },
-      activitiesnonlit: {
+      judulDokumen: {
         type: 'string',
-        title: 'Aktifitas Non-Litigasi',
-        ui: {
-          widget: 'select',
-          mode: 'tags',
-          asyncData: () => this.mtVocabHelper.getMtVocabEnum(84, 'kode'),
-        },
+        title: 'Judul Dokumen',
+      },
+      link: {
+        type: 'string',
+        title: 'Link',
+      },
+      keterangan: {
+        type: 'string',
+        title: 'Keterangan',
+        ui: { widget: 'textarea', autosize: { minRows: 6, maxRows: 12 } },
       },
     },
-    required: ['judulAktifitas', 'tglAktifitas', 'activitieslit', 'activitiesnonlit'],
+    required: ['jenisDokumen'],
     ui: {
       size: 'large',
     },
@@ -471,8 +688,104 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           },
         },
       },
+      targetAkhirAdvokasi: {
+        type: 'string',
+        title: 'Target Akhir Advokasi',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 6, maxRows: 12 },
+        },
+      },
+      strategiAdvokasi: {
+        type: 'string',
+        title: 'Strategi Advokasi',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 6, maxRows: 12 },
+        },
+      },
     },
     required: ['ppPendamping', 'didampingi', 'tglRapat', 'statusAlasanTdk'],
+    ui: {
+      size: 'large',
+    },
+  };
+
+  schemaAnalisa: SFSchema = {
+    properties: {
+      korban: {
+        type: 'string',
+        title: 'Korban',
+        readOnly: true,
+        ui: {
+          widget: 'custom',
+        },
+      },
+      pelaku: {
+        type: 'string',
+        title: 'Pelaku',
+        readOnly: true,
+        ui: {
+          widget: 'custom',
+        },
+      },
+      hakTerdampak: {
+        type: 'string',
+        title: 'Hak Terdampak',
+        ui: {
+          widget: 'tree-select',
+          multiple: true,
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          asyncData: () => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabParentTree(3).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+          expandChange: e => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(3, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+        },
+      },
+    },
+    ui: {
+      size: 'large',
+    },
+  };
+
+  schemaKlasifikasiDokumen: SFSchema = {
+    properties: {
+      classifications: {
+        type: 'string',
+        title: 'Klasifikasi Pendokumenan',
+        ui: {
+          widget: 'tree-select',
+          multiple: true,
+          allowClear: true,
+          dropdownStyle: { 'max-height': '300px' },
+          asyncData: () => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabParentTree(72).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+          expandChange: e => {
+            this.loading = true;
+            return this.mtVocabHelper.getMtVocabChildTree(72, e.node.key).pipe(res => {
+              this.loading = false;
+              return res;
+            });
+          },
+        },
+      },
+    },
     ui: {
       size: 'large',
     },
@@ -508,6 +821,58 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     },
   };
 
+  submitAnalisa(data) {
+    console.log(data);
+    console.log(this.korbanData);
+
+    console.log('hoiii');
+    this.loading = true;
+    this.destroyKorban
+      .mutate({ where: { caseId: { id: this.data.id } } })
+      .toPromise()
+      .then(
+        res => {
+          this.loading = false;
+          this.loading = true;
+          this.destroyPelaku
+            .mutate({ where: { caseId: { id: this.data.id } } })
+            .toPromise()
+            .then(
+              // tslint:disable-next-line: no-shadowed-variable
+              res => {
+                this.loading = false;
+                this.loading = true;
+                this.destroyCaseViolatedRight
+                  .mutate({ where: { caseId: { id: this.data.id } } })
+                  .toPromise()
+                  .then(
+                    // tslint:disable-next-line: no-shadowed-variable
+                    res => {
+                      this.loading = false;
+                      console.log('siniwoii');
+                      this.dataMutationUpdateUmum(this.processAnalisa(data), { id: this.data.id });
+                    },
+                    error => {
+                      this.loading = false;
+                      this.msg.error(JSON.stringify(error));
+                    },
+                  );
+                // this.dataMutationUpdateUmum(this.processAktifitasPendampingan(data), { id: this.data.id });
+              },
+              error => {
+                this.loading = false;
+                this.msg.error(JSON.stringify(error));
+              },
+            );
+          // this.dataMutationUpdateUmum(this.processAktifitasPendampingan(data), { id: this.data.id });
+        },
+        error => {
+          this.loading = false;
+          this.msg.error(JSON.stringify(error));
+        },
+      );
+  }
+
   submitRapatPK(data) {
     console.log(data);
     this.dataMutationUpdateUmum(this.processDataRapatPK(data), { id: this.data.id });
@@ -523,40 +888,80 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     this.dataMutationUpdateUmum(this.processCatatanPendampingan(data), { id: this.data.id });
   }
 
+  submitLampiranDokumen(data) {
+    console.log(data);
+    this.dataMutationUpdateUmum(this.processLampiranDokumen(data), { id: this.data.id });
+  }
+
   submitAktifitasPendampingan(data) {
+    this.loading = true;
     console.log(data);
     if (this.modeEditModal === 'edit') {
       console.log('hoiii');
-      this.destoryCaseProgressActivity
-        .mutate({ where: { caseId: this.data.id } })
+
+      this.destroyNonlitGQL
+        .mutate({ where: { caseProgressActivityId: { id: data.id } } })
         .toPromise()
         .then(
           res => {
-            this.dataMutationUpdateUmum(this.processAktifitasPendampingan(data), { id: this.data.id });
+            this.destroyLitGQL
+              .mutate({ where: { caseProgressActivityId: { id: data.id } } })
+              .toPromise()
+              .then(result => {
+                this.loading = false;
+                this.dataMutationUpdateUmum(this.processAktifitasPendampingan(data), { id: this.data.id });
+              });
           },
           error => {
+            this.loading = false;
             this.msg.error(JSON.stringify(error));
           },
         );
     } else {
+      this.loading = false;
       this.dataMutationUpdateUmum(this.processAktifitasPendampingan(data), { id: this.data.id });
     }
   }
 
+  submitKlasifikasiDokumen(data) {
+    this.loading = true;
+    console.log(data);
+
+    console.log('hoiii');
+
+    this.destroyCaseClassification
+      .mutate({ where: { caseId: { id: this.data.id } } })
+      .toPromise()
+      .then(
+        res => {
+          this.loading = false;
+          this.dataMutationUpdateUmum(this.processKlasifikasiDokumen(data), { id: this.data.id });
+        },
+        error => {
+          this.loading = false;
+          this.msg.error(JSON.stringify(error));
+        },
+      );
+  }
+
   processAktifitasPendampingan(data): CaseUpdateInput | string {
     if ('activities' in this.data) {
-      if (this.data.activites) {
+      if (this.modeEditModal === 'edit') {
         const activitieslit = <CaseProgressActivityLitCreateWithoutCaseProgressActivityIdInput[]>[];
-        for (const a of data.activitieslit) {
-          activitieslit.push({
-            kodeMt: a,
-          });
+        if (data.activitieslit) {
+          for (const a of data.activitieslit) {
+            activitieslit.push({
+              kodeMt: a,
+            });
+          }
         }
         const activitiesnonlit = <CaseProgressActivityLitCreateWithoutCaseProgressActivityIdInput[]>[];
-        for (const a of data.activitiesnonlit) {
-          activitiesnonlit.push({
-            kodeMt: a,
-          });
+        if (data.activitiesnonlit) {
+          for (const a of data.activitiesnonlit) {
+            activitiesnonlit.push({
+              kodeMt: a,
+            });
+          }
         }
         return <CaseUpdateInput>{
           activities: {
@@ -571,8 +976,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
                   rencanaStrategi: data.rencanaStrategi,
                   targetAdvokasi: data.targetAdvokasi,
                   tglAktifitas: moment(data.tglAktifitas).toDate(),
-                  activitieslit: { create: activitieslit },
-                  activitiesnonlit: { create: activitiesnonlit },
+                  activitieslit: activitieslit.length !== 0 ? { create: activitieslit } : null,
+                  activitiesnonlit: activitiesnonlit.length !== 0 ? { create: activitiesnonlit } : null,
                   updatedBy: this.settingService.user.name,
                 },
                 where: { id: data.id },
@@ -583,16 +988,21 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       } else {
         console.log('masuksini');
         const activitieslit = <CaseProgressActivityLitCreateWithoutCaseProgressActivityIdInput[]>[];
-        for (const a of data.activitieslit) {
-          activitieslit.push({
-            kodeMt: a,
-          });
+        if (data.activitieslit) {
+          for (const a of data.activitieslit) {
+            activitieslit.push({
+              kodeMt: a,
+            });
+          }
         }
+
         const activitiesnonlit = <CaseProgressActivityLitCreateWithoutCaseProgressActivityIdInput[]>[];
-        for (const a of data.activitiesnonlit) {
-          activitiesnonlit.push({
-            kodeMt: a,
-          });
+        if (data.activitiesnonlit) {
+          for (const a of data.activitiesnonlit) {
+            activitiesnonlit.push({
+              kodeMt: a,
+            });
+          }
         }
         return <CaseUpdateInput>{
           activities: {
@@ -606,8 +1016,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
                 rencanaStrategi: data.rencanaStrategi,
                 targetAdvokasi: data.targetAdvokasi,
                 tglAktifitas: moment(data.tglAktifitas).toDate(),
-                activitieslit: { create: activitieslit },
-                activitiesnonlit: { create: activitiesnonlit },
+                activitieslit: activitieslit.length !== 0 ? { create: activitieslit } : null,
+                activitiesnonlit: activitiesnonlit.length !== 0 ? { create: activitiesnonlit } : null,
               },
             ],
           },
@@ -616,10 +1026,44 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     }
   }
 
+  processAnalisa(data): CaseUpdateInput | string {
+    const korban = <CaseKorbanCreateWithoutCaseIdInput[]>[];
+    const pelaku = <CasePelakuCreateWithoutCaseIdInput[]>[];
+    const violatedRight = <CaseViolatedRightCreateWithoutCaseIdInput[]>[];
+    for (const a of this.korbanData) {
+      korban.push({ personId: { connect: { id: a.id } } });
+    }
+    for (const a of this.pelakuData) {
+      pelaku.push({ personId: { connect: { id: a.id } } });
+    }
+    for (const a of data.hakTerdampak) {
+      violatedRight.push({ kodeMt: a });
+    }
+
+    return <CaseUpdateInput>{
+      korbans: { create: korban },
+      pelakus: { create: pelaku },
+      violatedrights: { create: violatedRight },
+    };
+  }
+
+  processKlasifikasiDokumen(data): CaseUpdateInput | string {
+    const classification = <CaseClassificationCreateWithoutCaseIdInput[]>[];
+
+    for (const a of data.classifications) {
+      classification.push({ kodeMt: a });
+    }
+
+    return <CaseUpdateInput>{
+      classifications: { create: classification },
+    };
+  }
+
   processCatatanPendampingan(data): CaseUpdateInput | string {
     if ('progresses' in this.data) {
       if (this.data.progresses !== null) {
         return <CaseUpdateInput>{
+          application: { update: { tahap: '3012' } },
           progresses: {
             update: {
               catatan: data.catatan,
@@ -631,6 +1075,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       } else {
         console.log('masuksini');
         return <CaseUpdateInput>{
+          application: { update: { tahap: '3012' } },
           updatedBy: this.settingService.user.name,
           progresses: <CaseProgressUpdateOneWithoutCaseIdInput>{
             create: <CaseProgressCreateWithoutCaseIdInput>{
@@ -642,6 +1087,41 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           },
         };
       }
+    }
+  }
+
+  processLampiranDokumen(data): CaseUpdateInput | string {
+    if (this.modeEditModal === 'add') {
+      return <CaseUpdateInput>{
+        documents: {
+          create: [
+            {
+              createdBy: this.settingService.user.name,
+              jenisDokumen: data.jenisDokumen,
+              judulDokumen: data.judulDokumen,
+              keterangan: data.keterangan,
+              link: data.link,
+            },
+          ],
+        },
+      };
+    } else {
+      return <CaseUpdateInput>{
+        documents: {
+          update: [
+            {
+              data: {
+                jenisDokumen: data.jenisDokumen,
+                judulDokumen: data.judulDokumen,
+                keterangan: data.keterangan,
+                link: data.link,
+                updatedBy: this.settingService.user.name,
+              },
+              where: { id: data.id },
+            },
+          ],
+        },
+      };
     }
   }
 
@@ -692,6 +1172,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
               didampingi: data.didampingi,
               ppPendamping: { connect: { id: data.ppPendamping } },
               statusAlasanTdk: '',
+              targetAkhirAdvokasi: data.targetAkhirAdvokasi,
+              strategiAdvokasi: data.strategiAdvokasi,
             },
           },
           transfer: 'transfer' in this.data ? (this.data.transfer !== null ? { delete: true } : null) : null,
@@ -705,6 +1187,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
               tglRapat: moment(data.tglRapat).toDate(),
               updatedBy: this.settingService.user.name,
               didampingi: data.didampingi,
+              targetAkhirAdvokasi: data.targetAkhirAdvokasi,
+              strategiAdvokasi: data.strategiAdvokasi,
               ppPendamping:
                 'ppPendamping' in this.data.pk
                   ? this.data.pk.ppPendamping !== null
@@ -725,6 +1209,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
               tglRapat: moment(data.tglRapat).toDate(),
               updatedBy: this.settingService.user.name,
               didampingi: data.didampingi,
+              targetAkhirAdvokasi: data.targetAkhirAdvokasi,
+              strategiAdvokasi: data.strategiAdvokasi,
               ppPendamping:
                 'ppPendamping' in this.data.pk
                   ? this.data.pk.ppPendamping !== null
@@ -751,6 +1237,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
               updatedBy: this.settingService.user.name,
               didampingi: data.didampingi,
               ppPendamping: { connect: { id: data.ppPendamping } },
+              targetAkhirAdvokasi: data.targetAkhirAdvokasi,
+              strategiAdvokasi: data.strategiAdvokasi,
               statusAlasanTdk: '',
             },
           },
@@ -767,6 +1255,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
               updatedBy: this.settingService.user.name,
               didampingi: data.didampingi,
               ppPendamping: { connect: { id: data.ppPendamping } },
+              targetAkhirAdvokasi: data.targetAkhirAdvokasi,
+              strategiAdvokasi: data.strategiAdvokasi,
               statusAlasanTdk: '',
             },
           },
@@ -779,7 +1269,43 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     console.log(data);
     this.dataMutationUpdateUmum(data, { id: this.data.id });
   }
+
+  submitPenangananLebihLanjut(data) {
+    console.log(data);
+    this.dataMutationUpdateUmum(this.processPenangananLebihLanjut(data), { id: this.data.id });
+  }
+
+  processPenangananLebihLanjut(data): CaseUpdateInput | string {
+    return <CaseUpdateInput>{
+      statusPendampingan: data.statusPendampingan,
+      updatedBy: this.settingService.user.name,
+    };
+  }
+
+  submitTerminasi(data) {
+    console.log(data);
+    this.dataMutationUpdateUmum(this.processTerminasi(data), { id: this.data.id });
+  }
+
+  processTerminasi(data): CaseUpdateInput | string {
+    return <CaseUpdateInput>{
+      caseClosed: data.caseClosed,
+      caseClosedJenis: data.caseClosedJenis,
+      application: { update: { tahap: '4012' } },
+    };
+  }
+
   editUmum(tpl: TemplateRef<{}>, title: string) {
+    this.modalInstance = this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+
+  editRapatPK(tpl: TemplateRef<{}>, title: string) {
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
@@ -791,26 +1317,139 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   async openModalRapatPK(template: TemplateRef<{}>) {
     this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
+    if (!this.settingService.user.roles_type.find(el => el.type.id === 5)) {
+      this.msg.info('Hanya Kabid yang bisa mengedit hasil Rapat PK');
+      this.loading = false;
+      return;
+    }
+    if (!this.data.pk) {
+      this.msg.info('Tidak Ada Jadwal Rapat PK');
+      this.loading = false;
+      return;
+    }
 
+    if (!this.data.pk.tglRapat) {
+      this.msg.info('Tidak Ada Jadwal Rapat PK');
+      this.loading = false;
+      return;
+    }
+
+    if (!moment().isSameOrAfter(moment(this.data.pk.tglRapat), 'day')) {
+      this.msg.info('Hasil Rapat PK Baru Bisa Diedit Di Hari Rapat PK atau Setelahnya');
+      this.loading = false;
+      return;
+    }
+
+    if ('pk' in this.data) {
+      this.dataModalTemp = JSON.parse(JSON.stringify(this.data.pk));
+      if (this.dataModalTemp.ppPendamping) this.dataModalTemp.ppPendamping = this.dataModalTemp.ppPendamping.id;
+    }
+
+    this.editRapatPK(template, 'Edit Data Rapat PK');
+    this.loading = false;
+  }
+
+  async openModalTerminasi(template: TemplateRef<{}>) {
+    this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
     if (!this.settingService.user.roles_type.find(el => el.type.id === 5)) {
       this.msg.info('Hanya Kabid yang bisa mengedit hasil Rapat PK');
       this.loading = false;
       return;
     }
 
-    if ('pk' in this.data) {
-      this.dataModalTemp = this.data.pk;
-    }
+    this.dataModalTemp = {
+      caseClosed: this.data.caseClosed,
+      caseClosedJenis: this.data.caseClosedJenis,
+    };
 
     console.log(this.dataModalTemp);
 
-    this.editUmum(template, 'Edit Data Rapat PK');
+    this.editUmum(template, 'Edit Data Terminasi');
     this.loading = false;
+  }
+
+  async openModalAnalisa(template: TemplateRef<{}>) {
+    this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
+    const ppList = await this.mtVocabHelper.findHandlingPPArray(this.data.id);
+
+    if (!ppList[0].find(el => el.id === this.settingService.user.id)) {
+      this.msg.info('Anda Tidak Pernah Menangani Kasus Ini');
+      this.loading = false;
+      return;
+    }
+
+    this.korbanData = this.data.korbans.map(res => res.personId);
+    this.pelakuData = this.data.pelakus.map(res => res.personId);
+
+    const arrHakTerdampak = [];
+    for (const a of this.data.violatedrights) {
+      arrHakTerdampak.push(a.kodeMt);
+    }
+
+    this.dataModalTemp = {
+      hakTerdampak: arrHakTerdampak,
+    };
+    console.log(this.dataModalTemp);
+    // this.sfUmum. formData = {
+    //   judulKasus: this.data.judulKasus,
+    //   kronologiKasus: this.data.kronologiKasus,
+    //   targetAdvokasi: this.data.targetAdvokasi,
+    // };
+    this.editUmum(template, 'Edit Data Analisa');
+    this.loading = false;
+  }
+
+  openModalListPerson(type: string) {
+    this.korbanOrPelaku = type;
+    this.add(this.listPerson, 'Pilih Person');
+  }
+  add(tpl: TemplateRef<{}>, title: string) {
+    this.modalInstance = this.modalSrv.create({
+      nzTitle: title,
+      nzContent: tpl,
+      nzWidth: this.card.nativeElement.offsetWidth,
+      nzFooter: null,
+      nzBodyStyle: {},
+    });
+  }
+  closeModalAndSaveData(event: AllPerson.Persons) {
+    if (this.korbanOrPelaku === 'korban') {
+      this.modalInstance.close();
+      this.sfListPerson.setValue('/korban', event);
+      this.korbanData.push(event);
+      console.log(this.korbanData);
+      this.stKorban.reload();
+    } else {
+      this.modalInstance.close();
+      this.sfListPerson.setValue('/pelaku', event);
+      this.pelakuData.push(event);
+      console.log(this.pelakuData);
+      this.stPelaku.reload();
+    }
   }
 
   async openModalTransfer(template: TemplateRef<{}>) {
     this.loading = true;
-
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
     if (!this.settingService.user.roles_type.find(el => el.type.id === 5)) {
       this.msg.info('Hanya Kabid yang bisa mengedit form Transfer');
       this.loading = false;
@@ -838,12 +1477,13 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(this.dataModalTemp);
     if ('transfer' in this.data) {
       if (this.data.transfer !== null) {
         this.dataModalTemp = this.data.transfer;
+        this.dataModalTemp.network = this.data.transfer.network.id;
       }
     }
+    console.log(this.dataModalTemp);
 
     this.editUmum(template, 'Edit Data Transfer');
     this.loading = false;
@@ -851,6 +1491,11 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   async openCatatanPendampingan(template: TemplateRef<{}>) {
     this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
     if (this.data.pk !== null) {
       if ('ppPendamping' in this.data.pk) {
         if (this.data.pk.ppPendamping.id !== this.settingService.user.id) {
@@ -865,7 +1510,39 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       return;
     }
     if ('progresses' in this.data) {
-      this.dataModalTemp = this.data.progresses;
+      this.dataModalTemp = JSON.parse(JSON.stringify(this.data.progresses));
+
+      if (this.dataModalTemp.jenisPeradilan) {
+        const arrjenisPeradilan = (await this.mtVocabHelper.findParent(this.dataModalTemp.jenisPeradilan)).reverse();
+        console.log(arrjenisPeradilan);
+        let longEnumjenisPeradilan: any;
+        let ind = -1;
+        for (const b of arrjenisPeradilan) {
+          const titleAsync = await this.mtVocabHelper.translateMtVocab(b);
+          ind++;
+          switch (ind) {
+            case 0:
+              longEnumjenisPeradilan = {
+                title: titleAsync,
+                key: b,
+                children: [],
+              };
+              break;
+            case 1:
+              longEnumjenisPeradilan.children.push({
+                title: titleAsync,
+                key: b,
+                children: [],
+              });
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        this.dataModalTemp.jenisPeradilanEnum = longEnumjenisPeradilan;
+      }
     }
 
     console.log(this.dataModalTemp);
@@ -876,6 +1553,11 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
 
   async openAktifitasPendampinganAdd(template: TemplateRef<{}>) {
     this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
     if (this.data.pk !== null) {
       if ('ppPendamping' in this.data.pk) {
         if (this.data.pk.ppPendamping.id !== this.settingService.user.id) {
@@ -899,8 +1581,29 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
+  async openLampiranDokumenAdd(template: TemplateRef<{}>) {
+    if (!this.settingService.user.roles_type.find(el => el.type.id === 6)) {
+      this.msg.info('Hanya Dokumentalis yang bisa menambah Dokumen');
+      this.loading = false;
+      return;
+    }
+    this.loading = true;
+
+    this.modeEditModal = 'add';
+    this.dataModalTemp = {};
+    console.log(this.dataModalTemp);
+    this.editAktifitasPendampingan(template, 'Add Data Lampiran Dokumen');
+    this.loading = false;
+  }
+
   async openModalUmum(template: TemplateRef<{}>) {
     this.loading = true;
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
+
     const ppList = await this.mtVocabHelper.findHandlingPPArray(this.data.id);
 
     if (!ppList[0].find(el => el.id === this.settingService.user.id)) {
@@ -924,9 +1627,38 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
+  async openModalKlasifikasiDokumen(template: TemplateRef<{}>) {
+    this.loading = true;
+    if (!this.settingService.user.roles_type.find(el => el.type.id === 6)) {
+      this.msg.info('Hanya Dokumentalis yang bisa mengedit Dokumen');
+      this.loading = false;
+      return;
+    }
+    const arrKlasifikasiDokumen = [];
+    for (const a of this.data.classifications) {
+      arrKlasifikasiDokumen.push(a.kodeMt);
+    }
+    this.dataModalTemp = {
+      classifications: arrKlasifikasiDokumen,
+    };
+    console.log(this.dataModalTemp);
+    // this.sfUmum. formData = {
+    //   judulKasus: this.data.judulKasus,
+    //   kronologiKasus: this.data.kronologiKasus,
+    //   targetAdvokasi: this.data.targetAdvokasi,
+    // };
+    this.editUmum(template, 'Edit Data Klasifikasi Dokumen');
+    this.loading = false;
+  }
+
   async openModalPenangananLebihLanjut(template: TemplateRef<{}>) {
     this.loading = true;
-    const ppList = await this.mtVocabHelper.findHandlingPPArray(this.data.id);
+    if (this.data.application.tahap === '4012') {
+      this.msg.info('Kasus Sudah Diterminasi');
+      this.loading = false;
+      return;
+    }
+    // const ppList = await this.mtVocabHelper.findHandlingPPArray(this.data.id);
 
     if ('pk' in this.data) {
       if (this.data.pk !== null) {
@@ -950,8 +1682,10 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   }
 
   dataMutationUpdateUmum(data: CaseUpdateInput | string, id: CaseWhereUniqueInput) {
+    this.loading = true;
     if (typeof data === 'string') {
       this.msg.info(data);
+      this.loading = false;
       return;
     }
     console.log(data);
@@ -960,11 +1694,15 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(
         () => {
+          this.loading = false;
           this.msg.success('Data Berhasil Diubah');
           this.getData();
           if (this.modalInstance) this.modalInstance.close();
+          if (this.modalInstance) this.modalSrv.closeAll();
+          this.translateMtVocab();
         },
         error => {
+          this.loading = false;
           this.msg.error('Data Gagal Diubah');
           this.msg.error(JSON.stringify(error));
         },
@@ -1113,6 +1851,25 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     this.editKonsultasi(template, 'Edit Data Konsultasi');
   }
 
+  openModalAktifitasEdit(template: TemplateRef<{}>, data) {
+    this.modeEditModal = 'edit';
+    this.dataModalTemp = {};
+    this.dataModalTemp = data;
+    this.dataModalTemp.activitieslit = data.activitieslit.map(res => res.kodeMt);
+    this.dataModalTemp.activitiesnonlit = data.activitiesnonlit.map(res => res.kodeMt);
+    console.log(this.dataModalTemp);
+
+    this.editKonsultasi(template, 'Edit Data Aktifitas Pendampingan');
+  }
+
+  openModalLampiranDokumenEdit(template: TemplateRef<{}>, data) {
+    this.modeEditModal = 'edit';
+
+    this.dataModalTemp = data;
+    console.log(this.dataModalTemp);
+    this.editKonsultasi(template, 'Edit Data Lampiran Dokumen');
+  }
+
   async openModalKonsultasiView(template: TemplateRef<{}>, data) {
     const listPP = await this.mtVocabHelper.findHandlingPPString(this.data.id);
 
@@ -1154,6 +1911,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
   columnsConsultation: STColumn[] = [
     {
       title: 'Action',
+      fixed: 'left',
+      width: '120px',
       buttons: [
         {
           text: 'Edit',
@@ -1200,7 +1959,7 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
       },
     },
     {
-      title: 'APP',
+      title: 'APBH',
       index: 'applicationId.clients',
       format: (item, col) => {
         item.apps.forEach((el, ind, obj) => {
@@ -1222,6 +1981,60 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     },
   ];
 
+  columnsKorban: STColumn[] = [
+    {
+      title: 'Nama Lengkap',
+      index: 'namaLengkap',
+    },
+    {
+      title: 'Action',
+      fixed: 'left',
+      width: '120px',
+      buttons: [
+        {
+          text: 'Delete',
+          click: (item: any) => {
+            this.korbanData.forEach((el, ind) => {
+              if (el.id === item.id) {
+                this.korbanData.splice(ind, 1);
+              }
+            });
+            if (item.id) this.deletedKorban.push({ id: item.id });
+            this.stKorban.removeRow(item);
+            this.sfListPerson.setValue('/korban', this.korbanData);
+          },
+        },
+      ],
+    },
+  ];
+
+  columnsPelaku: STColumn[] = [
+    {
+      title: 'Nama Lengkap',
+      index: 'namaLengkap',
+    },
+    {
+      title: 'Action',
+      fixed: 'left',
+      width: '120px',
+      buttons: [
+        {
+          text: 'Delete',
+          click: (item: any) => {
+            this.pelakuData.forEach((el, ind) => {
+              if (el.id === item.id) {
+                this.pelakuData.splice(ind, 1);
+              }
+            });
+            if (item.id) this.deletedPelaku.push({ id: item.id });
+            this.stPelaku.removeRow(item);
+            this.sfListPerson.setValue('/pelaku', this.pelakuData);
+          },
+        },
+      ],
+    },
+  ];
+
   columnsCatatanPendampingan: STColumn[] = [
     {
       title: 'Action',
@@ -1229,10 +2042,12 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
         {
           text: 'Edit',
           click: (item: any) => {
-            this.openModalKonsultasiEdit(this.modalContentKonsultasi, item);
+            this.openModalAktifitasEdit(this.modalContentAktifitasPendampingan, item);
           },
           iif: (item: any) => {
-            return this.checkEligibleConsultationEdit();
+            return (
+              this.data.pk.ppPendamping.id === this.settingService.user.id && this.data.application.tahap !== '4012'
+            );
           },
         },
         {
@@ -1242,6 +2057,8 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
           },
         },
       ],
+      fixed: 'left',
+      width: '120px',
     },
     {
       title: 'Tanggal',
@@ -1255,6 +2072,72 @@ export class ViewCaseComponent implements OnInit, OnDestroy {
     {
       title: 'Judul Aktifitas',
       index: 'judulAktifitas',
+    },
+  ];
+
+  columnsLampiranDokumen: STColumn[] = [
+    {
+      title: 'Action',
+      buttons: [
+        {
+          text: 'Edit',
+          click: (item: any) => {
+            this.openModalLampiranDokumenEdit(this.modalLampiranDokumen, item);
+          },
+          iif: (item: any) => {
+            if (!this.settingService.user.roles_type.find(el => el.type.id === 6)) {
+              return false;
+            } else {
+              return true;
+            }
+          },
+        },
+        {
+          text: 'View',
+          click: (item: any) => {
+            this.openModalLampiranDokumenEdit(this.modalLampiranDokumenView, item);
+          },
+        },
+      ],
+      fixed: 'left',
+      width: '120px',
+    },
+    {
+      title: 'Tanggal',
+      index: 'createdAt',
+      type: 'date',
+      sort: {
+        default: 'ascend',
+        compare: (a: any, b: any) => moment(b.createdAt).unix() - moment(a.createdAt).unix(),
+      },
+    },
+    {
+      title: 'Judul Dokumen',
+      index: 'judulDokumen',
+    },
+  ];
+
+  columnsReferral: STColumn[] = [
+    {
+      title: 'Tanggal Referral',
+      index: 'tglTransfer',
+      type: 'date',
+      sort: {
+        default: 'ascend',
+        compare: (a: any, b: any) => moment(b.tglTransfer).unix() - moment(a.tglTransfer).unix(),
+      },
+    },
+    {
+      title: 'Klien',
+      index: 'client.namaLengkap',
+    },
+    {
+      title: 'Referral Ke',
+      index: 'network.name',
+    },
+    {
+      title: 'Catatan',
+      index: 'catatan',
     },
   ];
 

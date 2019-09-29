@@ -168,7 +168,7 @@ export type Application = {
   statusPerwakilan?: Maybe<Scalars['String']>,
   updatedAt: Scalars['DateTime'],
   updatedBy?: Maybe<Scalars['String']>,
-  wakilId: Person,
+  wakilId?: Maybe<Person>,
   waktuPernahKlien?: Maybe<Scalars['String']>,
   whyLbh?: Maybe<Scalars['String']>,
   case?: Maybe<Case>,
@@ -216,7 +216,7 @@ export type ApplicationCreateInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId: PersonCreateOneWithoutApplicationsInput,
+  wakilId?: Maybe<PersonCreateOneWithoutApplicationsInput>,
   case?: Maybe<CaseCreateOneWithoutApplicationInput>,
   clients?: Maybe<ClientCreateManyWithoutApplicationIdInput>,
 };
@@ -260,7 +260,7 @@ export type ApplicationCreateWithoutCaseInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId: PersonCreateOneWithoutApplicationsInput,
+  wakilId?: Maybe<PersonCreateOneWithoutApplicationsInput>,
   clients?: Maybe<ClientCreateManyWithoutApplicationIdInput>,
 };
 
@@ -283,7 +283,7 @@ export type ApplicationCreateWithoutClientsInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId: PersonCreateOneWithoutApplicationsInput,
+  wakilId?: Maybe<PersonCreateOneWithoutApplicationsInput>,
   case?: Maybe<CaseCreateOneWithoutApplicationInput>,
 };
 
@@ -899,7 +899,7 @@ export type ApplicationUpdateDataInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
+  wakilId?: Maybe<PersonUpdateOneWithoutApplicationsInput>,
   case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
@@ -923,7 +923,7 @@ export type ApplicationUpdateInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
+  wakilId?: Maybe<PersonUpdateOneWithoutApplicationsInput>,
   case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
@@ -1029,7 +1029,7 @@ export type ApplicationUpdateWithoutCaseDataInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
+  wakilId?: Maybe<PersonUpdateOneWithoutApplicationsInput>,
   clients?: Maybe<ClientUpdateManyWithoutApplicationIdInput>,
 };
 
@@ -1052,7 +1052,7 @@ export type ApplicationUpdateWithoutClientsDataInput = {
   whyLbh?: Maybe<Scalars['String']>,
   tahap?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>,
-  wakilId?: Maybe<PersonUpdateOneRequiredWithoutApplicationsInput>,
+  wakilId?: Maybe<PersonUpdateOneWithoutApplicationsInput>,
   case?: Maybe<CaseUpdateOneWithoutApplicationInput>,
 };
 
@@ -4910,6 +4910,8 @@ export type CasePk = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   ppPendamping?: Maybe<User>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
@@ -4931,6 +4933,8 @@ export type CasePkCreateInput = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
@@ -4948,6 +4952,8 @@ export type CasePkCreateWithoutCaseIdInput = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
@@ -4975,6 +4981,10 @@ export enum CasePkOrderByInput {
   LegalMemoDesc = 'legalMemo_DESC',
   NotulaRapatAsc = 'notulaRapat_ASC',
   NotulaRapatDesc = 'notulaRapat_DESC',
+  TargetAkhirAdvokasiAsc = 'targetAkhirAdvokasi_ASC',
+  TargetAkhirAdvokasiDesc = 'targetAkhirAdvokasi_DESC',
+  StrategiAdvokasiAsc = 'strategiAdvokasi_ASC',
+  StrategiAdvokasiDesc = 'strategiAdvokasi_DESC',
   StatusAlasanTdkAsc = 'statusAlasanTdk_ASC',
   StatusAlasanTdkDesc = 'statusAlasanTdk_DESC',
   TglRapatAsc = 'tglRapat_ASC',
@@ -4992,6 +5002,8 @@ export type CasePkPreviousValues = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedAt: Scalars['DateTime'],
@@ -5028,6 +5040,8 @@ export type CasePkUpdateInput = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
@@ -5040,6 +5054,8 @@ export type CasePkUpdateManyMutationInput = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
@@ -5059,6 +5075,8 @@ export type CasePkUpdateWithoutCaseIdDataInput = {
   didampingi?: Maybe<Scalars['String']>,
   legalMemo?: Maybe<Scalars['String']>,
   notulaRapat?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   tglRapat?: Maybe<Scalars['DateTime']>,
   updatedBy?: Maybe<Scalars['String']>,
@@ -5215,6 +5233,60 @@ export type CasePkWhereInput = {
   notulaRapat_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   notulaRapat_not_ends_with?: Maybe<Scalars['String']>,
+  targetAkhirAdvokasi?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  targetAkhirAdvokasi_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  targetAkhirAdvokasi_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  targetAkhirAdvokasi_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  targetAkhirAdvokasi_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  targetAkhirAdvokasi_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  targetAkhirAdvokasi_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  targetAkhirAdvokasi_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  targetAkhirAdvokasi_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  targetAkhirAdvokasi_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  targetAkhirAdvokasi_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  targetAkhirAdvokasi_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  targetAkhirAdvokasi_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  targetAkhirAdvokasi_not_ends_with?: Maybe<Scalars['String']>,
+  strategiAdvokasi?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  strategiAdvokasi_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  strategiAdvokasi_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  strategiAdvokasi_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  strategiAdvokasi_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  strategiAdvokasi_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  strategiAdvokasi_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  strategiAdvokasi_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  strategiAdvokasi_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  strategiAdvokasi_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  strategiAdvokasi_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  strategiAdvokasi_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  strategiAdvokasi_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  strategiAdvokasi_not_ends_with?: Maybe<Scalars['String']>,
   statusAlasanTdk?: Maybe<Scalars['String']>,
   /** All values that are not equal to given value. */
   statusAlasanTdk_not?: Maybe<Scalars['String']>,
@@ -5470,7 +5542,7 @@ export type CaseProgressActivityEdge = {
 
 export type CaseProgressActivityLit = {
   id: Scalars['Int'],
-  caseProgressActivityId: CaseProgressActivity,
+  caseProgressActivityId?: Maybe<CaseProgressActivity>,
   kodeMt?: Maybe<Scalars['String']>,
 };
 
@@ -5485,7 +5557,7 @@ export type CaseProgressActivityLitConnection = {
 
 export type CaseProgressActivityLitCreateInput = {
   kodeMt?: Maybe<Scalars['String']>,
-  caseProgressActivityId: CaseProgressActivityCreateOneWithoutActivitieslitInput,
+  caseProgressActivityId?: Maybe<CaseProgressActivityCreateOneWithoutActivitieslitInput>,
 };
 
 export type CaseProgressActivityLitCreateManyWithoutCaseProgressActivityIdInput = {
@@ -5595,7 +5667,7 @@ export type CaseProgressActivityLitSubscriptionWhereInput = {
 
 export type CaseProgressActivityLitUpdateInput = {
   kodeMt?: Maybe<Scalars['String']>,
-  caseProgressActivityId?: Maybe<CaseProgressActivityUpdateOneRequiredWithoutActivitieslitInput>,
+  caseProgressActivityId?: Maybe<CaseProgressActivityUpdateOneWithoutActivitieslitInput>,
 };
 
 export type CaseProgressActivityLitUpdateManyDataInput = {
@@ -5696,7 +5768,7 @@ export type CaseProgressActivityLitWhereUniqueInput = {
 
 export type CaseProgressActivityNonlit = {
   id: Scalars['Int'],
-  caseProgressActivityId: CaseProgressActivity,
+  caseProgressActivityId?: Maybe<CaseProgressActivity>,
   kodeMt?: Maybe<Scalars['String']>,
 };
 
@@ -5711,7 +5783,7 @@ export type CaseProgressActivityNonlitConnection = {
 
 export type CaseProgressActivityNonlitCreateInput = {
   kodeMt?: Maybe<Scalars['String']>,
-  caseProgressActivityId: CaseProgressActivityCreateOneWithoutActivitiesnonlitInput,
+  caseProgressActivityId?: Maybe<CaseProgressActivityCreateOneWithoutActivitiesnonlitInput>,
 };
 
 export type CaseProgressActivityNonlitCreateManyWithoutCaseProgressActivityIdInput = {
@@ -5821,7 +5893,7 @@ export type CaseProgressActivityNonlitSubscriptionWhereInput = {
 
 export type CaseProgressActivityNonlitUpdateInput = {
   kodeMt?: Maybe<Scalars['String']>,
-  caseProgressActivityId?: Maybe<CaseProgressActivityUpdateOneRequiredWithoutActivitiesnonlitInput>,
+  caseProgressActivityId?: Maybe<CaseProgressActivityUpdateOneWithoutActivitiesnonlitInput>,
 };
 
 export type CaseProgressActivityNonlitUpdateManyDataInput = {
@@ -6328,16 +6400,20 @@ export type CaseProgressActivityUpdateManyWithWhereNestedInput = {
   data: CaseProgressActivityUpdateManyDataInput,
 };
 
-export type CaseProgressActivityUpdateOneRequiredWithoutActivitieslitInput = {
+export type CaseProgressActivityUpdateOneWithoutActivitieslitInput = {
   create?: Maybe<CaseProgressActivityCreateWithoutActivitieslitInput>,
   connect?: Maybe<CaseProgressActivityWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
   update?: Maybe<CaseProgressActivityUpdateWithoutActivitieslitDataInput>,
   upsert?: Maybe<CaseProgressActivityUpsertWithoutActivitieslitInput>,
 };
 
-export type CaseProgressActivityUpdateOneRequiredWithoutActivitiesnonlitInput = {
+export type CaseProgressActivityUpdateOneWithoutActivitiesnonlitInput = {
   create?: Maybe<CaseProgressActivityCreateWithoutActivitiesnonlitInput>,
   connect?: Maybe<CaseProgressActivityWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
   update?: Maybe<CaseProgressActivityUpdateWithoutActivitiesnonlitDataInput>,
   upsert?: Maybe<CaseProgressActivityUpsertWithoutActivitiesnonlitInput>,
 };
@@ -16774,13 +16850,6 @@ export type PersonUpdateOneRequiredInput = {
   upsert?: Maybe<PersonUpsertNestedInput>,
 };
 
-export type PersonUpdateOneRequiredWithoutApplicationsInput = {
-  create?: Maybe<PersonCreateWithoutApplicationsInput>,
-  connect?: Maybe<PersonWhereUniqueInput>,
-  update?: Maybe<PersonUpdateWithoutApplicationsDataInput>,
-  upsert?: Maybe<PersonUpsertWithoutApplicationsInput>,
-};
-
 export type PersonUpdateOneRequiredWithoutClientsInput = {
   create?: Maybe<PersonCreateWithoutClientsInput>,
   connect?: Maybe<PersonWhereUniqueInput>,
@@ -16793,6 +16862,15 @@ export type PersonUpdateOneRequiredWithoutDocumentsInput = {
   connect?: Maybe<PersonWhereUniqueInput>,
   update?: Maybe<PersonUpdateWithoutDocumentsDataInput>,
   upsert?: Maybe<PersonUpsertWithoutDocumentsInput>,
+};
+
+export type PersonUpdateOneWithoutApplicationsInput = {
+  create?: Maybe<PersonCreateWithoutApplicationsInput>,
+  connect?: Maybe<PersonWhereUniqueInput>,
+  disconnect?: Maybe<Scalars['Boolean']>,
+  delete?: Maybe<Scalars['Boolean']>,
+  update?: Maybe<PersonUpdateWithoutApplicationsDataInput>,
+  upsert?: Maybe<PersonUpsertWithoutApplicationsInput>,
 };
 
 export type PersonUpdateOneWithoutCasekorbansInput = {
@@ -20994,6 +21072,48 @@ export type DestroyLogMutationVariables = {
 
 export type DestroyLogMutation = { deleteManyLogRequests: Pick<BatchPayload, 'count'> };
 
+export type DestroyLitMutationVariables = {
+  where: CaseProgressActivityLitWhereInput
+};
+
+
+export type DestroyLitMutation = { deleteManyCaseProgressActivityLits: Pick<BatchPayload, 'count'> };
+
+export type DestroyNonlitMutationVariables = {
+  where: CaseProgressActivityNonlitWhereInput
+};
+
+
+export type DestroyNonlitMutation = { deleteManyCaseProgressActivityNonlits: Pick<BatchPayload, 'count'> };
+
+export type DestroyKorbanMutationVariables = {
+  where: CaseKorbanWhereInput
+};
+
+
+export type DestroyKorbanMutation = { deleteManyCaseKorbans: Pick<BatchPayload, 'count'> };
+
+export type DestroyPelakuMutationVariables = {
+  where: CasePelakuWhereInput
+};
+
+
+export type DestroyPelakuMutation = { deleteManyCasePelakus: Pick<BatchPayload, 'count'> };
+
+export type DestroyCaseViolatedRightMutationVariables = {
+  where: CaseViolatedRightWhereInput
+};
+
+
+export type DestroyCaseViolatedRightMutation = { deleteManyCaseViolatedRights: Pick<BatchPayload, 'count'> };
+
+export type DestroyCaseClassificationMutationVariables = {
+  where: CaseClassificationWhereInput
+};
+
+
+export type DestroyCaseClassificationMutation = { deleteManyCaseClassifications: Pick<BatchPayload, 'count'> };
+
 export type DestroyCaseProgressActivityMutationVariables = {
   where: CaseProgressActivityWhereInput
 };
@@ -21027,7 +21147,7 @@ export type PostApplicationMutationVariables = {
 };
 
 
-export type PostApplicationMutation = { createApplication: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }) };
+export type PostApplicationMutation = { createApplication: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }) };
 
 export type PutCaseMutationVariables = {
   data: CaseUpdateInput,
@@ -21035,7 +21155,7 @@ export type PutCaseMutationVariables = {
 };
 
 
-export type PutCaseMutation = { updateCase: Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>, clients: Maybe<Array<{ personId: Pick<Person, 'namaLengkap'> }>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'tglKonsul' | 'updatedAt' | 'updatedBy'> & { apps: Maybe<Array<{ appConsultation: Maybe<Pick<User, 'name' | 'id'>> }>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>> })> };
+export type PutCaseMutation = { updateCase: Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<{ personId: Pick<Person, 'namaLengkap'> }>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'tglKonsul' | 'updatedAt' | 'updatedBy'> & { apps: Maybe<Array<{ appConsultation: Maybe<Pick<User, 'name' | 'id'>> }>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>> })> };
 
 export type PutLogRequestMutationVariables = {
   data: LogRequestUpdateInput,
@@ -21059,7 +21179,7 @@ export type PutApplicationMutationVariables = {
 };
 
 
-export type PutApplicationMutation = { updateApplication: Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })> };
+export type PutApplicationMutation = { updateApplication: Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })> };
 
 export type PutPersonMutationVariables = {
   data: PersonUpdateInput,
@@ -21087,7 +21207,7 @@ export type GetLogRequestQueryVariables = {
 };
 
 
-export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
+export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'didampingi' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id' | 'name'>>, personId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
 
 export type GetRolesTypeQueryVariables = {
   where?: Maybe<RolesTypeWhereInput>,
@@ -21139,7 +21259,33 @@ export type GetCaseQueryVariables = {
 };
 
 
-export type GetCaseQuery = { cases: Array<Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, referrals: Maybe<Array<(Pick<CaseReferral, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { client: Pick<Person, 'id' | 'namaLengkap'>, network: Maybe<Pick<Network, 'id' | 'name'>> })>>, application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>, clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'tglKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'updatedAt' | 'updatedBy'> & { caseId: (Pick<Case, 'id'> & { application: Pick<Application, 'id' | 'noReg'> }), apps: Maybe<Array<(Pick<CaseConsultationApp, 'id'> & { appConsultation: Maybe<(Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> })> })>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'id' | 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'tglAktifitas' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>>, logRequests: Maybe<Array<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: (Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> }) })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> })>> };
+export type GetCaseQuery = { cases: Array<Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, referrals: Maybe<Array<(Pick<CaseReferral, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { client: Pick<Person, 'id' | 'namaLengkap'>, network: Maybe<Pick<Network, 'id' | 'name'>> })>>, application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'tglKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'updatedAt' | 'updatedBy'> & { caseId: (Pick<Case, 'id'> & { application: Pick<Application, 'id' | 'noReg'> }), apps: Maybe<Array<(Pick<CaseConsultationApp, 'id'> & { appConsultation: Maybe<(Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> })> })>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'id' | 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link' | 'createdAt'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'tglAktifitas' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>>, logRequests: Maybe<Array<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: (Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> }) })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> })>> };
+
+export type GetConsultationQueryVariables = {
+  where?: Maybe<CaseConsultationWhereInput>,
+  orderBy?: Maybe<CaseConsultationOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type GetConsultationQuery = { caseConsultations: Array<Maybe<Pick<CaseConsultation, 'id'>>> };
+
+export type GetPkQueryVariables = {
+  where?: Maybe<CasePkWhereInput>,
+  orderBy?: Maybe<CasePkOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type GetPkQuery = { casePks: Array<Maybe<Pick<CasePk, 'id'>>> };
 
 export type GetClientQueryVariables = {
   where?: Maybe<ClientWhereInput>,
@@ -21165,7 +21311,7 @@ export type GetApplicationsQueryVariables = {
 };
 
 
-export type GetApplicationsQuery = { applications: Array<Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Pick<Person, 'id' | 'namaLengkap'>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>> };
+export type GetApplicationsQuery = { applications: Array<Maybe<(Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh'> & { wakilId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, case: Maybe<Pick<Case, 'id'>>, clients: Maybe<Array<(Pick<Client, 'id' | 'alamatLokasi' | 'asetGedung' | 'asetKios' | 'asetLahanGarapan' | 'asetLapak' | 'asetMobil' | 'asetMotor' | 'asetRumah' | 'asetTanah' | 'asetToko' | 'asetWarung' | 'createdAt' | 'createdBy' | 'pendapatan' | 'sktm' | 'sktmUpload' | 'stmKeterangan' | 'tanggunganAnak' | 'tanggunganFamili' | 'tanggunganLain' | 'tanggunganPasangan' | 'updatedAt' | 'updatedBy' | 'usiaSaatKlien'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>> };
 
 export type GetMtVocabsQueryVariables = {
   where?: Maybe<MtVocabWhereInput>,
@@ -21221,6 +21367,96 @@ export const DestroyLogDocument = gql`
   })
   export class DestroyLogGQL extends Apollo.Mutation<DestroyLogMutation, DestroyLogMutationVariables> {
     document = DestroyLogDocument;
+    
+  }
+export const DestroyLitDocument = gql`
+    mutation destroyLit($where: CaseProgressActivityLitWhereInput!) {
+  deleteManyCaseProgressActivityLits(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyLitGQL extends Apollo.Mutation<DestroyLitMutation, DestroyLitMutationVariables> {
+    document = DestroyLitDocument;
+    
+  }
+export const DestroyNonlitDocument = gql`
+    mutation destroyNonlit($where: CaseProgressActivityNonlitWhereInput!) {
+  deleteManyCaseProgressActivityNonlits(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyNonlitGQL extends Apollo.Mutation<DestroyNonlitMutation, DestroyNonlitMutationVariables> {
+    document = DestroyNonlitDocument;
+    
+  }
+export const DestroyKorbanDocument = gql`
+    mutation destroyKorban($where: CaseKorbanWhereInput!) {
+  deleteManyCaseKorbans(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyKorbanGQL extends Apollo.Mutation<DestroyKorbanMutation, DestroyKorbanMutationVariables> {
+    document = DestroyKorbanDocument;
+    
+  }
+export const DestroyPelakuDocument = gql`
+    mutation destroyPelaku($where: CasePelakuWhereInput!) {
+  deleteManyCasePelakus(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyPelakuGQL extends Apollo.Mutation<DestroyPelakuMutation, DestroyPelakuMutationVariables> {
+    document = DestroyPelakuDocument;
+    
+  }
+export const DestroyCaseViolatedRightDocument = gql`
+    mutation destroyCaseViolatedRight($where: CaseViolatedRightWhereInput!) {
+  deleteManyCaseViolatedRights(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyCaseViolatedRightGQL extends Apollo.Mutation<DestroyCaseViolatedRightMutation, DestroyCaseViolatedRightMutationVariables> {
+    document = DestroyCaseViolatedRightDocument;
+    
+  }
+export const DestroyCaseClassificationDocument = gql`
+    mutation destroyCaseClassification($where: CaseClassificationWhereInput!) {
+  deleteManyCaseClassifications(where: $where) {
+    count
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DestroyCaseClassificationGQL extends Apollo.Mutation<DestroyCaseClassificationMutation, DestroyCaseClassificationMutationVariables> {
+    document = DestroyCaseClassificationDocument;
     
   }
 export const DestroyCaseProgressActivityDocument = gql`
@@ -21564,6 +21800,8 @@ export const PutCaseDocument = gql`
       didampingi
       legalMemo
       notulaRapat
+      strategiAdvokasi
+      targetAkhirAdvokasi
       ppPendamping {
         address
         avatar
@@ -21914,6 +22152,14 @@ export const GetLogRequestDocument = gql`
     caseId {
       id
       judulKasus
+      transfer {
+        id
+        tglTransfer
+        network {
+          id
+          name
+        }
+      }
       application {
         id
         noReg
@@ -21928,6 +22174,7 @@ export const GetLogRequestDocument = gql`
       kronologiKasus
       pk {
         id
+        didampingi
         tglRapat
       }
     }
@@ -21949,9 +22196,11 @@ export const GetLogRequestDocument = gql`
     jenisRequest
     networkId {
       id
+      name
     }
     personId {
       id
+      namaLengkap
     }
     pp {
       id
@@ -22214,6 +22463,7 @@ export const GetCaseDocument = gql`
       judulDokumen
       keterangan
       link
+      createdAt
     }
     issues {
       id
@@ -22240,6 +22490,8 @@ export const GetCaseDocument = gql`
       didampingi
       legalMemo
       notulaRapat
+      strategiAdvokasi
+      targetAkhirAdvokasi
       ppPendamping {
         address
         avatar
@@ -22364,9 +22616,39 @@ export const GetCaseDocument = gql`
     document = GetCaseDocument;
     
   }
+export const GetConsultationDocument = gql`
+    query getConsultation($where: CaseConsultationWhereInput, $orderBy: CaseConsultationOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  caseConsultations(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetConsultationGQL extends Apollo.Query<GetConsultationQuery, GetConsultationQueryVariables> {
+    document = GetConsultationDocument;
+    
+  }
+export const GetPkDocument = gql`
+    query getPk($where: CasePkWhereInput, $orderBy: CasePkOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
+  casePks(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetPkGQL extends Apollo.Query<GetPkQuery, GetPkQueryVariables> {
+    document = GetPkDocument;
+    
+  }
 export const GetClientDocument = gql`
     query getClient($where: ClientWhereInput, $orderBy: ClientOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
-  clients {
+  clients(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     id
     alamatLokasi
     applicationId {
@@ -22574,6 +22856,42 @@ export namespace DestroyLog {
   export type DeleteManyLogRequests = DestroyLogMutation['deleteManyLogRequests'];
 }
 
+export namespace DestroyLit {
+  export type Variables = DestroyLitMutationVariables;
+  export type Mutation = DestroyLitMutation;
+  export type DeleteManyCaseProgressActivityLits = DestroyLitMutation['deleteManyCaseProgressActivityLits'];
+}
+
+export namespace DestroyNonlit {
+  export type Variables = DestroyNonlitMutationVariables;
+  export type Mutation = DestroyNonlitMutation;
+  export type DeleteManyCaseProgressActivityNonlits = DestroyNonlitMutation['deleteManyCaseProgressActivityNonlits'];
+}
+
+export namespace DestroyKorban {
+  export type Variables = DestroyKorbanMutationVariables;
+  export type Mutation = DestroyKorbanMutation;
+  export type DeleteManyCaseKorbans = DestroyKorbanMutation['deleteManyCaseKorbans'];
+}
+
+export namespace DestroyPelaku {
+  export type Variables = DestroyPelakuMutationVariables;
+  export type Mutation = DestroyPelakuMutation;
+  export type DeleteManyCasePelakus = DestroyPelakuMutation['deleteManyCasePelakus'];
+}
+
+export namespace DestroyCaseViolatedRight {
+  export type Variables = DestroyCaseViolatedRightMutationVariables;
+  export type Mutation = DestroyCaseViolatedRightMutation;
+  export type DeleteManyCaseViolatedRights = DestroyCaseViolatedRightMutation['deleteManyCaseViolatedRights'];
+}
+
+export namespace DestroyCaseClassification {
+  export type Variables = DestroyCaseClassificationMutationVariables;
+  export type Mutation = DestroyCaseClassificationMutation;
+  export type DeleteManyCaseClassifications = DestroyCaseClassificationMutation['deleteManyCaseClassifications'];
+}
+
 export namespace DestroyCaseProgressActivity {
   export type Variables = DestroyCaseProgressActivityMutationVariables;
   export type Mutation = DestroyCaseProgressActivityMutation;
@@ -22702,6 +23020,8 @@ export namespace GetLogRequest {
   export type Query = GetLogRequestQuery;
   export type LogRequests = GetLogRequestQuery['logRequests'][0];
   export type CaseId = GetLogRequestQuery['logRequests'][0]['caseId'];
+  export type Transfer = GetLogRequestQuery['logRequests'][0]['caseId']['transfer'];
+  export type Network = GetLogRequestQuery['logRequests'][0]['caseId']['transfer']['network'];
   export type Application = GetLogRequestQuery['logRequests'][0]['caseId']['application'];
   export type Clients = GetLogRequestQuery['logRequests'][0]['caseId']['application']['clients'][0];
   export type PersonId = GetLogRequestQuery['logRequests'][0]['caseId']['application']['clients'][0]['personId'];
@@ -22787,6 +23107,18 @@ export namespace GetCase {
   export type _Type = GetCaseQuery['cases'][0]['logRequests'][0]['pp'][0]['appConsultation']['roles_type'][0]['type'];
   export type RequestBy = GetCaseQuery['cases'][0]['logRequests'][0]['requestBy'];
   export type RequestTo = GetCaseQuery['cases'][0]['logRequests'][0]['requestTo'];
+}
+
+export namespace GetConsultation {
+  export type Variables = GetConsultationQueryVariables;
+  export type Query = GetConsultationQuery;
+  export type CaseConsultations = GetConsultationQuery['caseConsultations'][0];
+}
+
+export namespace GetPk {
+  export type Variables = GetPkQueryVariables;
+  export type Query = GetPkQuery;
+  export type CasePks = GetPkQuery['casePks'][0];
 }
 
 export namespace GetClient {

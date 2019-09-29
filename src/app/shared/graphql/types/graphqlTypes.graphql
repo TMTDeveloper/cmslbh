@@ -12,6 +12,42 @@ mutation destroyLog($where: LogRequestWhereInput!) {
   }
 }
 
+mutation destroyLit($where: CaseProgressActivityLitWhereInput!) {
+  deleteManyCaseProgressActivityLits(where: $where) {
+    count
+  }
+}
+
+mutation destroyNonlit($where: CaseProgressActivityNonlitWhereInput!) {
+  deleteManyCaseProgressActivityNonlits(where: $where) {
+    count
+  }
+}
+
+mutation destroyKorban($where: CaseKorbanWhereInput!) {
+  deleteManyCaseKorbans(where: $where) {
+    count
+  }
+}
+
+mutation destroyPelaku($where: CasePelakuWhereInput!) {
+  deleteManyCasePelakus(where: $where) {
+    count
+  }
+}
+
+mutation destroyCaseViolatedRight($where: CaseViolatedRightWhereInput!) {
+  deleteManyCaseViolatedRights(where: $where) {
+    count
+  }
+}
+
+mutation destroyCaseClassification($where: CaseClassificationWhereInput!) {
+  deleteManyCaseClassifications(where: $where) {
+    count
+  }
+}
+
 mutation destroyCaseProgressActivity($where: CaseProgressActivityWhereInput!) {
   deleteManyCaseProgressActivities(where: $where) {
     count
@@ -306,6 +342,8 @@ mutation putCase($data: CaseUpdateInput!, $where: CaseWhereUniqueInput!) {
       didampingi
       legalMemo
       notulaRapat
+      strategiAdvokasi
+      targetAkhirAdvokasi
       ppPendamping {
         address
         avatar
@@ -620,6 +658,14 @@ query getLogRequest(
     caseId {
       id
       judulKasus
+      transfer {
+        id
+        tglTransfer
+        network {
+          id
+          name
+        }
+      }
       application {
         id
         noReg
@@ -634,6 +680,7 @@ query getLogRequest(
       kronologiKasus
       pk {
         id
+        didampingi
         tglRapat
       }
     }
@@ -655,9 +702,11 @@ query getLogRequest(
     jenisRequest
     networkId {
       id
+      name
     }
     personId {
       id
+      namaLengkap
     }
     pp {
       id
@@ -924,6 +973,7 @@ query getCase(
       judulDokumen
       keterangan
       link
+      createdAt
     }
     issues {
       id
@@ -950,6 +1000,8 @@ query getCase(
       didampingi
       legalMemo
       notulaRapat
+      strategiAdvokasi
+      targetAkhirAdvokasi
       ppPendamping {
         address
         avatar
@@ -1066,6 +1118,43 @@ query getCase(
     }
   }
 }
+
+query getConsultation(
+  $where: CaseConsultationWhereInput
+  $orderBy: CaseConsultationOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  caseConsultations(
+    where: $where
+    orderBy: $orderBy
+    skip: $skip
+    after: $after
+    before: $before
+    first: $first
+    last: $last
+  ) {
+    id
+  }
+}
+
+query getPk(
+  $where: CasePkWhereInput
+  $orderBy: CasePkOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  casePks(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+  }
+}
+
 query getClient(
   $where: ClientWhereInput
   $orderBy: ClientOrderByInput
@@ -1075,7 +1164,7 @@ query getClient(
   $first: Int
   $last: Int
 ) {
-  clients {
+  clients(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     id
     alamatLokasi
     applicationId {

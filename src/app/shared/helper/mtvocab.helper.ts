@@ -16,6 +16,7 @@ import {
   GetLogRequest,
   LogRequestWhereInput,
   GetNetworksGQL,
+  GetClientGQL,
 } from '@shared/graphql';
 import { valid } from 'mockjs';
 import { _ } from 'underscore';
@@ -43,17 +44,19 @@ export class MtVocabHelper {
     private getCaseGQL: GetCaseGQL,
     private getLogRequestGQL: GetLogRequestGQL,
     private getNetworksGQL: GetNetworksGQL,
+    private getClientGQL: GetClientGQL,
   ) {}
 
   async findParent(kode: string) {
     const arrMtvocabs: GetMtVocabs.MtVocabs[] = [];
     let initialData = await this.getData(kode);
+    if (initialData[0].level === 0) return [kode];
     arrMtvocabs.push(initialData[0]);
-
+    console.log(arrMtvocabs);
     do {
       initialData = await this.getData(initialData[0].kode_induk);
       arrMtvocabs.push(initialData[0]);
-    } while (arrMtvocabs.slice(-1)[0].level !== 1);
+    } while (arrMtvocabs.slice(-1)[0].level !== 0);
     return arrMtvocabs.map(mtVocabs => mtVocabs.KODE);
   }
 
@@ -102,6 +105,89 @@ export class MtVocabHelper {
       .pipe(take(1));
   }
 
+  getMtVocabParentTree(kode_list: number) {
+    return this.getMtVocabsGQL
+      .watch(
+        {
+          where: {
+            sembunyikan: false,
+            kode_induk: '0',
+            kode_list: { kode_list: kode_list },
+          },
+          orderBy: MtVocabOrderByInput.UrutanAsc,
+        },
+        { fetchPolicy: 'cache-first' },
+      )
+      .valueChanges.pipe(
+        map(result =>
+          result.data.mtVocabs.map(res => {
+            const obj: any = {};
+            obj.key = res.KODE;
+            obj.title = res.teks;
+            return obj;
+          }),
+        ),
+      )
+      .pipe(take(1));
+  }
+
+  getMtVocabWithChildren(kode_list: number, children: any) {
+    return this.getMtVocabsGQL
+      .watch(
+        {
+          where: {
+            sembunyikan: false,
+            kode_induk: '0',
+            kode_list: { kode_list: kode_list },
+          },
+          orderBy: MtVocabOrderByInput.UrutanAsc,
+        },
+        { fetchPolicy: 'cache-first' },
+      )
+      .valueChanges.pipe(
+        map(result => {
+          return result.data.mtVocabs.map(res => {
+            const obj: any = {};
+            if (children) {
+              if (children.key === res.KODE) {
+                return children;
+              }
+            }
+            obj.key = res.KODE;
+            obj.title = res.teks;
+            return obj;
+          });
+        }),
+      )
+      .pipe(take(1));
+  }
+
+  getMtVocabChildTree(kode_list: number, kode: string) {
+    return this.getMtVocabsGQL
+      .watch(
+        {
+          where: {
+            sembunyikan: false,
+            kode_induk: kode,
+            kode_list: { kode_list: kode_list },
+          },
+          orderBy: MtVocabOrderByInput.UrutanAsc,
+        },
+        { fetchPolicy: 'cache-first' },
+      )
+      .valueChanges.pipe(
+        map(result =>
+          result.data.mtVocabs.map(res => {
+            const obj: any = {};
+            obj.key = res.KODE;
+            obj.title = res.teks;
+            return obj;
+          }),
+        ),
+      )
+      .pipe(take(1));
+  }
+
   getNetworksEnum(type: string) {
     return this.getNetworksGQL
       .watch({ where: { type: type } })
@@ -112,6 +198,23 @@ export class MtVocabHelper {
               const obj: any = {};
               obj.value = res.id;
               obj.label = res.name;
+              return obj;
+            }) as SFSchemaEnumType[],
+        ),
+      )
+      .pipe(take(1));
+  }
+
+  getClientsEnum(caseId: number) {
+    return this.getCaseGQL
+      .watch({ where: { id: caseId } })
+      .valueChanges.pipe(
+        map(
+          result =>
+            result.data.cases[0].application.clients.map(res => {
+              const obj: any = {};
+              obj.value = res.personId.id;
+              obj.label = res.personId.namaLengkap;
               return obj;
             }) as SFSchemaEnumType[],
         ),
@@ -140,7 +243,7 @@ export class MtVocabHelper {
     const rolesNumber = roles.map(val => Number(val));
     return this.getUserGQL
       .watch(<GetUser.Variables>{
-        where: <UserWhereInput>{ roles_type_some: <RoleWhereInput>{ type: { id_in: rolesNumber } } },
+        where: <UserWhereInput>{ roles_type_some: <RoleWhereInput>{ type: { id_in: rolesNumber } }, status: '1' },
       })
       .valueChanges.pipe(
         map(
@@ -282,9 +385,9 @@ export class MtVocabHelper {
   private searchGeneratorEnum(kode_list: number): GetMtVocabs.Variables {
     return <GetMtVocabs.Variables>{
       where: <MtVocabWhereInput>{
-        AND: <MtVocabWhereInput[]>[{ kode_list: <MtVocabGroupWhereInput>{ kode_list: kode_list } }],
+        AND: <MtVocabWhereInput[]>[{ kode_list: <MtVocabGroupWhereInput>{ kode_list: kode_list }, sembunyikan: false }],
       },
-      orderBy: MtVocabOrderByInput.TeksAsc,
+      orderBy: MtVocabOrderByInput.UrutanAsc,
     };
   }
 

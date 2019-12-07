@@ -259,9 +259,11 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
             jenisRequest: '1011',
             tglRequest_gte: moment()
               .hour(0)
+              .minute(0)
               .toDate(),
             tglRequest_lte: moment()
               .hour(23)
+              .minute(59)
               .toDate(),
           },
         },
@@ -272,6 +274,7 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
   }
 
   async queueConsultation(dataApplication) {
+    if (this.loading) return;
     const alreadyQueue = await this.checkAlreadyQueue(dataApplication);
     console.log(alreadyQueue);
     if (alreadyQueue.length !== 0) {

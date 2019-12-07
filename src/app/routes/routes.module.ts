@@ -15,6 +15,9 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { UserLockComponent } from './passport/lock/lock.component';
 import { CallbackComponent } from './callback/callback.component';
 import { FormModule } from './form/form.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -32,7 +35,16 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
-  imports: [SharedModule, RouteRoutingModule, FormModule],
+  imports: [
+    SharedModule,
+    RouteRoutingModule,
+    FormModule,
+    NgxChartsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA1bbmnwu6pfsHXI8r2aXzHgNYOvq2EStI',
+    }),
+    AgmJsMarkerClustererModule,
+  ],
   declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT],
   entryComponents: COMPONENTS_NOROUNT,
 })

@@ -7,6 +7,5 @@
     "ng-alain"
   ],
   "editor.tabSize": 2,
-  "prettier.stylelintIntegration": true,
   "editor.formatOnSave": true
 }

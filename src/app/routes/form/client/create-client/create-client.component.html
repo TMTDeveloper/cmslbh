@@ -1,6 +1,13 @@
 <div #card>
   <nz-card [nzBordered]="false">
-    <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading">
+    <sf
+      [layout]="'vertical'"
+      #sf
+      [schema]="schema"
+      [formData]="editData"
+      (formSubmit)="submit($event)"
+      [loading]="loading"
+    >
       <ng-template sf-template="personId" let-me let-ui="ui" let-schema="schema">
         <button
           type="button"

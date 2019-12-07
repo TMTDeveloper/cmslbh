@@ -20,14 +20,14 @@
           },
           {
             "text": "Dashboard",
-            "acl": ["5", "7", "8", "6"],
-            "link": "/dashboard/analysis",
-            "i18n": "menu.dashboard.analysis"
-          }, {
-            "text": "Dashboard",
             "acl": ["3", "4"],
             "link": "/dashboard/workplace",
             "i18n": "menu.dashboard.workplace"
+          },
+          {
+            "text": "Analisa",
+            "acl": ["7", "5", "6", "8"],
+            "link": "/form/analisa"
           }
         ]
       },

@@ -60,7 +60,14 @@
 
 <ng-template #modalContent>
   <!-- <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading"></sf> -->
-  <sf #sfCreateKasus [schema]="schema" [formData]="editData" (formSubmit)="submitByPP($event)" [loading]="loading">
+  <sf
+    #sfCreateKasus
+    [layout]="'vertical'"
+    [schema]="schema"
+    [formData]="editData"
+    (formSubmit)="submitByPP($event)"
+    [loading]="loading"
+  >
     <ng-template sf-template="caseIdReturned" let-me let-ui="ui" let-schema="schema">
       <button
         type="button"
@@ -91,6 +98,7 @@
   <!-- <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading"></sf> -->
   <sf
     #sfCreateKasus
+    [layout]="'vertical'"
     [schema]="schemaKabid"
     [formData]="editDataKabid"
     (formSubmit)="submitByKabid($event)"

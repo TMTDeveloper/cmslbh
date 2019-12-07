@@ -2,6 +2,7 @@
 <nz-card>
   <sf
     mode="search"
+    [layout]="'vertical'"
     [schema]="searchSchema"
     [formData]="params"
     (formSubmit)="st.reset($event)"

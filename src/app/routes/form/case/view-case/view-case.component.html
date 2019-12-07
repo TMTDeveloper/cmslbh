@@ -60,7 +60,7 @@
             <sv label="Hubungan Wakil Klien">{{ data.application?.relasiWakilClient }}</sv>
             <sv label="Duduk Perkara"
               ><div *ngIf="data.application?.dudukPerara">
-                <pre>{{ data.application?.dudukPerara }}</pre>
+                <pre style="white-space:pre-wrap;">{{ data.application?.dudukPerara }}</pre>
               </div></sv
             >
           </sv-container>
@@ -73,7 +73,7 @@
             <sv label="Judul Kasus">{{ data?.judulKasus }}</sv>
             <sv label="Deskripsi Kasus"
               ><div *ngIf="data?.kronologiKasus">
-                <pre>{{ data?.kronologiKasus }}</pre>
+                <pre style="white-space:pre-wrap;">{{ data?.kronologiKasus }}</pre>
               </div></sv
             >
             <sv *ngIf="kabid"
@@ -84,7 +84,6 @@
             <sv label="Korban">{{ translateKorbanPelaku('korban') }}</sv>
             <sv label="Pelaku">{{ translateKorbanPelaku('pelaku') }}</sv>
             <sv label="Hak Terdampak">{{ translateHakTerdampak() }}</sv>
-        
           </sv-container>
         </nz-card>
       </nz-tab>
@@ -132,18 +131,18 @@
             <sv label="Penanganan Lebih Lanjut">{{ translateStatusPk(data.pk?.didampingi) }}</sv>
             <sv label="PP Pendamping">{{ data.pk?.ppPendamping?.name }}</sv>
             <sv label="Target Advokasi Akhir"
-            ><div *ngIf="data.pk?.targetAkhirAdvokasi">
-              <pre>{{ data.pk?.targetAkhirAdvokasi }}</pre>
-            </div></sv
-          >
-          <sv label="Strategi Advokasi"
-          ><div *ngIf="data.pk?.strategiAdvokasi">
-            <pre>{{ data.pk?.strategiAdvokasi }}</pre>
-          </div></sv
-        >
+              ><div *ngIf="data.pk?.targetAkhirAdvokasi">
+                <pre style="white-space:pre-wrap;">{{ data.pk?.targetAkhirAdvokasi }}</pre>
+              </div></sv
+            >
+            <sv label="Strategi Advokasi"
+              ><div *ngIf="data.pk?.strategiAdvokasi">
+                <pre style="white-space:pre-wrap;">{{ data.pk?.strategiAdvokasi }}</pre>
+              </div></sv
+            >
             <sv label="Alasan Bila Kasus Tidak Didampingi / Transfer"
               ><div *ngIf="data.pk?.statusAlasanTdk">
-                <pre>{{ data.pk?.statusAlasanTdk }}</pre>
+                <pre style="white-space:pre-wrap;">{{ data.pk?.statusAlasanTdk }}</pre>
               </div></sv
             >
             <!-- <sv label="Link File Legal Memo"
@@ -168,7 +167,7 @@
             <sv label="Jenis Peradilan">{{ data.progresses?.jenisPeradilanTeks | async }}</sv>
             <sv label="Catatan"
               ><div *ngIf="data.progresses?.catatan">
-                <pre>{{ data.progresses?.catatan }}</pre>
+                <pre style="white-space:pre-wrap;">{{ data.progresses?.catatan }}</pre>
               </div></sv
             >
           </sv-container>
@@ -215,7 +214,7 @@
             <sv label="Ditransfer Ke">{{ data.transfer?.network?.name }}</sv>
             <sv label="Catatan"
               ><div *ngIf="data.transfer?.catatan">
-                <pre>{{ data.transfer?.catatan }}</pre>
+                <pre style="white-space:pre-wrap;">{{ data.transfer?.catatan }}</pre>
               </div></sv
             >
             <!-- <sv label="Link File Legal Memo"
@@ -286,6 +285,7 @@
   <ng-template #modalContentUmum>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaUmum"
       [formData]="dataModalTemp"
       (formSubmit)="submitUmum($event)"
@@ -296,6 +296,7 @@
   <ng-template #modalContentTerminasi>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaTerminasi"
       [formData]="dataModalTemp"
       (formSubmit)="submitTerminasi($event)"
@@ -306,6 +307,7 @@
   <ng-template #modalPenangananLebihLanjut>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaPenangananLebihLanjut"
       [formData]="dataModalTemp"
       (formSubmit)="submitUmum($event)"
@@ -315,6 +317,7 @@
   <ng-template #modalContentAnalisa>
     <sf
       #sfListPerson
+      [layout]="'vertical'"
       [schema]="schemaAnalisa"
       [formData]="dataModalTemp"
       (formSubmit)="submitAnalisa($event)"
@@ -363,6 +366,7 @@
   <ng-template #modalContentRapatPK>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaRapatPK"
       [formData]="dataModalTemp"
       (formSubmit)="submitRapatPK($event)"
@@ -372,6 +376,7 @@
   <ng-template #modalContentTransfer>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaTransfer"
       [formData]="dataModalTemp"
       (formSubmit)="submitTransfer($event)"
@@ -381,6 +386,7 @@
   <ng-template #modalContentCatatanPendampingan>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaCatatanPendampingan"
       [formData]="dataModalTemp"
       (formSubmit)="submitCatatanPendampingan($event)"
@@ -391,6 +397,7 @@
   <ng-template #modalContentKlasifikasiDokumen>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaKlasifikasiDokumen"
       [formData]="dataModalTemp"
       (formSubmit)="submitKlasifikasiDokumen($event)"
@@ -401,6 +408,7 @@
   <ng-template #modalContentAktifitasPendampingan>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaAktifitasPendampingan"
       [formData]="dataModalTemp"
       (formSubmit)="submitAktifitasPendampingan($event)"
@@ -411,16 +419,30 @@
   <ng-template #modalLampiranDokumen>
     <sf
       #sfUmum
+      [layout]="'vertical'"
       [schema]="schemaLampiranDokumen"
       [formData]="dataModalTemp"
       (formSubmit)="submitLampiranDokumen($event)"
       [loading]="loading"
-    ></sf>
+    >
+      <ng-template sf-template="filename" let-me let-ui="ui" let-schema="schemaLampiranDokumen">
+        <nz-upload
+          [nzBeforeUpload]="beforeUpload"
+          (nzChange)="changedStatusUpload($event)"
+          [nzAction]="uploadAction"
+          [(nzFileList)]="fileList"
+          [nzPreview]="preview"
+        >
+          <button type="button" nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
+        </nz-upload>
+      </ng-template></sf
+    >
   </ng-template>
 
   <ng-template #modalContentKonsultasi>
     <sf
       #sfKonsultasi
+      [layout]="'vertical'"
       [schema]="schemaKonsultasi"
       [formData]="dataModalTemp"
       (formSubmit)="submitKonsultasi($event)"
@@ -432,27 +454,27 @@
       <sv label="Judul Aktifitas">{{ dataModalTemp?.judulAktifitas }}</sv>
       <sv label="Isi Konsultasi"
         ><div *ngIf="dataModalTemp?.isiKonsul">
-          <pre>{{ dataModalTemp?.isiKonsul }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.isiKonsul }}</pre>
         </div></sv
       >
       <sv label="Harapan"
         ><div *ngIf="dataModalTemp?.harapan">
-          <pre>{{ dataModalTemp?.harapan }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.harapan }}</pre>
         </div></sv
       >
       <sv label="Saran Hukum"
         ><div *ngIf="dataModalTemp?.saranHukum">
-          <pre>{{ dataModalTemp?.saranHukum }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.saranHukum }}</pre>
         </div></sv
       >
       <sv label="Rencana Tindak Lanjut"
         ><div *ngIf="dataModalTemp?.rencanaTindakLanjut">
-          <pre>{{ dataModalTemp?.rencanaTindakLanjut }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.rencanaTindakLanjut }}</pre>
         </div></sv
       >
       <sv label="PP dan APBH"
         ><div>
-          <pre>{{ dataModalTemp?.listPP }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.listPP }}</pre>
         </div></sv
       >
     </sv-container>
@@ -476,27 +498,27 @@
       >
       <sv label="Posisi"
         ><div *ngIf="dataModalTemp?.position">
-          <pre>{{ dataModalTemp?.position }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.position }}</pre>
         </div></sv
       >
       <sv label="Target"
         ><div *ngIf="dataModalTemp?.targetAdvokasi">
-          <pre>{{ dataModalTemp?.targetAdvokasi }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.targetAdvokasi }}</pre>
         </div></sv
       >
       <sv label="Capaian"
         ><div *ngIf="dataModalTemp?.capaian">
-          <pre>{{ dataModalTemp?.capaian }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.capaian }}</pre>
         </div></sv
       >
       <sv label="Hambatan"
         ><div *ngIf="dataModalTemp?.hambatan">
-          <pre>{{ dataModalTemp?.hambatan }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.hambatan }}</pre>
         </div></sv
       >
       <sv label="Rencana Strategi"
         ><div *ngIf="dataModalTemp?.rencanaStrategi">
-          <pre>{{ dataModalTemp?.rencanaStrategi }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.rencanaStrategi }}</pre>
         </div></sv
       >
     </sv-container>
@@ -507,9 +529,12 @@
       <sv label="Jenis Dokumen">{{ dataModalTemp?.mtvocabteks | async }}</sv>
       <sv label="Judul Dokumen">{{ dataModalTemp?.judulDokumen }}</sv>
       <sv label="Link File"><span *ngIf="dataModalTemp?.link" [innerHTML]="dataModalTemp?.link | linky"></span></sv>
+      <sv label="File Uploaded"
+        ><span *ngIf="dataModalTemp?.filename" [innerHTML]="downloadAction + dataModalTemp?.filename | linky"></span
+      ></sv>
       <sv label="Keterangan"
         ><div *ngIf="dataModalTemp?.keterangan">
-          <pre>{{ dataModalTemp?.keterangan }}</pre>
+          <pre style="white-space:pre-wrap;">{{ dataModalTemp?.keterangan }}</pre>
         </div></sv
       >
       <sv label="Tanggal">{{

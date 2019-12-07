@@ -1,7 +1,14 @@
 <page-header *ngIf="!parent" [title]="'Create Application'"></page-header>
 <div #card>
   <nz-card [nzBordered]="false">
-    <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading">
+    <sf
+      [layout]="'vertical'"
+      #sf
+      [schema]="schema"
+      [formData]="editData"
+      (formSubmit)="submit($event)"
+      [loading]="loading"
+    >
       <ng-template sf-template="clients" let-me let-ui="ui" let-schema="schema">
         <div>
           <button

@@ -1,3 +1,86 @@
+#subscription
+
+subscription subscribeToLog($where: LogRequestSubscriptionWhereInput) {
+  logRequest(where: $where) {
+    mutation
+    node {
+      ID
+      caseId {
+        id
+        judulKasus
+        transfer {
+          id
+          tglTransfer
+          network {
+            id
+            name
+          }
+        }
+        application {
+          id
+          noReg
+          clients {
+            id
+            personId {
+              id
+              namaLengkap
+            }
+          }
+        }
+        kronologiKasus
+        pk {
+          id
+          didampingi
+          tglRapat
+        }
+      }
+      isiRequest
+      tanggapanRequestIsi
+      applicationId {
+        id
+        tahap
+        noReg
+        dudukPerara
+        clients {
+          id
+          personId {
+            id
+            namaLengkap
+          }
+        }
+      }
+      jenisRequest
+      networkId {
+        id
+        name
+      }
+      personId {
+        id
+        namaLengkap
+      }
+      pp {
+        id
+        appConsultation {
+          name
+          id
+        }
+      }
+      requestBy {
+        id
+        name
+      }
+      requestTo {
+        id
+      }
+      statusRequest
+      tanggapanRequest
+      tglExpired
+      tglRequest
+      tglRespon
+    }
+  }
+}
+
 # mutation
 
 mutation destroyRoles($where: RoleWhereInput!) {
@@ -315,6 +398,7 @@ mutation putCase($data: CaseUpdateInput!, $where: CaseWhereUniqueInput!) {
       jenisDokumen
       judulDokumen
       keterangan
+      filename
       link
     }
     issues {
@@ -655,6 +739,7 @@ query getLogRequest(
     last: $last
   ) {
     ID
+    updatedAt
     caseId {
       id
       judulKasus
@@ -972,6 +1057,7 @@ query getCase(
       jenisDokumen
       judulDokumen
       keterangan
+      filename
       link
       createdAt
     }

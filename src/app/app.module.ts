@@ -86,6 +86,18 @@ const APPINIT_PROVIDES = [
 ];
 // #endregion
 
+// window
+import { InjectionToken, FactoryProvider } from '@angular/core';
+
+export const WINDOW = new InjectionToken<Window>('window');
+
+const windowProvider: FactoryProvider = {
+  provide: WINDOW,
+  useFactory: () => window,
+};
+
+export const WINDOW_PROVIDERS = [windowProvider];
+
 import { DelonModule } from './delon.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -93,11 +105,15 @@ import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 import { GraphQLModule } from './graphql.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    NgxChartsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     DelonModule.forRoot(),
@@ -109,8 +125,18 @@ import { GraphQLModule } from './graphql.module';
     ...GLOBAL_THIRD_MODULES,
     ...FORM_MODULES,
     GraphQLModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA1bbmnwu6pfsHXI8r2aXzHgNYOvq2EStI',
+    }),
+    AgmJsMarkerClustererModule,
   ],
-  providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
+  providers: [
+    WINDOW_PROVIDERS,
+    ...LANG_PROVIDES,
+    ...INTERCEPTOR_PROVIDES,
+    ...I18NSERVICE_PROVIDES,
+    ...APPINIT_PROVIDES,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

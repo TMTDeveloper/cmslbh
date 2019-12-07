@@ -53,5 +53,12 @@
 </div>
 
 <ng-template #modalContent>
-  <sf #sf [schema]="schema" [formData]="editData" (formSubmit)="submit($event)" [loading]="loading"></sf>
+  <sf
+    [layout]="'vertical'"
+    #sf
+    [schema]="schema"
+    [formData]="editData"
+    (formSubmit)="submit($event)"
+    [loading]="loading"
+  ></sf>
 </ng-template>

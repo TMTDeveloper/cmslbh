@@ -142,6 +142,18 @@ export type AggregateRolesType = {
   count: Scalars['Int'],
 };
 
+export type AggregateSrcAnalisa = {
+  count: Scalars['Int'],
+};
+
+export type AggregateSrcOperator = {
+  count: Scalars['Int'],
+};
+
+export type AggregateSrcTemplate = {
+  count: Scalars['Int'],
+};
+
 export type AggregateUser = {
   count: Scalars['Int'],
 };
@@ -3642,6 +3654,7 @@ export type CaseDocument = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedAt: Scalars['DateTime'],
   updatedBy?: Maybe<Scalars['String']>,
 };
@@ -3661,6 +3674,7 @@ export type CaseDocumentCreateInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
   caseId: CaseCreateOneWithoutDocumentsInput,
 };
@@ -3676,6 +3690,7 @@ export type CaseDocumentCreateWithoutCaseIdInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
 };
 
@@ -3702,6 +3717,8 @@ export enum CaseDocumentOrderByInput {
   KeteranganDesc = 'keterangan_DESC',
   LinkAsc = 'link_ASC',
   LinkDesc = 'link_DESC',
+  FilenameAsc = 'filename_ASC',
+  FilenameDesc = 'filename_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   UpdatedByAsc = 'updatedBy_ASC',
@@ -3716,6 +3733,7 @@ export type CaseDocumentPreviousValues = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedAt: Scalars['DateTime'],
   updatedBy?: Maybe<Scalars['String']>,
 };
@@ -3892,6 +3910,33 @@ export type CaseDocumentScalarWhereInput = {
   link_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   link_not_ends_with?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  filename_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  filename_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  filename_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  filename_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  filename_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  filename_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  filename_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  filename_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  filename_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  filename_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  filename_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  filename_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  filename_not_ends_with?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['DateTime']>,
   /** All values that are not equal to given value. */
   updatedAt_not?: Maybe<Scalars['DateTime']>,
@@ -3967,6 +4012,7 @@ export type CaseDocumentUpdateInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
   caseId?: Maybe<CaseUpdateOneRequiredWithoutDocumentsInput>,
 };
@@ -3977,6 +4023,7 @@ export type CaseDocumentUpdateManyDataInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
 };
 
@@ -3986,6 +4033,7 @@ export type CaseDocumentUpdateManyMutationInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
 };
 
@@ -4012,6 +4060,7 @@ export type CaseDocumentUpdateWithoutCaseIdDataInput = {
   judulDokumen?: Maybe<Scalars['String']>,
   keterangan?: Maybe<Scalars['String']>,
   link?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
   updatedBy?: Maybe<Scalars['String']>,
 };
 
@@ -4198,6 +4247,33 @@ export type CaseDocumentWhereInput = {
   link_ends_with?: Maybe<Scalars['String']>,
   /** All values not ending with the given string. */
   link_not_ends_with?: Maybe<Scalars['String']>,
+  filename?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  filename_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  filename_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  filename_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  filename_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  filename_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  filename_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  filename_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  filename_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  filename_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  filename_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  filename_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  filename_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  filename_not_ends_with?: Maybe<Scalars['String']>,
   updatedAt?: Maybe<Scalars['DateTime']>,
   /** All values that are not equal to given value. */
   updatedAt_not?: Maybe<Scalars['DateTime']>,
@@ -4714,6 +4790,7 @@ export enum CaseOrderByInput {
 export type CasePelaku = {
   id: Scalars['Int'],
   caseId: Case,
+  jenisPelaku?: Maybe<Scalars['String']>,
   personId?: Maybe<Person>,
 };
 
@@ -4727,6 +4804,7 @@ export type CasePelakuConnection = {
 };
 
 export type CasePelakuCreateInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   caseId: CaseCreateOneWithoutPelakusInput,
   personId?: Maybe<PersonCreateOneWithoutCasepelakusInput>,
 };
@@ -4742,10 +4820,12 @@ export type CasePelakuCreateManyWithoutPersonIdInput = {
 };
 
 export type CasePelakuCreateWithoutCaseIdInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   personId?: Maybe<PersonCreateOneWithoutCasepelakusInput>,
 };
 
 export type CasePelakuCreateWithoutPersonIdInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   caseId: CaseCreateOneWithoutPelakusInput,
 };
 
@@ -4759,11 +4839,14 @@ export type CasePelakuEdge = {
 
 export enum CasePelakuOrderByInput {
   IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC'
+  IdDesc = 'id_DESC',
+  JenisPelakuAsc = 'jenisPelaku_ASC',
+  JenisPelakuDesc = 'jenisPelaku_DESC'
 }
 
 export type CasePelakuPreviousValues = {
   id: Scalars['Int'],
+  jenisPelaku?: Maybe<Scalars['String']>,
 };
 
 export type CasePelakuScalarWhereInput = {
@@ -4788,6 +4871,33 @@ export type CasePelakuScalarWhereInput = {
   id_gt?: Maybe<Scalars['Int']>,
   /** All values greater than or equal the given value. */
   id_gte?: Maybe<Scalars['Int']>,
+  jenisPelaku?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  jenisPelaku_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  jenisPelaku_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  jenisPelaku_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  jenisPelaku_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  jenisPelaku_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  jenisPelaku_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  jenisPelaku_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  jenisPelaku_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  jenisPelaku_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  jenisPelaku_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  jenisPelaku_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  jenisPelaku_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  jenisPelaku_not_ends_with?: Maybe<Scalars['String']>,
 };
 
 export type CasePelakuSubscriptionPayload = {
@@ -4816,8 +4926,17 @@ export type CasePelakuSubscriptionWhereInput = {
 };
 
 export type CasePelakuUpdateInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   caseId?: Maybe<CaseUpdateOneRequiredWithoutPelakusInput>,
   personId?: Maybe<PersonUpdateOneWithoutCasepelakusInput>,
+};
+
+export type CasePelakuUpdateManyDataInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
+};
+
+export type CasePelakuUpdateManyMutationInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
 };
 
 export type CasePelakuUpdateManyWithoutCaseIdInput = {
@@ -4827,6 +4946,7 @@ export type CasePelakuUpdateManyWithoutCaseIdInput = {
   disconnect?: Maybe<Array<CasePelakuWhereUniqueInput>>,
   delete?: Maybe<Array<CasePelakuWhereUniqueInput>>,
   update?: Maybe<Array<CasePelakuUpdateWithWhereUniqueWithoutCaseIdInput>>,
+  updateMany?: Maybe<Array<CasePelakuUpdateManyWithWhereNestedInput>>,
   deleteMany?: Maybe<Array<CasePelakuScalarWhereInput>>,
   upsert?: Maybe<Array<CasePelakuUpsertWithWhereUniqueWithoutCaseIdInput>>,
 };
@@ -4838,15 +4958,23 @@ export type CasePelakuUpdateManyWithoutPersonIdInput = {
   disconnect?: Maybe<Array<CasePelakuWhereUniqueInput>>,
   delete?: Maybe<Array<CasePelakuWhereUniqueInput>>,
   update?: Maybe<Array<CasePelakuUpdateWithWhereUniqueWithoutPersonIdInput>>,
+  updateMany?: Maybe<Array<CasePelakuUpdateManyWithWhereNestedInput>>,
   deleteMany?: Maybe<Array<CasePelakuScalarWhereInput>>,
   upsert?: Maybe<Array<CasePelakuUpsertWithWhereUniqueWithoutPersonIdInput>>,
 };
 
+export type CasePelakuUpdateManyWithWhereNestedInput = {
+  where: CasePelakuScalarWhereInput,
+  data: CasePelakuUpdateManyDataInput,
+};
+
 export type CasePelakuUpdateWithoutCaseIdDataInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   personId?: Maybe<PersonUpdateOneWithoutCasepelakusInput>,
 };
 
 export type CasePelakuUpdateWithoutPersonIdDataInput = {
+  jenisPelaku?: Maybe<Scalars['String']>,
   caseId?: Maybe<CaseUpdateOneRequiredWithoutPelakusInput>,
 };
 
@@ -4894,6 +5022,33 @@ export type CasePelakuWhereInput = {
   id_gt?: Maybe<Scalars['Int']>,
   /** All values greater than or equal the given value. */
   id_gte?: Maybe<Scalars['Int']>,
+  jenisPelaku?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  jenisPelaku_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  jenisPelaku_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  jenisPelaku_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  jenisPelaku_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  jenisPelaku_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  jenisPelaku_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  jenisPelaku_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  jenisPelaku_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  jenisPelaku_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  jenisPelaku_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  jenisPelaku_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  jenisPelaku_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  jenisPelaku_not_ends_with?: Maybe<Scalars['String']>,
   caseId?: Maybe<CaseWhereInput>,
   personId?: Maybe<PersonWhereInput>,
 };
@@ -12319,6 +12474,7 @@ export type LogRequest = {
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
 };
 
 
@@ -12713,7 +12869,9 @@ export enum LogRequestOrderByInput {
   TglRequestAsc = 'tglRequest_ASC',
   TglRequestDesc = 'tglRequest_DESC',
   TglResponAsc = 'tglRespon_ASC',
-  TglResponDesc = 'tglRespon_DESC'
+  TglResponDesc = 'tglRespon_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
 }
 
 export type LogRequestPreviousValues = {
@@ -12726,6 +12884,7 @@ export type LogRequestPreviousValues = {
   tglExpired?: Maybe<Scalars['DateTime']>,
   tglRequest?: Maybe<Scalars['DateTime']>,
   tglRespon?: Maybe<Scalars['DateTime']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
 };
 
 export type LogRequestScalarWhereInput = {
@@ -12930,6 +13089,21 @@ export type LogRequestScalarWhereInput = {
   tglRespon_gt?: Maybe<Scalars['DateTime']>,
   /** All values greater than or equal the given value. */
   tglRespon_gte?: Maybe<Scalars['DateTime']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  /** All values that are not equal to given value. */
+  updatedAt_not?: Maybe<Scalars['DateTime']>,
+  /** All values that are contained in given list. */
+  updatedAt_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values less than the given value. */
+  updatedAt_lt?: Maybe<Scalars['DateTime']>,
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: Maybe<Scalars['DateTime']>,
+  /** All values greater than the given value. */
+  updatedAt_gt?: Maybe<Scalars['DateTime']>,
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: Maybe<Scalars['DateTime']>,
 };
 
 export type LogRequestSubscriptionPayload = {
@@ -13476,6 +13650,21 @@ export type LogRequestWhereInput = {
   tglRespon_gt?: Maybe<Scalars['DateTime']>,
   /** All values greater than or equal the given value. */
   tglRespon_gte?: Maybe<Scalars['DateTime']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  /** All values that are not equal to given value. */
+  updatedAt_not?: Maybe<Scalars['DateTime']>,
+  /** All values that are contained in given list. */
+  updatedAt_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: Maybe<Array<Scalars['DateTime']>>,
+  /** All values less than the given value. */
+  updatedAt_lt?: Maybe<Scalars['DateTime']>,
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: Maybe<Scalars['DateTime']>,
+  /** All values greater than the given value. */
+  updatedAt_gt?: Maybe<Scalars['DateTime']>,
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: Maybe<Scalars['DateTime']>,
   caseId?: Maybe<CaseWhereInput>,
   applicationId?: Maybe<ApplicationWhereInput>,
   networkId?: Maybe<NetworkWhereInput>,
@@ -14102,6 +14291,9 @@ export type Mutation = {
   createPersonDocument: PersonDocument,
   createRole: Role,
   createUserProfile: UserProfile,
+  createSrcAnalisa: SrcAnalisa,
+  createSrcOperator: SrcOperator,
+  createSrcTemplate: SrcTemplate,
   createApplication: Application,
   createLogRequest: LogRequest,
   createRolesType: RolesType,
@@ -14135,6 +14327,9 @@ export type Mutation = {
   updatePersonDocument?: Maybe<PersonDocument>,
   updateRole?: Maybe<Role>,
   updateUserProfile?: Maybe<UserProfile>,
+  updateSrcAnalisa?: Maybe<SrcAnalisa>,
+  updateSrcOperator?: Maybe<SrcOperator>,
+  updateSrcTemplate?: Maybe<SrcTemplate>,
   updateApplication?: Maybe<Application>,
   updateLogRequest?: Maybe<LogRequest>,
   updateRolesType?: Maybe<RolesType>,
@@ -14168,6 +14363,9 @@ export type Mutation = {
   deletePersonDocument?: Maybe<PersonDocument>,
   deleteRole?: Maybe<Role>,
   deleteUserProfile?: Maybe<UserProfile>,
+  deleteSrcAnalisa?: Maybe<SrcAnalisa>,
+  deleteSrcOperator?: Maybe<SrcOperator>,
+  deleteSrcTemplate?: Maybe<SrcTemplate>,
   deleteApplication?: Maybe<Application>,
   deleteLogRequest?: Maybe<LogRequest>,
   deleteRolesType?: Maybe<RolesType>,
@@ -14201,6 +14399,9 @@ export type Mutation = {
   upsertPersonDocument: PersonDocument,
   upsertRole: Role,
   upsertUserProfile: UserProfile,
+  upsertSrcAnalisa: SrcAnalisa,
+  upsertSrcOperator: SrcOperator,
+  upsertSrcTemplate: SrcTemplate,
   upsertApplication: Application,
   upsertLogRequest: LogRequest,
   upsertRolesType: RolesType,
@@ -14212,6 +14413,7 @@ export type Mutation = {
   updateManyCaseConsultations: BatchPayload,
   updateManyCaseDocuments: BatchPayload,
   updateManyCaseIssues: BatchPayload,
+  updateManyCasePelakus: BatchPayload,
   updateManyCasePks: BatchPayload,
   updateManyCaseProgresses: BatchPayload,
   updateManyCaseProgressActivities: BatchPayload,
@@ -14229,6 +14431,9 @@ export type Mutation = {
   updateManyMtVocabGroups: BatchPayload,
   updateManyPersonDocuments: BatchPayload,
   updateManyUserProfiles: BatchPayload,
+  updateManySrcAnalisas: BatchPayload,
+  updateManySrcOperators: BatchPayload,
+  updateManySrcTemplates: BatchPayload,
   updateManyApplications: BatchPayload,
   updateManyLogRequests: BatchPayload,
   updateManyRolesTypes: BatchPayload,
@@ -14262,6 +14467,9 @@ export type Mutation = {
   deleteManyPersonDocuments: BatchPayload,
   deleteManyRoles: BatchPayload,
   deleteManyUserProfiles: BatchPayload,
+  deleteManySrcAnalisas: BatchPayload,
+  deleteManySrcOperators: BatchPayload,
+  deleteManySrcTemplates: BatchPayload,
   deleteManyApplications: BatchPayload,
   deleteManyLogRequests: BatchPayload,
   deleteManyRolesTypes: BatchPayload,
@@ -14403,6 +14611,21 @@ export type MutationCreateRoleArgs = {
 
 export type MutationCreateUserProfileArgs = {
   data: UserProfileCreateInput
+};
+
+
+export type MutationCreateSrcAnalisaArgs = {
+  data: SrcAnalisaCreateInput
+};
+
+
+export type MutationCreateSrcOperatorArgs = {
+  data: SrcOperatorCreateInput
+};
+
+
+export type MutationCreateSrcTemplateArgs = {
+  data: SrcTemplateCreateInput
 };
 
 
@@ -14598,6 +14821,24 @@ export type MutationUpdateUserProfileArgs = {
 };
 
 
+export type MutationUpdateSrcAnalisaArgs = {
+  data: SrcAnalisaUpdateInput,
+  where: SrcAnalisaWhereUniqueInput
+};
+
+
+export type MutationUpdateSrcOperatorArgs = {
+  data: SrcOperatorUpdateInput,
+  where: SrcOperatorWhereUniqueInput
+};
+
+
+export type MutationUpdateSrcTemplateArgs = {
+  data: SrcTemplateUpdateInput,
+  where: SrcTemplateWhereUniqueInput
+};
+
+
 export type MutationUpdateApplicationArgs = {
   data: ApplicationUpdateInput,
   where: ApplicationWhereUniqueInput
@@ -14766,6 +15007,21 @@ export type MutationDeleteRoleArgs = {
 
 export type MutationDeleteUserProfileArgs = {
   where: UserProfileWhereUniqueInput
+};
+
+
+export type MutationDeleteSrcAnalisaArgs = {
+  where: SrcAnalisaWhereUniqueInput
+};
+
+
+export type MutationDeleteSrcOperatorArgs = {
+  where: SrcOperatorWhereUniqueInput
+};
+
+
+export type MutationDeleteSrcTemplateArgs = {
+  where: SrcTemplateWhereUniqueInput
 };
 
 
@@ -14988,6 +15244,27 @@ export type MutationUpsertUserProfileArgs = {
 };
 
 
+export type MutationUpsertSrcAnalisaArgs = {
+  where: SrcAnalisaWhereUniqueInput,
+  create: SrcAnalisaCreateInput,
+  update: SrcAnalisaUpdateInput
+};
+
+
+export type MutationUpsertSrcOperatorArgs = {
+  where: SrcOperatorWhereUniqueInput,
+  create: SrcOperatorCreateInput,
+  update: SrcOperatorUpdateInput
+};
+
+
+export type MutationUpsertSrcTemplateArgs = {
+  where: SrcTemplateWhereUniqueInput,
+  create: SrcTemplateCreateInput,
+  update: SrcTemplateUpdateInput
+};
+
+
 export type MutationUpsertApplicationArgs = {
   where: ApplicationWhereUniqueInput,
   create: ApplicationCreateInput,
@@ -15057,6 +15334,12 @@ export type MutationUpdateManyCaseDocumentsArgs = {
 export type MutationUpdateManyCaseIssuesArgs = {
   data: CaseIssueUpdateManyMutationInput,
   where?: Maybe<CaseIssueWhereInput>
+};
+
+
+export type MutationUpdateManyCasePelakusArgs = {
+  data: CasePelakuUpdateManyMutationInput,
+  where?: Maybe<CasePelakuWhereInput>
 };
 
 
@@ -15159,6 +15442,24 @@ export type MutationUpdateManyPersonDocumentsArgs = {
 export type MutationUpdateManyUserProfilesArgs = {
   data: UserProfileUpdateManyMutationInput,
   where?: Maybe<UserProfileWhereInput>
+};
+
+
+export type MutationUpdateManySrcAnalisasArgs = {
+  data: SrcAnalisaUpdateManyMutationInput,
+  where?: Maybe<SrcAnalisaWhereInput>
+};
+
+
+export type MutationUpdateManySrcOperatorsArgs = {
+  data: SrcOperatorUpdateManyMutationInput,
+  where?: Maybe<SrcOperatorWhereInput>
+};
+
+
+export type MutationUpdateManySrcTemplatesArgs = {
+  data: SrcTemplateUpdateManyMutationInput,
+  where?: Maybe<SrcTemplateWhereInput>
 };
 
 
@@ -15330,6 +15631,21 @@ export type MutationDeleteManyRolesArgs = {
 
 export type MutationDeleteManyUserProfilesArgs = {
   where?: Maybe<UserProfileWhereInput>
+};
+
+
+export type MutationDeleteManySrcAnalisasArgs = {
+  where?: Maybe<SrcAnalisaWhereInput>
+};
+
+
+export type MutationDeleteManySrcOperatorsArgs = {
+  where?: Maybe<SrcOperatorWhereInput>
+};
+
+
+export type MutationDeleteManySrcTemplatesArgs = {
+  where?: Maybe<SrcTemplateWhereInput>
 };
 
 
@@ -17939,6 +18255,9 @@ export type Query = {
   personDocuments: Array<Maybe<PersonDocument>>,
   roles: Array<Maybe<Role>>,
   userProfiles: Array<Maybe<UserProfile>>,
+  srcAnalisas: Array<Maybe<SrcAnalisa>>,
+  srcOperators: Array<Maybe<SrcOperator>>,
+  srcTemplates: Array<Maybe<SrcTemplate>>,
   applications: Array<Maybe<Application>>,
   logRequests: Array<Maybe<LogRequest>>,
   rolesTypes: Array<Maybe<RolesType>>,
@@ -17972,6 +18291,9 @@ export type Query = {
   personDocument?: Maybe<PersonDocument>,
   role?: Maybe<Role>,
   userProfile?: Maybe<UserProfile>,
+  srcAnalisa?: Maybe<SrcAnalisa>,
+  srcOperator?: Maybe<SrcOperator>,
+  srcTemplate?: Maybe<SrcTemplate>,
   application?: Maybe<Application>,
   logRequest?: Maybe<LogRequest>,
   rolesType?: Maybe<RolesType>,
@@ -18005,6 +18327,9 @@ export type Query = {
   personDocumentsConnection: PersonDocumentConnection,
   rolesConnection: RoleConnection,
   userProfilesConnection: UserProfileConnection,
+  srcAnalisasConnection: SrcAnalisaConnection,
+  srcOperatorsConnection: SrcOperatorConnection,
+  srcTemplatesConnection: SrcTemplateConnection,
   applicationsConnection: ApplicationConnection,
   logRequestsConnection: LogRequestConnection,
   rolesTypesConnection: RolesTypeConnection,
@@ -18313,6 +18638,39 @@ export type QueryUserProfilesArgs = {
 };
 
 
+export type QuerySrcAnalisasArgs = {
+  where?: Maybe<SrcAnalisaWhereInput>,
+  orderBy?: Maybe<SrcAnalisaOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySrcOperatorsArgs = {
+  where?: Maybe<SrcOperatorWhereInput>,
+  orderBy?: Maybe<SrcOperatorOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySrcTemplatesArgs = {
+  where?: Maybe<SrcTemplateWhereInput>,
+  orderBy?: Maybe<SrcTemplateOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
 export type QueryApplicationsArgs = {
   where?: Maybe<ApplicationWhereInput>,
   orderBy?: Maybe<ApplicationOrderByInput>,
@@ -18511,6 +18869,21 @@ export type QueryRoleArgs = {
 
 export type QueryUserProfileArgs = {
   where: UserProfileWhereUniqueInput
+};
+
+
+export type QuerySrcAnalisaArgs = {
+  where: SrcAnalisaWhereUniqueInput
+};
+
+
+export type QuerySrcOperatorArgs = {
+  where: SrcOperatorWhereUniqueInput
+};
+
+
+export type QuerySrcTemplateArgs = {
+  where: SrcTemplateWhereUniqueInput
 };
 
 
@@ -18833,6 +19206,39 @@ export type QueryRolesConnectionArgs = {
 export type QueryUserProfilesConnectionArgs = {
   where?: Maybe<UserProfileWhereInput>,
   orderBy?: Maybe<UserProfileOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySrcAnalisasConnectionArgs = {
+  where?: Maybe<SrcAnalisaWhereInput>,
+  orderBy?: Maybe<SrcAnalisaOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySrcOperatorsConnectionArgs = {
+  where?: Maybe<SrcOperatorWhereInput>,
+  orderBy?: Maybe<SrcOperatorOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySrcTemplatesConnectionArgs = {
+  where?: Maybe<SrcTemplateWhereInput>,
+  orderBy?: Maybe<SrcTemplateOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -19280,6 +19686,690 @@ export type RoleWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>,
 };
 
+export type SrcAnalisa = {
+  id: Scalars['Int'],
+  group?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of items. */
+export type SrcAnalisaConnection = {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** A list of edges. */
+  edges: Array<Maybe<SrcAnalisaEdge>>,
+  aggregate: AggregateSrcAnalisa,
+};
+
+export type SrcAnalisaCreateInput = {
+  group?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+};
+
+/** An edge in a connection. */
+export type SrcAnalisaEdge = {
+  /** The item at the end of the edge. */
+  node: SrcAnalisa,
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+};
+
+export enum SrcAnalisaOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  GroupAsc = 'group_ASC',
+  GroupDesc = 'group_DESC',
+  LabelAsc = 'label_ASC',
+  LabelDesc = 'label_DESC',
+  FieldAsc = 'field_ASC',
+  FieldDesc = 'field_DESC',
+  TypeAsc = 'type_ASC',
+  TypeDesc = 'type_DESC',
+  SourceAsc = 'source_ASC',
+  SourceDesc = 'source_DESC',
+  KodeListAsc = 'kode_list_ASC',
+  KodeListDesc = 'kode_list_DESC',
+  AliasAsc = 'alias_ASC',
+  AliasDesc = 'alias_DESC'
+}
+
+export type SrcAnalisaPreviousValues = {
+  id: Scalars['Int'],
+  group?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+};
+
+export type SrcAnalisaSubscriptionPayload = {
+  mutation: MutationType,
+  node?: Maybe<SrcAnalisa>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SrcAnalisaPreviousValues>,
+};
+
+export type SrcAnalisaSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcAnalisaSubscriptionWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcAnalisaSubscriptionWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcAnalisaSubscriptionWhereInput>>,
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>,
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<SrcAnalisaWhereInput>,
+};
+
+export type SrcAnalisaUpdateInput = {
+  group?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+};
+
+export type SrcAnalisaUpdateManyMutationInput = {
+  group?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+};
+
+export type SrcAnalisaWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcAnalisaWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcAnalisaWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcAnalisaWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  group?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  group_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  group_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  group_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  group_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  group_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  group_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  group_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  group_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  group_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  group_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  group_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  group_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  group_not_ends_with?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  label_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  label_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  label_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  label_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  label_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  label_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  label_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  label_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  label_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  label_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  label_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  label_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  label_not_ends_with?: Maybe<Scalars['String']>,
+  field?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  field_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  field_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  field_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  field_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  field_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  field_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  field_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  field_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  field_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  field_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  field_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  field_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  field_not_ends_with?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  type_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  type_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  type_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  type_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  type_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  type_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  type_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  type_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  type_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  type_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  type_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  type_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  type_not_ends_with?: Maybe<Scalars['String']>,
+  source?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  source_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  source_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  source_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  source_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  source_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  source_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  source_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  source_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  source_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  source_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  source_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  source_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  source_not_ends_with?: Maybe<Scalars['String']>,
+  kode_list?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  kode_list_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  kode_list_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  kode_list_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  kode_list_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  kode_list_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  kode_list_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  kode_list_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  kode_list_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  kode_list_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  kode_list_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  kode_list_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  kode_list_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  kode_list_not_ends_with?: Maybe<Scalars['String']>,
+  alias?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  alias_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  alias_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  alias_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  alias_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  alias_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  alias_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  alias_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  alias_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  alias_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  alias_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  alias_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  alias_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  alias_not_ends_with?: Maybe<Scalars['String']>,
+};
+
+export type SrcAnalisaWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
+export type SrcOperator = {
+  id: Scalars['Int'],
+  type?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of items. */
+export type SrcOperatorConnection = {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** A list of edges. */
+  edges: Array<Maybe<SrcOperatorEdge>>,
+  aggregate: AggregateSrcOperator,
+};
+
+export type SrcOperatorCreateInput = {
+  type?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** An edge in a connection. */
+export type SrcOperatorEdge = {
+  /** The item at the end of the edge. */
+  node: SrcOperator,
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+};
+
+export enum SrcOperatorOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  TypeAsc = 'type_ASC',
+  TypeDesc = 'type_DESC',
+  OperatorAsc = 'operator_ASC',
+  OperatorDesc = 'operator_DESC',
+  LabelAsc = 'label_ASC',
+  LabelDesc = 'label_DESC'
+}
+
+export type SrcOperatorPreviousValues = {
+  id: Scalars['Int'],
+  type?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+export type SrcOperatorSubscriptionPayload = {
+  mutation: MutationType,
+  node?: Maybe<SrcOperator>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SrcOperatorPreviousValues>,
+};
+
+export type SrcOperatorSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcOperatorSubscriptionWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcOperatorSubscriptionWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcOperatorSubscriptionWhereInput>>,
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>,
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<SrcOperatorWhereInput>,
+};
+
+export type SrcOperatorUpdateInput = {
+  type?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+export type SrcOperatorUpdateManyMutationInput = {
+  type?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+export type SrcOperatorWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcOperatorWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcOperatorWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcOperatorWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  type?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  type_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  type_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  type_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  type_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  type_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  type_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  type_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  type_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  type_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  type_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  type_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  type_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  type_not_ends_with?: Maybe<Scalars['String']>,
+  operator?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  operator_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  operator_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  operator_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  operator_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  operator_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  operator_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  operator_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  operator_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  operator_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  operator_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  operator_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  operator_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  operator_not_ends_with?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  label_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  label_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  label_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  label_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  label_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  label_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  label_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  label_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  label_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  label_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  label_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  label_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  label_not_ends_with?: Maybe<Scalars['String']>,
+};
+
+export type SrcOperatorWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
+export type SrcTemplate = {
+  id: Scalars['Int'],
+  name?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+};
+
+/** A connection to a list of items. */
+export type SrcTemplateConnection = {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo,
+  /** A list of edges. */
+  edges: Array<Maybe<SrcTemplateEdge>>,
+  aggregate: AggregateSrcTemplate,
+};
+
+export type SrcTemplateCreateInput = {
+  name?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+};
+
+/** An edge in a connection. */
+export type SrcTemplateEdge = {
+  /** The item at the end of the edge. */
+  node: SrcTemplate,
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'],
+};
+
+export enum SrcTemplateOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  TemplateAsc = 'template_ASC',
+  TemplateDesc = 'template_DESC'
+}
+
+export type SrcTemplatePreviousValues = {
+  id: Scalars['Int'],
+  name?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+};
+
+export type SrcTemplateSubscriptionPayload = {
+  mutation: MutationType,
+  node?: Maybe<SrcTemplate>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SrcTemplatePreviousValues>,
+};
+
+export type SrcTemplateSubscriptionWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcTemplateSubscriptionWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcTemplateSubscriptionWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcTemplateSubscriptionWhereInput>>,
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<Array<MutationType>>,
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<SrcTemplateWhereInput>,
+};
+
+export type SrcTemplateUpdateInput = {
+  name?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+};
+
+export type SrcTemplateUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+};
+
+export type SrcTemplateWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<Array<SrcTemplateWhereInput>>,
+  /** Logical OR on all given filters. */
+  OR?: Maybe<Array<SrcTemplateWhereInput>>,
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<Array<SrcTemplateWhereInput>>,
+  id?: Maybe<Scalars['Int']>,
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<Scalars['Int']>,
+  /** All values that are contained in given list. */
+  id_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<Array<Scalars['Int']>>,
+  /** All values less than the given value. */
+  id_lt?: Maybe<Scalars['Int']>,
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<Scalars['Int']>,
+  /** All values greater than the given value. */
+  id_gt?: Maybe<Scalars['Int']>,
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<Scalars['Int']>,
+  name?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  name_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  name_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  name_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  name_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  template?: Maybe<Scalars['String']>,
+  /** All values that are not equal to given value. */
+  template_not?: Maybe<Scalars['String']>,
+  /** All values that are contained in given list. */
+  template_in?: Maybe<Array<Scalars['String']>>,
+  /** All values that are not contained in given list. */
+  template_not_in?: Maybe<Array<Scalars['String']>>,
+  /** All values less than the given value. */
+  template_lt?: Maybe<Scalars['String']>,
+  /** All values less than or equal the given value. */
+  template_lte?: Maybe<Scalars['String']>,
+  /** All values greater than the given value. */
+  template_gt?: Maybe<Scalars['String']>,
+  /** All values greater than or equal the given value. */
+  template_gte?: Maybe<Scalars['String']>,
+  /** All values containing the given string. */
+  template_contains?: Maybe<Scalars['String']>,
+  /** All values not containing the given string. */
+  template_not_contains?: Maybe<Scalars['String']>,
+  /** All values starting with the given string. */
+  template_starts_with?: Maybe<Scalars['String']>,
+  /** All values not starting with the given string. */
+  template_not_starts_with?: Maybe<Scalars['String']>,
+  /** All values ending with the given string. */
+  template_ends_with?: Maybe<Scalars['String']>,
+  /** All values not ending with the given string. */
+  template_not_ends_with?: Maybe<Scalars['String']>,
+};
+
+export type SrcTemplateWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
 export type Subscription = {
   case?: Maybe<CaseSubscriptionPayload>,
   caseClassification?: Maybe<CaseClassificationSubscriptionPayload>,
@@ -19308,6 +20398,9 @@ export type Subscription = {
   personDocument?: Maybe<PersonDocumentSubscriptionPayload>,
   role?: Maybe<RoleSubscriptionPayload>,
   userProfile?: Maybe<UserProfileSubscriptionPayload>,
+  srcAnalisa?: Maybe<SrcAnalisaSubscriptionPayload>,
+  srcOperator?: Maybe<SrcOperatorSubscriptionPayload>,
+  srcTemplate?: Maybe<SrcTemplateSubscriptionPayload>,
   application?: Maybe<ApplicationSubscriptionPayload>,
   logRequest?: Maybe<LogRequestSubscriptionPayload>,
   rolesType?: Maybe<RolesTypeSubscriptionPayload>,
@@ -19449,6 +20542,21 @@ export type SubscriptionRoleArgs = {
 
 export type SubscriptionUserProfileArgs = {
   where?: Maybe<UserProfileSubscriptionWhereInput>
+};
+
+
+export type SubscriptionSrcAnalisaArgs = {
+  where?: Maybe<SrcAnalisaSubscriptionWhereInput>
+};
+
+
+export type SubscriptionSrcOperatorArgs = {
+  where?: Maybe<SrcOperatorSubscriptionWhereInput>
+};
+
+
+export type SubscriptionSrcTemplateArgs = {
+  where?: Maybe<SrcTemplateSubscriptionWhereInput>
 };
 
 
@@ -21058,6 +22166,13 @@ export type UserWhereInput = {
 export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>,
 };
+export type SubscribeToLogSubscriptionVariables = {
+  where?: Maybe<LogRequestSubscriptionWhereInput>
+};
+
+
+export type SubscribeToLogSubscription = { logRequest: Maybe<(Pick<LogRequestSubscriptionPayload, 'mutation'> & { node: Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'didampingi' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id' | 'name'>>, personId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })> })> };
+
 export type DestroyRolesMutationVariables = {
   where: RoleWhereInput
 };
@@ -21155,7 +22270,7 @@ export type PutCaseMutationVariables = {
 };
 
 
-export type PutCaseMutation = { updateCase: Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<{ personId: Pick<Person, 'namaLengkap'> }>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'tglKonsul' | 'updatedAt' | 'updatedBy'> & { apps: Maybe<Array<{ appConsultation: Maybe<Pick<User, 'name' | 'id'>> }>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>> })> };
+export type PutCaseMutation = { updateCase: Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<{ personId: Pick<Person, 'namaLengkap'> }>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'tglKonsul' | 'updatedAt' | 'updatedBy'> & { apps: Maybe<Array<{ appConsultation: Maybe<Pick<User, 'name' | 'id'>> }>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'filename' | 'link'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>> })> };
 
 export type PutLogRequestMutationVariables = {
   data: LogRequestUpdateInput,
@@ -21207,7 +22322,7 @@ export type GetLogRequestQueryVariables = {
 };
 
 
-export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'didampingi' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id' | 'name'>>, personId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
+export type GetLogRequestQuery = { logRequests: Array<Maybe<(Pick<LogRequest, 'ID' | 'updatedAt' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<(Pick<Case, 'id' | 'judulKasus' | 'kronologiKasus'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, application: (Pick<Application, 'id' | 'noReg'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), pk: Maybe<Pick<CasePk, 'id' | 'didampingi' | 'tglRapat'>> })>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id' | 'name'>>, personId: Maybe<Pick<Person, 'id' | 'namaLengkap'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: Pick<User, 'name' | 'id'> })>>, requestBy: Maybe<Pick<User, 'id' | 'name'>>, requestTo: Maybe<Pick<User, 'id'>> })>> };
 
 export type GetRolesTypeQueryVariables = {
   where?: Maybe<RolesTypeWhereInput>,
@@ -21259,7 +22374,7 @@ export type GetCaseQueryVariables = {
 };
 
 
-export type GetCaseQuery = { cases: Array<Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, referrals: Maybe<Array<(Pick<CaseReferral, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { client: Pick<Person, 'id' | 'namaLengkap'>, network: Maybe<Pick<Network, 'id' | 'name'>> })>>, application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'tglKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'updatedAt' | 'updatedBy'> & { caseId: (Pick<Case, 'id'> & { application: Pick<Application, 'id' | 'noReg'> }), apps: Maybe<Array<(Pick<CaseConsultationApp, 'id'> & { appConsultation: Maybe<(Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> })> })>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'id' | 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'link' | 'createdAt'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'tglAktifitas' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>>, logRequests: Maybe<Array<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: (Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> }) })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> })>> };
+export type GetCaseQuery = { cases: Array<Maybe<(Pick<Case, 'id' | 'applicationId' | 'caseClosed' | 'caseClosedJenis' | 'createdAt' | 'createdBy' | 'hakTerlanggar' | 'issue' | 'judulKasus' | 'klasifikasiDok' | 'klasifikasiDok' | 'kronologiKasus' | 'lockDitolak' | 'statusPendampingan' | 'targetAdvokasi' | 'unlockPk' | 'unlockTransfer' | 'updatedAt' | 'updatedBy'> & { transfer: Maybe<(Pick<CaseTransfer, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { network: Maybe<Pick<Network, 'id' | 'name'>> })>, referrals: Maybe<Array<(Pick<CaseReferral, 'id' | 'tglTransfer' | 'catatan' | 'createdBy' | 'updatedBy'> & { client: Pick<Person, 'id' | 'namaLengkap'>, network: Maybe<Pick<Network, 'id' | 'name'>> })>>, application: (Pick<Application, 'id' | 'createdAt' | 'createdBy' | 'dudukPerara' | 'infoLbh' | 'jumlahPenerimaManfaat' | 'konfirmasiData' | 'noReg' | 'pernahKlien' | 'pernahPpLain' | 'ppLain' | 'regDate' | 'relasiWakilClient' | 'setujuAdvokasi' | 'statusPerwakilan' | 'updatedAt' | 'updatedBy' | 'waktuPernahKlien' | 'whyLbh' | 'tahap' | 'status'> & { wakilId: Maybe<Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon'>>, clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> }), classifications: Maybe<Array<Pick<CaseClassification, 'id' | 'kodeMt'>>>, consultations: Maybe<Array<(Pick<CaseConsultation, 'id' | 'appKonsul' | 'createdAt' | 'createdBy' | 'isiKonsul' | 'judulAktifitas' | 'ppKonsul' | 'tglKonsul' | 'harapan' | 'saranHukum' | 'rencanaTindakLanjut' | 'updatedAt' | 'updatedBy'> & { caseId: (Pick<Case, 'id'> & { application: Pick<Application, 'id' | 'noReg'> }), apps: Maybe<Array<(Pick<CaseConsultationApp, 'id'> & { appConsultation: Maybe<(Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> })> })>> })>>, documents: Maybe<Array<Pick<CaseDocument, 'id' | 'jenisDokumen' | 'judulDokumen' | 'keterangan' | 'filename' | 'link' | 'createdAt'>>>, issues: Maybe<Array<Pick<CaseIssue, 'id' | 'kodeMt'>>>, korbans: Maybe<Array<(Pick<CaseKorban, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pelakus: Maybe<Array<(Pick<CasePelaku, 'id'> & { personId: Maybe<Pick<Person, 'namaLengkap' | 'id'>> })>>, pk: Maybe<(Pick<CasePk, 'id' | 'createdAt' | 'createdBy' | 'didampingi' | 'legalMemo' | 'notulaRapat' | 'strategiAdvokasi' | 'targetAkhirAdvokasi' | 'statusAlasanTdk' | 'tglRapat'> & { ppPendamping: Maybe<(Pick<User, 'address' | 'avatar' | 'createdAt' | 'deletedAt' | 'email' | 'id' | 'name' | 'password' | 'phone' | 'position' | 'rememberToken' | 'roles' | 'status' | 'updatedAt' | 'username'> & { profile: Pick<UserProfile, 'id' | 'noContact'> })> })>, progresses: Maybe<Pick<CaseProgress, 'id' | 'catatan' | 'jenisPeradilan'>>, activities: Maybe<Array<(Pick<CaseProgressActivity, 'id' | 'capaian' | 'hambatan' | 'tglAktifitas' | 'judulAktifitas' | 'position' | 'rencanaStrategi' | 'targetAdvokasi'> & { activitieslit: Maybe<Array<Pick<CaseProgressActivityLit, 'id' | 'kodeMt'>>>, activitiesnonlit: Maybe<Array<Pick<CaseProgressActivityNonlit, 'id' | 'kodeMt'>>> })>>, transferreferrals: Maybe<Array<Pick<CaseTransferReferral, 'id' | 'catatan' | 'document' | 'jenisTransferReferral' | 'networkId' | 'updatedAt' | 'updatedBy'>>>, violatedrights: Maybe<Array<Pick<CaseViolatedRight, 'id' | 'kodeMt'>>>, logRequests: Maybe<Array<(Pick<LogRequest, 'ID' | 'isiRequest' | 'tanggapanRequestIsi' | 'jenisRequest' | 'statusRequest' | 'tanggapanRequest' | 'tglExpired' | 'tglRequest' | 'tglRespon'> & { caseId: Maybe<Pick<Case, 'id' | 'judulKasus'>>, applicationId: Maybe<(Pick<Application, 'id' | 'tahap' | 'noReg' | 'dudukPerara'> & { clients: Maybe<Array<(Pick<Client, 'id'> & { personId: Pick<Person, 'id' | 'namaLengkap'> })>> })>, networkId: Maybe<Pick<Network, 'id'>>, personId: Maybe<Pick<Person, 'id'>>, pp: Maybe<Array<(Pick<LogRequestApp, 'id'> & { appConsultation: (Pick<User, 'name' | 'id'> & { roles_type: Maybe<Array<(Pick<Role, 'id'> & { type: Pick<RolesType, 'id'> })>> }) })>>, requestBy: Maybe<Pick<User, 'id'>>, requestTo: Maybe<Pick<User, 'id'>> })>> })>> };
 
 export type GetConsultationQueryVariables = {
   where?: Maybe<CaseConsultationWhereInput>,
@@ -21339,6 +22454,96 @@ export type AllPersonQueryVariables = {
 
 export type AllPersonQuery = { persons: Array<Maybe<(Pick<Person, 'id' | 'agama' | 'alamatDomisili' | 'alamatId' | 'alatBantu' | 'alias' | 'createdAt' | 'createdBy' | 'disabilitas' | 'distrikDomisili' | 'distrikId' | 'domisiliSama' | 'email' | 'golDarah' | 'jenisDisabilitas' | 'jenisDomisili' | 'jenisId' | 'jenisKelamin' | 'jmlAnggota' | 'namaLengkap' | 'nomorId' | 'pekerjaan' | 'pendidikan' | 'statusPernikahan' | 'telepon' | 'tglLahir' | 'tmpLahir' | 'unitSatuan' | 'updatedAt' | 'updatedBy' | 'wargaNegara'> & { applications: Maybe<Array<Pick<Application, 'id' | 'noReg' | 'createdAt'>>>, clients: Maybe<Array<(Pick<Client, 'id'> & { applicationId: Pick<Application, 'id' | 'noReg' | 'createdAt'> })>>, documents: Maybe<Array<Pick<PersonDocument, 'id' | 'title' | 'file'>>> })>> };
 
+export const SubscribeToLogDocument = gql`
+    subscription subscribeToLog($where: LogRequestSubscriptionWhereInput) {
+  logRequest(where: $where) {
+    mutation
+    node {
+      ID
+      caseId {
+        id
+        judulKasus
+        transfer {
+          id
+          tglTransfer
+          network {
+            id
+            name
+          }
+        }
+        application {
+          id
+          noReg
+          clients {
+            id
+            personId {
+              id
+              namaLengkap
+            }
+          }
+        }
+        kronologiKasus
+        pk {
+          id
+          didampingi
+          tglRapat
+        }
+      }
+      isiRequest
+      tanggapanRequestIsi
+      applicationId {
+        id
+        tahap
+        noReg
+        dudukPerara
+        clients {
+          id
+          personId {
+            id
+            namaLengkap
+          }
+        }
+      }
+      jenisRequest
+      networkId {
+        id
+        name
+      }
+      personId {
+        id
+        namaLengkap
+      }
+      pp {
+        id
+        appConsultation {
+          name
+          id
+        }
+      }
+      requestBy {
+        id
+        name
+      }
+      requestTo {
+        id
+      }
+      statusRequest
+      tanggapanRequest
+      tglExpired
+      tglRequest
+      tglRespon
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SubscribeToLogGQL extends Apollo.Subscription<SubscribeToLogSubscription, SubscribeToLogSubscriptionVariables> {
+    document = SubscribeToLogDocument;
+    
+  }
 export const DestroyRolesDocument = gql`
     mutation destroyRoles($where: RoleWhereInput!) {
   deleteManyRoles(where: $where) {
@@ -21773,6 +22978,7 @@ export const PutCaseDocument = gql`
       jenisDokumen
       judulDokumen
       keterangan
+      filename
       link
     }
     issues {
@@ -22149,6 +23355,7 @@ export const GetLogRequestDocument = gql`
     query getLogRequest($where: LogRequestWhereInput, $orderBy: LogRequestOrderByInput, $skip: Int, $after: String, $before: String, $first: Int, $last: Int) {
   logRequests(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     ID
+    updatedAt
     caseId {
       id
       judulKasus
@@ -22462,6 +23669,7 @@ export const GetCaseDocument = gql`
       jenisDokumen
       judulDokumen
       keterangan
+      filename
       link
       createdAt
     }
@@ -22844,7 +24052,30 @@ export const AllPersonDocument = gql`
   export class AllPersonGQL extends Apollo.Query<AllPersonQuery, AllPersonQueryVariables> {
     document = AllPersonDocument;
     
-  }export namespace DestroyRoles {
+  }export namespace SubscribeToLog {
+  export type Variables = SubscribeToLogSubscriptionVariables;
+  export type Subscription = SubscribeToLogSubscription;
+  export type LogRequest = SubscribeToLogSubscription['logRequest'];
+  export type Node = SubscribeToLogSubscription['logRequest']['node'];
+  export type CaseId = SubscribeToLogSubscription['logRequest']['node']['caseId'];
+  export type Transfer = SubscribeToLogSubscription['logRequest']['node']['caseId']['transfer'];
+  export type Network = SubscribeToLogSubscription['logRequest']['node']['caseId']['transfer']['network'];
+  export type Application = SubscribeToLogSubscription['logRequest']['node']['caseId']['application'];
+  export type Clients = SubscribeToLogSubscription['logRequest']['node']['caseId']['application']['clients'][0];
+  export type PersonId = SubscribeToLogSubscription['logRequest']['node']['caseId']['application']['clients'][0]['personId'];
+  export type Pk = SubscribeToLogSubscription['logRequest']['node']['caseId']['pk'];
+  export type ApplicationId = SubscribeToLogSubscription['logRequest']['node']['applicationId'];
+  export type _Clients = SubscribeToLogSubscription['logRequest']['node']['applicationId']['clients'][0];
+  export type _PersonId = SubscribeToLogSubscription['logRequest']['node']['applicationId']['clients'][0]['personId'];
+  export type NetworkId = SubscribeToLogSubscription['logRequest']['node']['networkId'];
+  export type __PersonId = SubscribeToLogSubscription['logRequest']['node']['personId'];
+  export type Pp = SubscribeToLogSubscription['logRequest']['node']['pp'][0];
+  export type AppConsultation = SubscribeToLogSubscription['logRequest']['node']['pp'][0]['appConsultation'];
+  export type RequestBy = SubscribeToLogSubscription['logRequest']['node']['requestBy'];
+  export type RequestTo = SubscribeToLogSubscription['logRequest']['node']['requestTo'];
+}
+
+export namespace DestroyRoles {
   export type Variables = DestroyRolesMutationVariables;
   export type Mutation = DestroyRolesMutation;
   export type DeleteManyRoles = DestroyRolesMutation['deleteManyRoles'];

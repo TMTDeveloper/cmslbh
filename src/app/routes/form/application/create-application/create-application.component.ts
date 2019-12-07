@@ -357,6 +357,8 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
           visibleIf: {
             statusPerwakilan: value => value !== '01000000000070' && value !== null,
           },
+          widget: 'select',
+          asyncData: () => this.mtVocabHelper.getMtVocabEnum(21, 'teks'),
         },
       },
       jumlahPenerimaManfaat: {

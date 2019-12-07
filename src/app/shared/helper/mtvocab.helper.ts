@@ -105,6 +105,24 @@ export class MtVocabHelper {
       .pipe(take(1));
   }
 
+  async getMtVocabSub(kode_list: number, kode: string) {
+    const arr = [];
+    const a = await this.getMtVocabChildTreeArrayOnly(kode_list, kode).toPromise();
+    for (const b of a) {
+      arr.push(b);
+    }
+    for (const c of arr) {
+      const a = await this.getMtVocabChildTreeArrayOnly(kode_list, c).toPromise();
+      if (a.length > 0) {
+        for (const b of a) {
+          arr.push(b);
+        }
+      }
+    }
+    arr.push(kode);
+    return arr;
+  }
+
   getMtVocabParentTree(kode_list: number) {
     return this.getMtVocabsGQL
       .watch(
@@ -184,6 +202,31 @@ export class MtVocabHelper {
             return obj;
           }),
         ),
+      )
+      .pipe(take(1));
+  }
+
+  getMtVocabChildTreeArrayOnly(kode_list: number, kode: string) {
+    return this.getMtVocabsGQL
+      .watch(
+        {
+          where: {
+            sembunyikan: false,
+            kode_induk: kode,
+            kode_list: { kode_list: kode_list },
+          },
+          orderBy: MtVocabOrderByInput.UrutanAsc,
+        },
+        { fetchPolicy: 'cache-first' },
+      )
+      .valueChanges.pipe(
+        map(result => {
+          const arr = [];
+          result.data.mtVocabs.forEach(res => {
+            arr.push(res.KODE);
+          });
+          return arr;
+        }),
       )
       .pipe(take(1));
   }

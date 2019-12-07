@@ -9,6 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "downlevelIteration": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -20,6 +21,7 @@
     ],
     "baseUrl": "./src/",
     "paths": {
+      "tslib": ["../vendor/tslib/tslib.d.ts"],
       "@shared": [
         "app/shared/index"
       ],

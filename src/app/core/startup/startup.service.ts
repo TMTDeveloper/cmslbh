@@ -32,6 +32,9 @@ export class StartupService {
     iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
   }
 
+  hostname = window.location.hostname;
+  origin = window.location.origin;
+
   load(): Promise<any> {
     // only works with promises
     // https://github.com/angular/angular/issues/15088

@@ -10,6 +10,6 @@ export class HelperService {
   constructor(public http: HttpClient) {}
 
   downloadFile(id: string): Observable<Blob> {
-    return this.http.get(`${environment.API_URL}files/` + id, { responseType: 'blob' });
+    return this.http.get(`http://${window.location.hostname}:3000/files/` + id, { responseType: 'blob' });
   }
 }

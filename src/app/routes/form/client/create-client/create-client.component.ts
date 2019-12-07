@@ -41,7 +41,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   private _editData: any;
   fileList: UploadFile[] = [];
   modalInstance: NzModalRef;
-  uploadAction = `${environment.API_URL}upload`;
+  uploadAction = `http://${window.location.hostname}:3000/upload`;
   constructor(
     public msg: NzMessageService,
     public mtVocabHelper: MtVocabHelper,

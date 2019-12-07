@@ -101,7 +101,7 @@ export class UserLoginComponent implements OnDestroy {
       token:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.rQ6RqWVa505gFM295E7UAdjA4BJMy0Liu5rIUs-9quM',
     });
-    const urlLogin = `${environment.API_URL}auth/token`;
+    const urlLogin = `http://${window.location.hostname}:3000/auth/token`;
     this.http
       .post(urlLogin, {
         type: this.type,

@@ -10,8 +10,10 @@ import { getMainDefinition } from 'apollo-utilities';
 
 const uri = `http://${window.location.hostname}:3000/graphql`;
 const uriWS = `ws://${window.location.hostname}:3000/graphql`;
+// const uri = `http://10.10.10.40:3000/graphql`;
+// const uriWS = `ws://10.10.10.40:3000/graphql`;
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-  console.log(uriWS);
+  // console.log(uriWS);
   const http = httpLink.create({
     uri: uri,
   });

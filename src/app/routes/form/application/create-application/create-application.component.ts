@@ -70,7 +70,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         this.clientData = editData.clients;
       }
       this._editData = editData;
-      console.log(editData);
+      // console.log(editData);
       this.loading = false;
     })();
   }
@@ -84,14 +84,14 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
   loading = false;
 
   submit(value: any) {
-    console.log(value);
+    // console.log(value);
     if (this.modeApp === 'create') {
       const processedData = this.processDataCreate(value);
-      console.log(processedData);
+      // console.log(processedData);
       this.dataMutationCreate(processedData);
     } else {
       const processedData = this.processDataUpdate(value);
-      console.log(processedData);
+      // console.log(processedData);
       this.dataMutationUpdate(processedData, { id: value.id });
     }
   }
@@ -122,7 +122,8 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     //     unlockTransfer: false,
     //   },
     // });
-    data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
+    console.log(data.regDate);
+    data.regDate = moment(data.regDate).toDate();
     // data.case = caseCreate;
     let wakilIdTemp: any;
     if (data.statusPerwakilan !== '01000000000070') wakilIdTemp = data.wakilId.id;
@@ -139,14 +140,15 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
 
   processDataUpdate(data: any): ApplicationUpdateInput {
     // updatemode
+    console.log(data.regDate);
     const clients = this.processUpdateClientData(data);
-    data.regDate = moment(data.regDate, 'YYYY-MM-DD HH:mm:ss').toDate();
+    data.regDate = moment(data.regDate).toDate();
     let wakilIdTemp: any;
     if (data.statusPerwakilan !== '01000000000070') wakilIdTemp = data.wakilId.id;
     data.wakilId = undefined;
     data.clients = clients;
     data.updatedBy = this.settingService.user.name;
-    // delete data.case;
+    delete data.case;
     const {
       id,
       fileList,
@@ -205,7 +207,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         if (!obj.sktm) {
           obj.stmKeterangan = '';
         }
-        console.log(obj);
+        // console.log(obj);
         const personIdTemp = obj.personId.id;
         data.createdBy = this.settingService.user.name;
         data.updatedBy = this.settingService.user.name;
@@ -497,7 +499,7 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
     }
     this.st.reload();
     this.sf.setValue('/clients', this.clientData);
-    console.log(event);
-    console.log(this.clientData);
+    // console.log(event);
+    // console.log(this.clientData);
   }
 }

@@ -3,29 +3,47 @@
   <nz-card [nzBordered]="false">
     <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
       <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
-        <div nz-col nzMd="8" nzSm="24">
+        <!-- Nama Clien, Nama Wakil, Nomor Registrasi dan Judul Kasus -->
+        <div nz-col nzMd="6" nzSm="24">
           <nz-form-item>
-            <nz-form-label nzFor="namaLengkap">Nama Wakil</nz-form-label>
+            <nz-form-label nzFor="namaKlien">Nama Klien</nz-form-label>
             <nz-form-control>
-              <input
-                nz-input
-                [(ngModel)]="q.namaLengkap"
-                name="namaLengkap"
-                placeholder="Nama Wakil"
-                id="namaLengkap"
-              />
+              <input nz-input [(ngModel)]="q.namaKlien" name="namaKlien" placeholder="nama klien" id="namaKlien" />
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div nz-col nzMd="8" nzSm="24">
+        <div nz-col nzMd="6" nzSm="24">
           <nz-form-item>
-            <nz-form-label nzFor="nomorId">Nomor Registrasi</nz-form-label>
+            <nz-form-label nzFor="namaWakil">Nama Wakil</nz-form-label>
+            <nz-form-control>
+              <input nz-input [(ngModel)]="q.namaWakil" name="namaWakil" placeholder="nama wakil" id="namaWakil" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="6" nzSm="24">
+          <nz-form-item>
+            <nz-form-label nzFor="noReg">Nomor Registrasi</nz-form-label>
             <nz-form-control>
               <input nz-input [(ngModel)]="q.noReg" name="noReg" placeholder="No Registrasi" id="noReg" />
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+        <div nz-col nzMd="6" nzSm="24" *ngIf="expandForm">
+          <nz-form-item>
+            <nz-form-label nzFor="judulKasus">Judul Kasus</nz-form-label>
+            <nz-form-control>
+              <input
+                [(ngModel)]="q.judulKasus"
+                name="judulKasus"
+                placeholder="judul kasus"
+                id="judulKasus"
+                nz-input
+                id="judulKasus"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="expandForm ? 24 : 6" [class.text-right]="expandForm">
           <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">Search</button>
           <button nz-button type="reset" (click)="reset()" class="mx-sm">Reset</button>
           <a (click)="expandForm = !expandForm">

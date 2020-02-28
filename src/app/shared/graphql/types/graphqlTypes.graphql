@@ -137,6 +137,12 @@ mutation destroyCaseProgressActivity($where: CaseProgressActivityWhereInput!) {
   }
 }
 
+mutation destroyCaseIssue($where: CaseIssueWhereInput!) {
+  deleteManyCaseIssues(where: $where) {
+    count
+  }
+}
+
 mutation postLogRequest($data: LogRequestCreateInput!) {
   createLogRequest(data: $data) {
     ID
@@ -193,6 +199,23 @@ mutation postUser($data: UserCreateInput!) {
       id
       noContact
     }
+  }
+}
+
+mutation postNetwork($data: NetworkCreateInput!) {
+  createNetwork(data: $data) {
+    address
+    contactPerson
+    createdAt
+    email
+    id
+    name
+    noContact
+    provinceId
+    regencyId
+    type
+    status
+    updatedAt
   }
 }
 mutation postClient($data: ClientCreateInput!) {
@@ -418,6 +441,7 @@ mutation putCase($data: CaseUpdateInput!, $where: CaseWhereUniqueInput!) {
         namaLengkap
         id
       }
+      jenisPelaku
     }
     pk {
       id
@@ -545,6 +569,23 @@ mutation putUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
       id
       noContact
     }
+  }
+}
+
+mutation putNetwork($data: NetworkUpdateInput!, $where: NetworkWhereUniqueInput!) {
+  updateNetwork(data: $data, where: $where) {
+    address
+    contactPerson
+    createdAt
+    email
+    id
+    name
+    noContact
+    provinceId
+    regencyId
+    type
+    status
+    updatedAt
   }
 }
 
@@ -858,6 +899,7 @@ query getNetworks(
     provinceId
     regencyId
     type
+    status
     updatedAt
   }
 }
@@ -1005,10 +1047,63 @@ query getCase(
       whyLbh
       clients {
         id
+        alamatLokasi
+        asetGedung
+        asetKios
+        asetLahanGarapan
+        asetLapak
+        asetMobil
+        asetMotor
+        asetRumah
+        asetTanah
+        asetToko
+        asetWarung
+        createdAt
+        createdBy
+        pendapatan
         personId {
           id
+          agama
+          alamatDomisili
+          alamatId
+          alatBantu
+          alias
+          createdAt
+          createdBy
+          disabilitas
+          distrikDomisili
+          distrikId
+          domisiliSama
+          email
+          golDarah
+          jenisDisabilitas
+          jenisDomisili
+          jenisId
+          jenisKelamin
+          jmlAnggota
           namaLengkap
+          nomorId
+          pekerjaan
+          pendidikan
+          statusPernikahan
+          telepon
+          tglLahir
+          tmpLahir
+          unitSatuan
+          updatedAt
+          updatedBy
+          wargaNegara
         }
+        sktm
+        sktmUpload
+        stmKeterangan
+        tanggunganAnak
+        tanggunganFamili
+        tanggunganLain
+        tanggunganPasangan
+        updatedAt
+        updatedBy
+        usiaSaatKlien
       }
       tahap
       status
@@ -1078,6 +1173,7 @@ query getCase(
         namaLengkap
         id
       }
+      jenisPelaku
     }
     pk {
       id
@@ -1323,6 +1419,7 @@ query getApplications(
     wakilId {
       id
       namaLengkap
+      alamatId
     }
     waktuPernahKlien
     whyLbh
@@ -1348,6 +1445,12 @@ query getApplications(
       personId {
         id
         namaLengkap
+        tglLahir
+        tmpLahir
+        alamatId
+        pekerjaan
+        jenisId
+        nomorId
       }
       sktm
       sktmUpload

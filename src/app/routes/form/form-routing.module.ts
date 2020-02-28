@@ -16,6 +16,8 @@ import { ViewCaseComponent } from './case/view-case/view-case.component';
 import { RapatQueueComponent } from './rapat-queue/rapat-queue.component';
 import { ReferralQueueComponent } from './referral-queue/referral-queue.component';
 import { AnalisisComponent } from './analisis/analisis.component';
+import { CreateNetworkComponent } from './network/create-network/create-network.component';
+import { ListNetworkComponent } from './network/list-network/list-network.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,13 @@ const routes: Routes = [
   {
     path: 'user',
     children: [{ path: 'create', component: CreateUserComponent }, { path: 'list', component: ListUserComponent }],
+  },
+  {
+    path: 'network',
+    children: [
+      { path: 'create', component: CreateNetworkComponent },
+      { path: 'list', component: ListNetworkComponent },
+    ],
   },
   {
     path: 'consultation-queue',

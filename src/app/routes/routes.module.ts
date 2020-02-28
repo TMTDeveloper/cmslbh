@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from '@shared';
 import { RouteRoutingModule } from './routes-routing.module';
 // dashboard pages
@@ -15,10 +14,10 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { UserLockComponent } from './passport/lock/lock.component';
 import { CallbackComponent } from './callback/callback.component';
 import { FormModule } from './form/form.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
-
+import { CasesComponent } from './dashboard/cases/cases.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 const COMPONENTS = [
   DashboardV1Component,
   DashboardAnalysisComponent,
@@ -38,14 +37,14 @@ const COMPONENTS_NOROUNT = [];
   imports: [
     SharedModule,
     RouteRoutingModule,
-    FormModule,
     NgxChartsModule,
+    FormModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA1bbmnwu6pfsHXI8r2aXzHgNYOvq2EStI',
     }),
     AgmJsMarkerClustererModule,
   ],
-  declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT],
+  declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT, CasesComponent],
   entryComponents: COMPONENTS_NOROUNT,
 })
 export class RoutesModule {}

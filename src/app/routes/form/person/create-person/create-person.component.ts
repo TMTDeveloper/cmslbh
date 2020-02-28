@@ -95,12 +95,12 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
               break;
           }
         }
-        console.log(longEnumDistrikId);
+        // console.log(longEnumDistrikId);
         editData.distrikIdEnum = longEnumDistrikId;
       }
       if (editData.distrikDomisili) {
         const arrDistrikDomisili = (await this.mtVocabHelper.findParent(editData.distrikDomisili)).reverse();
-        console.log(arrDistrikDomisili);
+        // console.log(arrDistrikDomisili);
         let longEnumDistrikDomisili: any;
         let ind = -1;
         for (const b of arrDistrikDomisili) {
@@ -145,7 +145,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
 
       if (editData.pekerjaan) {
         const arrPekerjaan = (await this.mtVocabHelper.findParent(editData.pekerjaan)).reverse();
-        console.log(arrPekerjaan);
+        // console.log(arrPekerjaan);
         let longEnumPekerjaan: any;
         let ind = -1;
         for (const b of arrPekerjaan) {
@@ -195,7 +195,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
         editData.jenisDomisili = 'Lainnya (sebutkan)';
       }
       this._editData = editData;
-      console.log(editData);
+      // console.log(editData);
       this.loading = false;
     })();
   }
@@ -209,7 +209,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
   loading = false;
 
   submit(value: any) {
-    console.log(value);
+    // console.log(value);
     const processedData = this.processData(value);
     this.mode === 'edit'
       ? this.dataMutationUpdate(<PersonUpdateInput>processedData, <PersonWhereUniqueInput>{ id: value.id })
@@ -498,7 +498,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           asyncData: () => {
             this.loading = true;
             if (this.mode === 'edit') {
-              console.log(this.editData);
+              // console.log(this.editData);
               return this.mtVocabHelper.getMtVocabWithChildren(63, this.editData.distrikIdEnum).pipe(res => {
                 this.loading = false;
                 return res;
@@ -567,7 +567,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           asyncData: () => {
             this.loading = true;
             if (this.mode === 'edit') {
-              console.log(this.editData);
+              // console.log(this.editData);
               return this.mtVocabHelper.getMtVocabWithChildren(63, this.editData.distrikDomisiliEnum).pipe(res => {
                 this.loading = false;
                 return res;
@@ -676,7 +676,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
           asyncData: () => {
             this.loading = true;
             if (this.mode === 'edit') {
-              console.log(this.editData);
+              // console.log(this.editData);
               return this.mtVocabHelper.getMtVocabWithChildren(10, this.editData.pekerjaanEnum).pipe(res => {
                 this.loading = false;
                 return res;
@@ -688,7 +688,7 @@ export class CreatePersonComponent implements OnInit, OnDestroy {
             });
           },
           expandChange: e => {
-            console.log(e);
+            // console.log(e);
             this.loading = true;
             return this.mtVocabHelper.getMtVocabChildTree(10, e.node.key).pipe(res => {
               this.loading = false;

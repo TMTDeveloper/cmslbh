@@ -105,7 +105,6 @@ import { AppComponent } from './app.component';
 import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 import { GraphQLModule } from './graphql.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 
@@ -113,7 +112,6 @@ import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    NgxChartsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     DelonModule.forRoot(),

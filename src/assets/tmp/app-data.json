@@ -25,6 +25,12 @@
             "i18n": "menu.dashboard.workplace"
           },
           {
+            "text": "Dashboard",
+            "acl": ["7", "5", "6", "8"],
+            "link": "/dashboard/cases",
+            "i18n": "menu.dashboard.cases"
+          },
+          {
             "text": "Analisa",
             "acl": ["7", "5", "6", "8"],
             "link": "/form/analisa"
@@ -70,6 +76,20 @@
           {
             "text": "List User",
             "link": "/form/user/list"
+          }
+        ]
+      },
+      {
+        "text": "Network",
+        "icon": "anticon-edit",
+        "acl": ["8"],
+        "children": [{
+            "text": "Create Network",
+            "link": "/form/network/create"
+          },
+          {
+            "text": "List Network",
+            "link": "/form/network/list"
           }
         ]
       },

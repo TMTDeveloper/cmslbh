@@ -61,21 +61,21 @@ export class AnalisisComponent implements OnInit {
   }
 
   initNode(i, kodeList) {
-    console.log(kodeList);
+    // console.log(kodeList);
 
     this.mtVocabHelper
       .getMtVocabParentTree(Number(kodeList))
       .toPromise()
       .then(res => {
         this.nodeArray[kodeList] = res;
-        console.log(this.nodeArray);
+        // console.log(this.nodeArray);
         this.cdr.detectChanges();
       });
   }
 
   onExpandChange(e: NzFormatEmitEvent, i): void {
     const node = e.node;
-    console.log(node);
+    // console.log(node);
     if (node && node.getChildren().length === 0 && node.isExpanded) {
       this.loadNode(i, node).then(data => {
         node.addChildren(data);
@@ -87,7 +87,7 @@ export class AnalisisComponent implements OnInit {
     return this.mtVocabHelper
       .getMtVocabChildTree(Number(i), node.key)
       .pipe(res => {
-        console.log(res);
+        // console.log(res);
         return res;
       })
       .toPromise();
@@ -261,7 +261,7 @@ export class AnalisisComponent implements OnInit {
 
   isFormArrayOnlyOne() {
     const arr = this.analisaForm.get('analisaFilter') as FormArray;
-    console.log(arr.length);
+    // console.log(arr.length);
     if (arr.length === 1) {
       return true;
     } else return false;
@@ -284,11 +284,11 @@ export class AnalisisComponent implements OnInit {
       .at(arr.length - 1)
       .get('logika')
       .setValue('');
-    console.log(this.analisaForm.value);
+    // console.log(this.analisaForm.value);
 
     this.loading = true;
     const builtQuery = await this.queryBuilder(this.analisaForm.value.analisaFilter);
-    console.log(builtQuery);
+    // console.log(builtQuery);
     await this.submitQuery(builtQuery);
     this.loading = false;
     this.cdr.detectChanges();
@@ -308,7 +308,7 @@ export class AnalisisComponent implements OnInit {
             totalTransfer: 0,
             totalTidakDidampingi: 0,
           };
-          console.log(res);
+          // console.log(res);
           if (!res) return sebaranKasus;
           if (res.length === 0) return sebaranKasus;
 
@@ -320,12 +320,13 @@ export class AnalisisComponent implements OnInit {
             return !el.didampingi;
           }).length;
           sebaranKasus.totalTransfer = res.filter(el => {
-            return !el.transfer;
+            return el.transfer;
           }).length;
           return sebaranKasus;
         }),
       )
       .toPromise();
+    // console.log(builtQuery);
     this.sebaranPerson = await this.http
       .post(this.urlQuery, {
         query: query.defaultPerson + where + builtQuery,
@@ -337,13 +338,17 @@ export class AnalisisComponent implements OnInit {
             totalPelaku: 0,
             totalKlien: 0,
           };
-          console.log(res);
+          // console.log(res);
           if (!res) return sebaranPerson;
           if (res.length === 0) return sebaranPerson;
-
+          // console.log([...new Set(res.filter(res => res.korban !== null).map(item => item.korban))]);
           sebaranPerson.totalKlien = res.length;
-          sebaranPerson.totalPelaku = [...new Set(res.map(item => item.pelaku))].length;
-          sebaranPerson.totalKorban = [...new Set(res.map(item => item.korban))].length;
+          sebaranPerson.totalPelaku = [
+            ...new Set(res.filter(resa => resa.pelaku !== null).map(itema => itema.pelaku)),
+          ].length;
+          sebaranPerson.totalKorban = [
+            ...new Set(res.filter(resb => resb.korban !== null).map(itemb => itemb.korban)),
+          ].length;
           return sebaranPerson;
         }),
       )
@@ -358,7 +363,7 @@ export class AnalisisComponent implements OnInit {
             totalPermohonan: 0,
             totalPenerimaManfaat: 0,
           };
-          console.log(res);
+          // console.log(res);
           if (!res) return sebaranPermohonan;
           if (res.length === 0) return sebaranPermohonan;
 
@@ -401,7 +406,7 @@ export class AnalisisComponent implements OnInit {
               }
             });
             nilai = queryNilai + ')';
-            console.log(queryNilai);
+            // console.log(queryNilai);
             break;
           }
           if (typeof nilai === 'string') nilai = "'" + nilai + "'";
@@ -425,8 +430,8 @@ export class AnalisisComponent implements OnInit {
       }
 
       if (form.length - 1 === ind) el.logika = '';
-      console.log(form.length - 1);
-      console.log(ind);
+      // console.log(form.length - 1);
+      // console.log(ind);
       if (el.field.type === 'date' && nilai) {
         builtQuery =
           builtQuery +
@@ -450,11 +455,11 @@ export class AnalisisComponent implements OnInit {
     if (!builtQuery) {
       return;
     }
-    console.log(builtQuery);
+    // console.log(builtQuery);
     const where = ' where ';
     this.loading = true;
     this.cdr.detectChanges();
-    console.log(this.selectedTemplate + where + builtQuery);
+    // console.log(this.selectedTemplate + where + builtQuery);
     this.http
       .post(
         this.urlCsv,
@@ -466,7 +471,7 @@ export class AnalisisComponent implements OnInit {
         { responseType: 'blob' },
       )
       .subscribe(async res => {
-        console.log(res);
+        // console.log(res);
         const a = document.createElement('a');
         a.href = URL.createObjectURL(res);
         const queryTemplate = await this.queryTemplate;

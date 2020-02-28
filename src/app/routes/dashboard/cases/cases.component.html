@@ -1,4 +1,4 @@
-<page-header *ngIf="!parent" [title]="'Antrian Konsultasi'"></page-header>
+<page-header [title]="'Semua Kasus'"></page-header>
 <div #card>
   <nz-card [nzBordered]="false">
     <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
@@ -13,15 +13,15 @@
         </div>
         <div nz-col nzMd="8" nzSm="24">
           <nz-form-item>
-            <nz-form-label nzFor="ppName">Nama PP</nz-form-label>
+            <nz-form-label nzFor="judulKasus">Judul Kasus</nz-form-label>
             <nz-form-control>
-              <input nz-input [(ngModel)]="q.ppName" name="ppName" placeholder="Nama PP" id="ppName" />
+              <input nz-input [(ngModel)]="q.judulKasus" name="judulKasus" placeholder="Judul kasus" id="judulKasus" />
             </nz-form-control>
           </nz-form-item>
         </div>
         <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
           <nz-form-item>
-            <nz-form-label nzFor="noReg">No Reg</nz-form-label>
+            <nz-form-label nzFor="noReg">No Registrasi</nz-form-label>
             <nz-form-control>
               <input nz-input [(ngModel)]="q.noReg" name="noReg" placeholder="Nomor Registrasi" id="noReg" />
             </nz-form-control>
@@ -37,12 +37,14 @@
         </div>
       </div>
     </form>
+
     <st
       #st
-      [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }"
       [columns]="columns"
       [data]="data"
+      [widthMode]="{ type: 'strict', strictBehavior: 'wrap' }"
       [loading]="loading"
+      (change)="stChange($event)"
       [scroll]="{ x: '1064px' }"
     >
       <ng-template st-row="status" let-i>
@@ -53,23 +55,5 @@
 </div>
 
 <ng-template #modalContent>
-  <sf
-    [layout]="'vertical'"
-    #sf
-    [schema]="schema"
-    [formData]="editData"
-    (formSubmit)="submit($event)"
-    [loading]="loading"
-  >
-    <ng-template sf-template="dudukPerara" let-me let-ui="ui" let-schema="schema">
-      <!-- <textarea nz-input [(ngModel)]="me.formProperty.value.namaLengkap"[nzAutosize]="true" placeholder=""  [readonly]="me.disabled"></textarea> -->
-      <sv-container>
-        <sv
-          ><div>
-            <pre style="white-space:pre-wrap;">{{ me.formProperty.value }}</pre>
-          </div></sv
-        ></sv-container
-      >
-    </ng-template>
-  </sf>
+  <!-- <app-view-case [parent]="true" [caseParam]="caseParam"></app-view-case> -->
 </ng-template>

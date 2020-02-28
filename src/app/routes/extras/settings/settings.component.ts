@@ -33,7 +33,7 @@ export class ExtrasSettingsComponent implements OnInit {
   }
 
   profileSave(event, value) {
-    console.log('profile value', value);
+    // console.log('profile value', value);
   }
 
   pwdSave() {
@@ -46,7 +46,7 @@ export class ExtrasSettingsComponent implements OnInit {
     if (!this.pwd.confirm_new_password) {
       return this.msg.error('invalid confirm new password');
     }
-    console.log('pwd value', this.pwd);
+    // console.log('pwd value', this.pwd);
   }
 
   ngOnInit() {

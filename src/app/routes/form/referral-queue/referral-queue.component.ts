@@ -73,6 +73,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
   editDataKabid: any;
   query = {
     where: <CaseWhereInput>{
+      AND: [],
       OR: [
         { consultations_some: { apps_some: { appConsultation: { id: this.settingService.user.id } } } },
         { pk: { ppPendamping: { id: this.settingService.user.id } } },
@@ -117,7 +118,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
           text: 'Tanggapi',
           click: (item: any) => {
             this.editDataKabid = item;
-            console.log(this.editDataKabid);
+            // console.log(this.editDataKabid);
             this.edit(this.modalElKabid, 'Tanggapi Rekomendasi');
           },
           iif: item => {
@@ -216,7 +217,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
       title: 'Klien',
       index: 'applicationId.clients',
       format: item => {
-        console.log(item);
+        // console.log(item);
         return item.personId.namaLengkap;
       },
     },
@@ -269,7 +270,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
         fetchPolicy: 'no-cache',
       },
     );
-    console.log('sampe sini');
+    // console.log('sampe sini');
     this.loading = true;
     this.usersObs = this.users.valueChanges
       .pipe(
@@ -277,7 +278,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
           const tempLog = [];
           for (const a of result.data.logRequests) {
             const b = <any>{ ...a };
-            console.log(b.applicationId.jenisRequest);
+            // console.log(b.applicationId.jenisRequest);
             b.noReg = a.applicationId.noReg;
             b.caseTitle = a.caseId ? a.caseId.judulKasus : '';
             b.dudukPerara = a.applicationId.dudukPerara;
@@ -300,12 +301,12 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
   }
 
   getDataKasus(event) {
-    console.log(event);
+    // console.log(event);
     this.modalInstance.close();
     this.editDataTemp = event;
     this.sfCreateKasus.refreshSchema();
     this.sfCreateKasus.setValue('/caseIdReturned', event);
-    console.log(this.sfCreateKasus.getValue('/caseIdReturned'));
+    // console.log(this.sfCreateKasus.getValue('/caseIdReturned'));
   }
 
   getData() {
@@ -368,14 +369,14 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
         where: <LogRequestWhereInput>{
           jenisRequest_in: ['2011'],
           AND: [
-            this.q.ppName !== null
+            this.q.ppName
               ? {
                   requestBy: {
                     name_contains: this.q.ppName,
                   },
                 }
               : {},
-            this.q.clientName !== null
+            this.q.clientName
               ? {
                   applicationId: {
                     clients_some: {
@@ -384,7 +385,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.noReg !== null
+            this.q.noReg
               ? {
                   applicationId: {
                     noReg_contains: this.q.noReg,
@@ -400,7 +401,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
           requestBy: { id: this.settingService.user.id },
           jenisRequest_in: ['2011'],
           AND: [
-            this.q.ppName !== null
+            this.q.ppName
               ? {
                   pp_some: {
                     appConsultation: {
@@ -409,7 +410,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.clientName !== null
+            this.q.clientName
               ? {
                   applicationId: {
                     clients_some: {
@@ -418,7 +419,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.noReg !== null
+            this.q.noReg
               ? {
                   applicationId: {
                     noReg_contains: this.q.noReg,
@@ -480,7 +481,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    console.log(this.modalInstance);
+    // console.log(this.modalInstance);
     this.modalSrv.closeAll();
     this.getData();
   }
@@ -520,7 +521,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
       },
       networkList: {
         type: 'string',
-        title: 'Transfer Ke',
+        title: 'Referral Ke',
         ui: {
           widget: 'select',
           asyncData: () => this.mtVocabHelper.getNetworksEnum('2'),
@@ -586,11 +587,11 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
   };
 
   submitByPP(value: any) {
-    console.log(value);
+    // console.log(value);
     this.dataMutationCreate(this.processDataCreateLogRequest(value));
   }
   submitByKabid(value: any) {
-    console.log(value);
+    // console.log(value);
     this.dataMutationUpdate(this.processDataUpdateLogRequest(value), value.ID);
   }
 
@@ -668,7 +669,7 @@ export class ReferralQueueComponent implements OnInit, OnDestroy {
   }
 
   dataMutationUpdate(data: LogRequestUpdateInput | string, id: number) {
-    console.log(data);
+    // console.log(data);
     if (typeof data === 'string') {
       this.msg.info(data);
       return;

@@ -1,31 +1,32 @@
 import {
   Component,
   OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   TemplateRef,
   Input,
   Output,
   EventEmitter,
   ViewChild,
   ElementRef,
-  ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { AllPerson, AllPersonGQL, PersonWhereInput, GetCaseGQL, GetCase, CaseWhereInput } from '@shared';
+import { zip, Subscription } from 'rxjs';
+import { NzMessageService, NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { _HttpClient, SettingsService } from '@delon/theme';
+import { GetCase, AllPersonGQL, GetCaseGQL, CaseWhereInput, GetConsultationGQL, GetPk, GetPkGQL } from '@shared';
 import { QueryRef } from 'apollo-angular';
-import { Subscription } from 'rxjs';
-import { NzModalRef, NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { STComponent, STColumn, STData, STChange } from '@delon/abc';
 import * as moment from 'moment';
-import { _HttpClient } from '@delon/theme';
 import { MtVocabHelper } from '@shared/helper';
 import { map, tap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 @Component({
-  selector: 'app-list-case',
-  templateUrl: './list-case.component.html',
-  styleUrls: ['./list-case.component.less'],
+  selector: 'app-cases',
+  templateUrl: './cases.component.html',
+  styleUrls: ['./cases.component.less'],
 })
-export class ListCaseComponent implements OnInit, OnDestroy {
+export class CasesComponent implements OnInit, OnDestroy {
   @Input() parent: boolean;
   @Output() dataKasus = new EventEmitter<String>();
   @ViewChild('card') card: ElementRef;
@@ -33,17 +34,22 @@ export class ListCaseComponent implements OnInit, OnDestroy {
   @Input() query: GetCase.Variables;
   caseParam = '';
   q: any = {
+    clientName: null,
     judulKasus: null,
     noReg: null,
-    namaLengkap: null,
   };
-  data: GetCase.Cases[] = [];
+  data: any[] | GetCase.Cases[] = [];
   dataSelected: GetCase.Cases;
   mode = '';
   cases: QueryRef<GetCase.Query, GetCase.Variables>;
   casesObs: Subscription;
   loading = false;
   modalInstance: NzModalRef;
+
+  aggTotalKonsultasi: Promise<number>;
+  aggTotalKasus: Promise<number>;
+  aggTotalPendampingan: Promise<number>;
+
   @ViewChild('st')
   st: STComponent;
 
@@ -51,7 +57,7 @@ export class ListCaseComponent implements OnInit, OnDestroy {
     {
       title: 'Action',
       fixed: 'left',
-      width: '200px',
+      width: '120px',
       buttons: [
         {
           text: 'Select',
@@ -63,30 +69,22 @@ export class ListCaseComponent implements OnInit, OnDestroy {
         {
           text: 'View Kasus',
           click: (item: any) => {
-            this.caseParam = item.id;
-            this.mode = 'edit';
-            this.edit(this.modalEl, 'View Kasus');
+            this.router.navigateByUrl('form/case/view/' + item.id);
           },
         },
       ],
     },
-
+    {
+      title: 'Tahap Kasus',
+      index: 'application',
+      format: item => {
+        // console.log(item);
+        return item.application.tahapTeks;
+      },
+    },
     {
       title: 'Judul Kasus',
       index: 'judulKasus',
-      sort: {
-        compare: (a, b) => {
-          const nameA = a.namaLengkap.toUpperCase();
-          const nameB = b.namaLengkap.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        },
-      },
     },
     {
       title: 'Nomor Register',
@@ -97,6 +95,7 @@ export class ListCaseComponent implements OnInit, OnDestroy {
       index: 'application.regDate',
       type: 'date',
       sort: {
+        default: 'descend',
         compare: (a, b) => moment(a.application.regDate).unix() - moment(b.application.regDate).unix(),
       },
     },
@@ -120,7 +119,7 @@ export class ListCaseComponent implements OnInit, OnDestroy {
   description = '';
   totalCallNo = 0;
   expandForm = false;
-
+  roles_type;
   constructor(
     private http: _HttpClient,
     public msg: NzMessageService,
@@ -129,10 +128,17 @@ export class ListCaseComponent implements OnInit, OnDestroy {
     private allPersonGQL: AllPersonGQL,
     public mtVocab: MtVocabHelper,
     private getCaseGQL: GetCaseGQL,
-  ) {}
+    public settingService: SettingsService,
+    private getConsultationGQL: GetConsultationGQL,
+    private getPkGQL: GetPkGQL,
+    public router: Router,
+    private mtVocabHelper: MtVocabHelper,
+  ) {
+    this.roles_type = this.settingService.user.roles_type;
+  }
 
   ngOnInit() {
-    this.cases = this.getCaseGQL.watch(this.query ? this.query : this.searchGenerator(), {
+    this.cases = this.getCaseGQL.watch(this.searchGenerator(), {
       fetchPolicy: 'no-cache',
     });
     this.loading = true;
@@ -144,8 +150,16 @@ export class ListCaseComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         // console.log(res);
         this.data = res;
+        this.translateMtVocab();
         this.cdr.detectChanges();
       });
+  }
+
+  async translateMtVocab() {
+    for (const a of this.data) {
+      a.application.tahapTeks = await this.mtVocabHelper.translateMtVocab(a.application.tahap);
+    }
+    this.st.reload();
   }
 
   ngOnDestroy(): void {
@@ -153,10 +167,9 @@ export class ListCaseComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    console.log(this.searchGeneratorAppend(this.query));
     this.loading = true;
     this.cases
-      .refetch(this.searchGeneratorAppend(this.query))
+      .refetch(this.searchGenerator())
       .then(res => {
         this.data = res.data.cases;
       })
@@ -165,54 +178,33 @@ export class ListCaseComponent implements OnInit, OnDestroy {
       });
   }
 
-  searchGeneratorAppend(query: GetCase.Variables): GetCase.Variables {
-    const queryVar = JSON.parse(JSON.stringify(query));
-    console.log(queryVar);
-    queryVar.where.AND.push({
-      AND: <CaseWhereInput[]>[
-        this.q.judulKasus
-          ? {
-              judulKasus_contains: this.q.judulKasus,
-            }
-          : {},
-        this.q.namaLengkap
-          ? {
-              application: {
-                clients_some: {
-                  personId: { namaLengkap_contains: this.q.namaLengkap },
-                },
-              },
-            }
-          : {},
-        this.q.noReg
-          ? {
-              application: {
-                noReg_contains: this.q.noReg,
-              },
-            }
-          : {},
-      ],
-    });
-    return queryVar;
-  }
-
   searchGenerator(): GetCase.Variables {
-    if (this.q.namaLengkap || this.q.nomorId) {
-      return <GetCase.Variables>{
-        where: <CaseWhereInput>{
-          OR: <CaseWhereInput[]>[
-            {
-              namaLengkap_contains: this.q.namaLengkap === '' ? null : this.q.namaLengkap,
-            },
-            {
-              // nomorId_contains: this.q.nomorId === '' ? null : this.q.nomorId,
-            },
-          ],
-        },
-      };
-    }
     return <GetCase.Variables>{
-      where: <CaseWhereInput>{},
+      where: <CaseWhereInput>{
+        AND: [
+          this.q.judulKasus !== null
+            ? {
+                judulKasus_contains: this.q.judulKasus,
+              }
+            : {},
+          this.q.clientName !== null
+            ? {
+                application: {
+                  clients_some: {
+                    personId: { namaLengkap_contains: this.q.clientName },
+                  },
+                },
+              }
+            : {},
+          this.q.noReg !== null
+            ? {
+                application: {
+                  noReg_contains: this.q.noReg,
+                },
+              }
+            : {},
+        ],
+      },
     };
   }
 

@@ -20,6 +20,8 @@ import { CaseConsultationComponent } from './case/case-consultation/case-consult
 import { RapatQueueComponent } from './rapat-queue/rapat-queue.component';
 import { ReferralQueueComponent } from './referral-queue/referral-queue.component';
 import { AnalisisComponent } from './analisis/analisis.component';
+import { CreateNetworkComponent } from './network/create-network/create-network.component';
+import { ListNetworkComponent } from './network/list-network/list-network.component';
 
 const COMPONENTS = [ListPersonComponent, CreatePersonComponent];
 
@@ -42,6 +44,8 @@ const COMPONENTS = [ListPersonComponent, CreatePersonComponent];
     RapatQueueComponent,
     ReferralQueueComponent,
     AnalisisComponent,
+    CreateNetworkComponent,
+    ListNetworkComponent,
   ],
   entryComponents: [],
   exports: [...COMPONENTS],

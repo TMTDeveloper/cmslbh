@@ -72,7 +72,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   cobajing(d) {
-    console.log(d);
+    // console.log(d);
   }
   ngOnInit() {}
 
@@ -80,7 +80,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   loading = false;
 
   submit(value: any) {
-    console.log(value);
+    // console.log(value);
     // console.log(this.sf.getValue('/sktmUpload'));
     // value.fileList = this.fileList;
     this.saveData.emit({ value: value, mode: this.mode });
@@ -306,7 +306,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.modalInstance.close();
     this.sf.setValue('/personId', event);
     const umur = moment().diff(moment(event.tglLahir), 'years');
-    console.log(umur);
+    // console.log(umur);
     if (umur) this.sf.setValue('/usiaSaatKlien', umur);
   }
 

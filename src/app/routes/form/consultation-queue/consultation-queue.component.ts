@@ -98,7 +98,8 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           text: 'Tetapkan PP',
           click: (item: any) => {
             this.editData = item;
-            console.log(this.editData);
+            // console.log(this.editData);
+            this.getData();
             this.mode = 'edit';
             this.edit(this.modalEl, 'Edit Data');
           },
@@ -208,7 +209,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
       index: 'kadaluarsa',
       type: 'date',
       format: (item, col) => {
-        console.log(moment(item.tglRequest).unix() - moment().unix());
+        // console.log(moment(item.tglRequest).unix() - moment().unix());
         if (moment().isAfter(moment(item.tglRequest), 'day')) {
           return 'Ya';
         } else {
@@ -243,10 +244,10 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
       // <GetLogRequest.Variables>{ where: { pp_some: { appConsultation: { id: this.settingService.user.id } } } },
       this.searchGenerator(),
       {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'network-only',
       },
     );
-    console.log('sampe sini');
+    // console.log('sampe sini');
     this.loading = true;
     this.usersObs = this.users.valueChanges
       .pipe(
@@ -265,7 +266,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         tap(() => (this.loading = false)),
       )
       .subscribe(async res => {
-        console.log(res);
+        // console.log(res);
         this.data = await res;
         this.cdr.detectChanges();
       });
@@ -302,7 +303,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         where: {
           jenisRequest: '1011',
           AND: [
-            this.q.ppName !== null
+            this.q.ppName
               ? {
                   pp_some: {
                     appConsultation: {
@@ -311,7 +312,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.clientName !== null
+            this.q.clientName
               ? {
                   applicationId: {
                     clients_some: {
@@ -320,7 +321,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.noReg !== null
+            this.q.noReg
               ? {
                   applicationId: {
                     noReg_contains: this.q.noReg,
@@ -330,7 +331,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
           ],
         },
       };
-    if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
+    // if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
     // if (this.q.ppName || this.q.clientName || this.q.noReg) {
     //   return <GetLogRequest.Variables>{
     //     where: <LogRequestWhereInput>{
@@ -360,7 +361,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     //     },
     //   };
     // }
-    console.log('masuk sini');
+    // console.log('masuk sini');
     return <GetLogRequest.Variables>{
       where: <LogRequestWhereInput>this.aclService.data.roles.find(el => el === '3' || el === '4')
         ? {
@@ -429,6 +430,11 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkDoubleAssign() {
+    if (this.editData.statusRequest !== '0') return true;
+    return false;
+  }
+
   async edit(tpl: TemplateRef<{}>, title: string) {
     Object.defineProperties(this.schema, {
       properties: {
@@ -448,7 +454,9 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
             type: 'string',
             title: 'Duduk Perkara',
             readOnly: true,
-            ui: { widget: 'textarea', autosize: { minRows: 2, maxRows: 6 } },
+            ui: {
+              widget: 'custom',
+            },
           },
           caseTitle: {
             type: 'string',
@@ -473,7 +481,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
             title: 'APBH',
             ui: {
               widget: 'select',
-              mode: 'tags',
+              mode: 'multiple',
               asyncData: () => this.mtVocabHelper.getUsers(['4']),
             },
           },
@@ -484,9 +492,13 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         },
       },
     });
-    console.log('caseId.id' in this.editData);
-    if ('caseId.id' in this.editData) {
-      this.editData.handlingPP = await this.mtVocabHelper.findHandlingPPString(Number(this.editData.caseId.id));
+    // console.log('caseId.id' in this.editData);
+    console.log(this.editData);
+    if ('caseId' in this.editData) {
+      if (this.editData.caseId) {
+        this.editData.handlingPP = await this.mtVocabHelper.findHandlingPPString(Number(this.editData.caseId.id));
+        console.log(this.editData);
+      }
     }
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,
@@ -521,7 +533,7 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
 
   schema: SFSchema = {
     properties: {
-      id: {
+      ID: {
         type: 'string',
         ui: {
           hidden: true,
@@ -536,7 +548,9 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         type: 'string',
         title: 'Duduk Perkara',
         readOnly: true,
-        ui: { widget: 'textarea', autosize: { minRows: 2, maxRows: 6 } },
+        ui: {
+          widget: 'custom',
+        },
       },
       caseTitle: {
         type: 'string',
@@ -561,19 +575,19 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
         title: 'APBH',
         ui: {
           widget: 'select',
-          mode: 'tags',
+          mode: 'multiple',
           asyncData: () => this.mtVocabHelper.getUsers(['4']),
         },
       },
     },
-
+    required: ['listPP'],
     ui: {
       size: 'large',
     },
   };
 
   isCaseTitleDisabled() {
-    console.log(this.editData.caseId ? true : false);
+    // console.log(this.editData.caseId ? true : false);
     if (this.editData.caseId === '') {
       return true;
     } else {
@@ -581,18 +595,39 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
     }
   }
 
-  submit(value: any) {
-    console.log(value);
+  async submit(value: any) {
+    // console.log(value);
+    const res = await this.users.refetch(this.searchGenerator());
+
+    const tempLog = [];
+    for (const a of res.data.logRequests) {
+      const b = <any>{ ...a };
+      tempLog.push(b);
+    }
+    this.data = tempLog;
+    const el = this.data.find(el => el.ID === value.ID);
+    if (!el) {
+      this.msg.error('Request Konsultasi Sudah Tidak Ada');
+      this.closeModal();
+      return;
+    } else if (el.statusRequest !== '0') {
+      this.msg.error('Konsultasi Sudah Ditetapkan PP');
+      this.closeModal();
+      return;
+    }
+
     this.dataMutationUpdate(this.processDataAssign(value), <LogRequestWhereUniqueInput>{ ID: value.ID });
   }
 
   processDataAssign(data): LogRequestUpdateInput {
     const listPPAPP = <LogRequestAppCreateWithoutLogRequestIdInput[]>[];
-    for (const a of data.listAPP) {
-      const b = <LogRequestAppCreateWithoutLogRequestIdInput>{
-        appConsultation: { connect: { id: a } },
-      };
-      listPPAPP.push(b);
+    if ('listAPP' in data) {
+      for (const a of data.listAPP) {
+        const b = <LogRequestAppCreateWithoutLogRequestIdInput>{
+          appConsultation: { connect: { id: a } },
+        };
+        listPPAPP.push(b);
+      }
     }
     listPPAPP.push(<LogRequestAppCreateWithoutLogRequestIdInput>{
       appConsultation: { connect: { id: data.listPP } },
@@ -628,7 +663,6 @@ export class ConsultationQueueComponent implements OnInit, OnDestroy {
       pp: data.pp,
       tglRespon: data.tglRespon,
       statusRequest: data.statusRequest,
-      caseId: { delete: true },
     };
   }
 

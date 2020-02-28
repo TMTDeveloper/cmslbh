@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestro
 import { _HttpClient, MenuService } from '@delon/theme';
 import { NavigationEnd, Router } from '@angular/router';
 import * as moment from 'moment';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-dashboard-v1',
@@ -54,7 +53,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     showXAxis: true,
     showYAxis: true,
     gradient: false,
-    showLegend: true,
+    showLegend: false,
     showXAxisLabel: true,
     xAxisLabel: 'Jumlah',
     showYAxisLabel: true,
@@ -70,7 +69,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     showXAxis: true,
     showYAxis: true,
     gradient: false,
-    showLegend: true,
+    showLegend: false,
     showXAxisLabel: true,
     xAxisLabel: 'Jumlah',
     showYAxisLabel: true,
@@ -86,7 +85,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     showXAxis: true,
     showYAxis: true,
     gradient: false,
-    showLegend: true,
+    showLegend: false,
     showXAxisLabel: true,
     xAxisLabel: 'Jumlah',
     showYAxisLabel: true,
@@ -102,7 +101,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     showXAxis: true,
     showYAxis: true,
     gradient: false,
-    showLegend: true,
+    showLegend: false,
     showXAxisLabel: true,
     xAxisLabel: 'Jumlah',
     showYAxisLabel: true,
@@ -146,7 +145,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahKasus = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`jumlahKasus\` from \`case\` LEFT JOIN \`application\` on \`application\`.\`case\` = \`case\`.\`id\` WHERE \`case\`.created_at >= ${dateFromText}
-        AND \`case\`.created_at <${dateToText}`,
+        AND \`case\`.created_at <=${dateToText}`,
       })
       .toPromise();
     if (jumlahKasus.length > 0) this.jumlahKasus = jumlahKasus[0].jumlahKasus;
@@ -154,7 +153,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahAplikasi = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`jumlahAplikasi\` from \`application\` WHERE \`application\`.reg_date >= ${dateFromText}
-      AND \`application\`.reg_date <${dateToText}`,
+      AND \`application\`.reg_date <=${dateToText}`,
       })
       .toPromise();
     if (jumlahAplikasi.length > 0) this.jumlahAplikasi = jumlahAplikasi[0].jumlahAplikasi;
@@ -162,7 +161,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahKonsultasi = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`jumlahKonsultasi\` from \`case_consultation\` WHERE created_at >= ${dateFromText}
-    AND created_at <${dateToText}`,
+    AND created_at <=${dateToText}`,
       })
       .toPromise();
     if (jumlahKonsultasi.length > 0) this.jumlahKonsultasi = jumlahKonsultasi[0].jumlahKonsultasi;
@@ -170,7 +169,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahTransfer = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`jumlahTransfer\` from \`CaseTransfer\` WHERE tglTransfer >= ${dateFromText}
-  AND tglTransfer <${dateToText} AND tglTransfer is not null`,
+  AND tglTransfer <=${dateToText} AND tglTransfer is not null`,
       })
       .toPromise();
     if (jumlahTransfer.length > 0) this.jumlahTransfer = jumlahTransfer[0].jumlahTransfer;
@@ -178,7 +177,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahRujukan = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`jumlahRujukan\` from \`CaseReferral\` WHERE tglTransfer >= ${dateFromText}
-  AND tglTransfer <${dateToText} and tglTransfer is not null`,
+  AND tglTransfer <=${dateToText} and tglTransfer is not null`,
       })
       .toPromise();
     if (jumlahRujukan.length > 0) this.jumlahRujukan = jumlahRujukan[0].jumlahRujukan;
@@ -186,7 +185,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const jumlahPenerimaManfaat = await this.http
       .post(this.urlQuery, {
         query: `select sum(\`application\`.\`jumlah_penerima_manfaat\`) as \`jumlahPenerimaManfaat\` from \`application\` WHERE reg_date >= ${dateFromText}
-      AND reg_date <${dateToText}`,
+      AND reg_date <=${dateToText}`,
       })
       .toPromise();
     // console.log(jumlahPenerimaManfaat);
@@ -198,7 +197,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const kasusBerjalan = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`kasusBerjalan\` from \`case\` LEFT JOIN \`application\` on \`application\`.\`case\` = \`case\`.\`id\` WHERE \`case\`.created_at >= ${dateFromText}
-        AND \`case\`.created_at <${dateToText} AND tahap != '4012'`,
+        AND \`case\`.created_at <=${dateToText} AND tahap != '4012'`,
       })
       .toPromise();
     // console.log(kasusBerjalan);
@@ -208,7 +207,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
     const kasusSelesai = await this.http
       .post(this.urlQuery, {
         query: `select count(*) as \`kasusSelesai\` from \`case\` LEFT JOIN \`application\` on \`application\`.\`case\` = \`case\`.\`id\` WHERE \`case\`.created_at >= ${dateFromText}
-        AND \`case\`.created_at <${dateToText} AND tahap = '4012'`,
+        AND \`case\`.created_at <=${dateToText} AND tahap = '4012'`,
       })
       .toPromise();
     // console.log(kasusSelesai);
@@ -219,7 +218,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
         query: `SELECT (select teks from mt_vocab where kode=kode_mt) as name, COUNT(*) as value
         FROM (select kode_mt,reg_date from case_violated_rights left join \`case\` on \`case_violated_rights\`.\`case_id\` = \`case\`.\`id\`  left join \`application\` on \`application\`.\`case\` = \`case\`.\`id\`) as a
         where reg_date >= ${dateFromText}
-        AND reg_date <${dateToText} AND kode_mt is not null
+        AND reg_date <=${dateToText} AND kode_mt is not null
         Group By kode_mt
         Order By COUNT(*) DESC
         LIMIT 10
@@ -236,7 +235,7 @@ export class DashboardV1Component implements OnInit, OnDestroy {
         query: `SELECT (select teks from mt_vocab where kode=jenis_peradilan) as name, COUNT(*) as value
         FROM (select jenis_peradilan,reg_date from case_progress left join \`case\` on \`case_progress\`.\`id\` = \`case\`.\`progresses\`  left join \`application\` on \`application\`.\`case\` = \`case\`.\`id\` where jenis_peradilan is not null) as a
         where reg_date >= ${dateFromText}
-        AND reg_date <${dateToText} 
+        AND reg_date <=${dateToText} 
         Group By jenis_peradilan
         Order By COUNT(*) DESC
         LIMIT 10
@@ -249,28 +248,27 @@ export class DashboardV1Component implements OnInit, OnDestroy {
 
     const issueLokal = await this.http
       .post(this.urlQuery, {
-        query: `SELECT (select teks from mt_vocab where kode=issue) as name, COUNT(*) as value
-    FROM (select issue,reg_date from \`case\` left join \`application\` on \`application\`.\`case\` = \`case\`.\`id\`) as a
-    where reg_date >= ${dateFromText}
-    AND reg_date <${dateToText}  AND issue is not null
-    Group By issue
-    Order By COUNT(*) DESC
-    LIMIT 10
-    
-    
-    
-    `,
+        query: `SELECT (select teks from mt_vocab where kode=a.kode_mt) as name, COUNT(*) as value
+        FROM (select kode_mt,reg_date from case_issue left join \`case\` on \`case_issue\`.\`case_id\` = \`case\`.\`id\`  left join \`application\` on \`application\`.\`case\` = \`case\`.\`id\`) as a
+        where reg_date >= ${dateFromText}
+        AND reg_date <=${dateToText} AND kode_mt is not null
+        Group By kode_mt
+        Order By COUNT(*) DESC
+        LIMIT 10
+        
+        
+        `,
       })
       .toPromise();
     // console.log(issueLokal);
     this.issueLokal = issueLokal;
-
+    // console.log(this.issueLokal);
     const unitSatuan = await this.http
       .post(this.urlQuery, {
         query: `SELECT (select teks from mt_vocab where kode=unit_satuan) as name, COUNT(*) as value
       FROM (select unit_satuan,reg_date from client left join person on client.person_id = person.id left join application on application.id= client.application_id) as a
       where reg_date >= ${dateFromText}
-      AND reg_date <${dateToText} AND unit_satuan is not null
+      AND reg_date <=${dateToText} AND unit_satuan is not null
       Group By unit_satuan
       Order By COUNT(*) DESC
       LIMIT 10`,
@@ -299,7 +297,7 @@ FROM
         client
     LEFT JOIN person ON client.person_id = person.id
     LEFT JOIN application ON application.id = client.application_id) AS a    where reg_date >= ${dateFromText}
-    AND reg_date <${dateToText}`,
+    AND reg_date <=${dateToText}`,
       })
       .toPromise();
     // console.log(listAlamat);

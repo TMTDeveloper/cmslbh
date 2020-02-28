@@ -77,7 +77,12 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
         { application: { tahap_not: '4012' } },
         {
           logRequests_every: {
-            tanggapanRequest_not_in: ['98011'],
+            OR: [
+              {
+                tanggapanRequest_not_in: ['98011'],
+              },
+              { tglExpired_lt: moment().toDate() },
+            ],
           },
         },
       ],
@@ -121,7 +126,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
           text: 'Tanggapi',
           click: (item: any) => {
             this.editDataKabid = item;
-            console.log(this.editDataKabid);
+            // console.log(this.editDataKabid);
             this.edit(this.modalElKabid, 'Tanggapi Rekomendasi');
           },
           iif: item => {
@@ -292,7 +297,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
         fetchPolicy: 'no-cache',
       },
     );
-    console.log('sampe sini');
+    // console.log('sampe sini');
     this.loading = true;
     this.usersObs = this.users.valueChanges
       .pipe(
@@ -300,7 +305,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
           const tempLog = [];
           for (const a of result.data.logRequests) {
             const b = <any>{ ...a };
-            console.log(b.applicationId.jenisRequest);
+            // console.log(b.applicationId.jenisRequest);
             b.noReg = a.applicationId.noReg;
             b.caseTitle = a.caseId ? a.caseId.judulKasus : '';
             b.dudukPerara = a.applicationId.dudukPerara;
@@ -323,10 +328,10 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
   }
 
   getDataKasus(event) {
-    console.log(event);
+    // console.log(event);
     this.modalInstance.close();
     this.sfCreateKasus.setValue('/caseIdReturned', event);
-    console.log(this.sfCreateKasus.getValue('/caseIdReturned'));
+    // console.log(this.sfCreateKasus.getValue('/caseIdReturned'));
   }
 
   getData() {
@@ -421,7 +426,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
           requestBy: { id: this.settingService.user.id },
           jenisRequest_in: ['3111', '4111', '5111'],
           AND: [
-            this.q.ppName !== null
+            this.q.ppName
               ? {
                   pp_some: {
                     appConsultation: {
@@ -430,7 +435,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.clientName !== null
+            this.q.clientName
               ? {
                   applicationId: {
                     clients_some: {
@@ -439,7 +444,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
                   },
                 }
               : {},
-            this.q.noReg !== null
+            this.q.noReg
               ? {
                   applicationId: {
                     noReg_contains: this.q.noReg,
@@ -487,7 +492,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    console.log(this.modalInstance);
+    // console.log(this.modalInstance);
     this.modalSrv.closeAll();
     this.getData();
   }
@@ -625,11 +630,11 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
   };
 
   submitByPP(value: any) {
-    console.log(value);
+    // console.log(value);
     this.dataMutationCreate(this.processDataCreateLogRequest(value));
   }
   submitByKabid(value: any) {
-    console.log(value);
+    // console.log(value);
     this.dataMutationUpdate(this.processDataUpdateLogRequest(value), value.ID);
   }
 
@@ -813,7 +818,7 @@ export class RapatQueueComponent implements OnInit, OnDestroy {
   }
 
   dataMutationUpdate(data: LogRequestUpdateInput | string, id: number) {
-    console.log(data);
+    // console.log(data);
     if (typeof data === 'string') {
       this.msg.info(data);
       return;

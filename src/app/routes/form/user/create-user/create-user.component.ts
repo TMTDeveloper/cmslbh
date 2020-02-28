@@ -71,7 +71,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   loading = false;
 
   submit(value: any) {
-    console.log(value);
+    // console.log(value);
     const processedData = this.processData(value);
     if (this.mode === 'edit') {
       this.destroyRolesGQL
@@ -187,7 +187,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
         title: 'Posisi',
         ui: {
           widget: 'select',
-          mode: 'tags',
+          mode: 'multiple',
           asyncData: () => this.mtVocabHelper.getRolesType(),
         },
       },

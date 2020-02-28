@@ -73,7 +73,7 @@ export class HeaderNotifyComponent implements OnInit {
         fetchPolicy: 'no-cache',
       },
     );
-    console.log('sampe sini');
+    // console.log('sampe sini');
     this.loading = true;
     this.logsObs = this.log.valueChanges
       .pipe(
@@ -91,9 +91,9 @@ export class HeaderNotifyComponent implements OnInit {
         tap(() => (this.loading = false)),
       )
       .subscribe(async res => {
-        console.log(res);
+        // console.log(res);
         this.logData = await res;
-        console.log(this.logData);
+        // console.log(this.logData);
       });
     this.subscribeKonsultasi();
   }
@@ -106,7 +106,7 @@ export class HeaderNotifyComponent implements OnInit {
         if (this.loading) return;
         setTimeout(() => {
           this.count = this.count + 1;
-          console.log(subscriptionData.data.logRequest);
+          // console.log(subscriptionData.data.logRequest);
           const item = { ...subscriptionData.data.logRequest.node };
           item.datetime = moment();
           this.notifData.unshift(item);
@@ -114,7 +114,7 @@ export class HeaderNotifyComponent implements OnInit {
         }, 5000);
       },
       onError: err => {
-        console.log(err);
+        // console.log(err);
       },
     });
   }
@@ -173,8 +173,8 @@ export class HeaderNotifyComponent implements OnInit {
         },
         last: 10,
       };
-    if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
-    console.log('masuk sini');
+    // if (this.aclService.data.roles.find(el => el === '3' || el === '4')) console.log('nemu woy');
+    // console.log('masuk sini');
     return <GetLogRequest.Variables>{
       where: <LogRequestWhereInput>this.aclService.data.roles.find(el => el === '3' || el === '4')
         ? {
@@ -368,7 +368,7 @@ export class HeaderNotifyComponent implements OnInit {
   }
 
   select(res: any) {
-    console.log(res);
+    // console.log(res);
     this.msg.success(`点击了 ${res.title} 的 ${res.item.title}`);
   }
 
@@ -378,7 +378,7 @@ export class HeaderNotifyComponent implements OnInit {
     setTimeout(() => {
       this.count = 0;
       this.data = this.updateNoticeData(this.notifData, 'Konsultasi');
-      console.log(this.data);
+      // console.log(this.data);
       this.loading = false;
       this.cdr.detectChanges();
     }, 1000);

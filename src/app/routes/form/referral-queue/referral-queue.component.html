@@ -86,7 +86,7 @@
         <sv label="Klien">{{ listClient(editDataTemp?.application.clients) }}</sv>
         <sv label="Deskripsi Kasus"
           ><div *ngIf="editDataTemp?.kronologiKasus">
-            <pre> {{ editDataTemp?.kronologiKasus }}</pre>
+            <pre style="white-space:pre-wrap;"> {{ editDataTemp?.kronologiKasus }}</pre>
           </div>
         </sv>
       </sv-container>
@@ -123,7 +123,7 @@
         <sv label="Klien">{{ listClient(me.formProperty.value?.application.clients) }}</sv>
         <sv label="Deskripsi Kasus"
           ><div *ngIf="me.formProperty.value?.kronologiKasus">
-            <pre>{{ me.formProperty.value?.kronologiKasus }}</pre>
+            <pre style="white-space:pre-wrap;">{{ me.formProperty.value?.kronologiKasus }}</pre>
           </div>
         </sv>
         <sv-title>Rekomendasi</sv-title>
@@ -133,7 +133,7 @@
         <sv label="Referral Ke">{{ editDataKabid.networkId.name }}</sv>
         <sv label="Alasan"
           ><div *ngIf="editDataKabid.isiRequest">
-            <pre>{{ editDataKabid.isiRequest }}</pre>
+            <pre style="white-space: pre-wrap;">{{ editDataKabid.isiRequest }}</pre>
           </div>
         </sv>
       </sv-container>

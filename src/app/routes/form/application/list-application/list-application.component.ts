@@ -43,14 +43,17 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
   @ViewChild('modalContent') modalEl: TemplateRef<{}>;
 
   q: any = {
-    namaLengkap: null,
+    namaKlien: null,
     noReg: null,
+    namaWakil: null,
+    judulKasus: null,
   };
   data: GetApplications.Applications[] = [];
   dataSelected: any;
   mode = '';
   applications: QueryRef<GetApplications.Query, GetApplications.Variables>;
   personsObs: Subscription;
+  urlDocx = `http://${window.location.hostname}:3000/applicationdoc`;
   loading = false;
   modalInstance: NzModalRef;
   @ViewChild('st')
@@ -72,11 +75,22 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
         {
           text: 'Edit',
           click: (item: any) => {
+            item.regDate = moment(item.regDate).toDate();
             this.dataSelected = item;
             this.dataSelected.fileList = item.clients;
             this.mode = 'edit';
             this.edit(this.modalEl, 'Edit Data');
           },
+        },
+        {
+          text: 'Download',
+          click: async (item: any) => {
+            item.clients[0].personId.pekerjaan = await this.mtVocab.translateMtVocab(
+              item.clients[0].personId.pekerjaan,
+            );
+            this.downloadDocx(item);
+          },
+          iif: item => item.noReg,
         },
         {
           text: 'Konsultasi',
@@ -110,6 +124,21 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
       type: 'date',
       sort: {
         compare: (a, b) => moment(a.regDate).unix() - moment(b.regDate).unix(),
+      },
+    },
+    {
+      title: 'Klien',
+      index: 'applicationId.clients',
+      format: (item, col) => {
+        const formatText = item.clients.map(val => {
+          return val.personId.namaLengkap;
+        });
+        formatText.sort();
+        let concattedText = '';
+        for (const a of formatText) {
+          concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
+        }
+        return concattedText;
       },
     },
     {
@@ -149,6 +178,7 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
     private postLogRequestGQL: PostLogRequestGQL,
     private settingService: SettingsService,
     private getLogRequestGQL: GetLogRequestGQL,
+    public http: _HttpClient,
   ) {}
 
   ngOnInit() {
@@ -162,7 +192,7 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
         tap(() => (this.loading = false)),
       )
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.data = res;
         this.cdr.detectChanges();
       });
@@ -185,24 +215,37 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
   }
 
   searchGenerator(): GetApplications.Variables {
-    if (this.q.namaLengkap || this.q.noReg) {
-      return <GetApplications.Variables>{
-        where: <ApplicationWhereInput>{
-          OR: <ApplicationWhereInput[]>[
-            {
-              noReg_contains: this.q.noReg === '' ? null : this.q.noReg,
-            },
-            {
-              wakilId: <PersonWhereInput>{
-                namaLengkap_contains: this.q.namaLengkap === '' ? null : this.q.namaLengkap,
-              },
-            },
-          ],
-        },
-      };
-    }
     return <GetApplications.Variables>{
-      where: <ApplicationWhereInput>{},
+      where: <ApplicationWhereInput>{
+        AND: <ApplicationWhereInput[]>[
+          this.q.judulKasus
+            ? {
+                case: {
+                  judulKasus_contains: this.q.judulKasus,
+                },
+              }
+            : {},
+          this.q.namaKlien
+            ? {
+                clients_some: {
+                  personId: { namaLengkap_contains: this.q.namaKlien },
+                },
+              }
+            : {},
+          this.q.noReg
+            ? {
+                noReg_contains: this.q.noReg,
+              }
+            : {},
+          this.q.namaWakil
+            ? {
+                wakilId: {
+                  namaLengkap_contains: this.q.namaWakil,
+                },
+              }
+            : {},
+        ],
+      },
     };
   }
 
@@ -276,7 +319,7 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
   async queueConsultation(dataApplication) {
     if (this.loading) return;
     const alreadyQueue = await this.checkAlreadyQueue(dataApplication);
-    console.log(alreadyQueue);
+    // console.log(alreadyQueue);
     if (alreadyQueue.length !== 0) {
       this.msg.info('Antrian Konsultasi Sudah Ada Untuk Aplikasi ' + dataApplication.noReg);
       return;
@@ -306,5 +349,28 @@ export class ListApplicationComponent implements OnInit, OnDestroy {
           this.msg.error(JSON.stringify(error));
         },
       );
+  }
+
+  downloadDocx(data: any) {
+    this.http
+      .post(
+        this.urlDocx,
+        {
+          param: data,
+        },
+        {},
+        { responseType: 'blob' },
+      )
+      .subscribe(async res => {
+        // console.log(res);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(res);
+
+        a.download = `${data.noReg}-${moment().format('YYYY-MM-DD')}.docx`;
+        // start download
+        a.click();
+        this.loading = false;
+        this.cdr.detectChanges();
+      });
   }
 }

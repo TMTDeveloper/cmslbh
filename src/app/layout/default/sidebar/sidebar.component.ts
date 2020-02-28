@@ -9,10 +9,10 @@ import { SettingsService } from '@delon/theme';
 export class SidebarComponent {
   roles_type: any = [];
   constructor(public settings: SettingsService) {
-    console.log(this.settings);
+    // console.log(this.settings);
     if ('roles_type' in settings.user) {
       this.roles_type = this.settings.user.roles_type;
     }
-    console.log(this.roles_type);
+    // console.log(this.roles_type);
   }
 }

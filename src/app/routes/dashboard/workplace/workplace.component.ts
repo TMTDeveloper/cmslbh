@@ -80,7 +80,7 @@ export class DashboardWorkplaceComponent implements OnInit, OnDestroy {
       title: 'Tahap Kasus',
       index: 'application',
       format: item => {
-        console.log(item);
+        // console.log(item);
         return item.application.tahapTeks;
       },
     },

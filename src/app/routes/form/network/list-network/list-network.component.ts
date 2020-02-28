@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { GetUserGQL, GetUser, UserWhereInput } from '@shared';
+import { GetNetworks, GetNetworksGQL, NetworkWhereInput } from '@shared';
 import { QueryRef } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import { NzModalRef, NzMessageService, NzModalService } from 'ng-zorro-antd';
@@ -18,17 +18,15 @@ import { STComponent, STColumn, STData } from '@delon/abc';
 import * as moment from 'moment';
 import { _HttpClient } from '@delon/theme';
 import { MtVocabHelper } from '@shared/helper';
-import { map, tap, concat } from 'rxjs/operators';
-import { identifier } from 'babel-types';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-list-user',
-  templateUrl: './list-user.component.html',
-  styleUrls: ['./list-user.component.less'],
+  selector: 'app-list-network',
+  templateUrl: './list-network.component.html',
 })
-export class ListUserComponent implements OnInit, OnDestroy {
+export class ListNetworkComponent implements OnInit, OnDestroy {
   @Input() parent: boolean;
-  @Output() dataUser = new EventEmitter<GetUser.Users>();
+  @Output() dataNetwork = new EventEmitter<GetNetworks.Networks>();
   @ViewChild('card') card: ElementRef;
   @ViewChild('modalContent') modalEl: TemplateRef<{}>;
 
@@ -36,11 +34,11 @@ export class ListUserComponent implements OnInit, OnDestroy {
     email: null,
     name: null,
   };
-  data: GetUser.Users[] = [];
-  dataSelected: GetUser.Users | any;
+  data: GetNetworks.Networks[] = [];
+  dataSelected: GetNetworks.Networks | any;
   mode = '';
-  users: QueryRef<GetUser.Query, GetUser.Variables>;
-  usersObs: Subscription;
+  networks: QueryRef<GetNetworks.Query, GetNetworks.Variables>;
+  networksObs: Subscription;
   loading = false;
   modalInstance: NzModalRef;
   @ViewChild('st')
@@ -52,7 +50,7 @@ export class ListUserComponent implements OnInit, OnDestroy {
         {
           text: 'Select',
           click: (item: any) => {
-            this.dataUser.emit(item);
+            this.dataNetwork.emit(item);
           },
           iif: () => this.parent,
         },
@@ -70,7 +68,7 @@ export class ListUserComponent implements OnInit, OnDestroy {
     },
 
     {
-      title: 'Nama Lengkap',
+      title: 'Nama Network',
       index: 'name',
       sort: {
         compare: (a, b) => {
@@ -87,22 +85,35 @@ export class ListUserComponent implements OnInit, OnDestroy {
       },
     },
     {
+      title: 'Contact Person',
+      index: 'contactPerson',
+    },
+    {
+      title: 'Alamat',
+      index: 'address',
+    },
+    {
       title: 'Email',
       index: 'email',
     },
     {
-      title: 'Posisi',
-      index: 'roles_type',
-      format: (item, col) => {
-        const formatText = item.roles_type.map(val => {
-          return val.type.description;
-        });
-        formatText.sort();
-        let concattedText = '';
-        for (const a of formatText) {
-          concattedText === '' ? (concattedText = a) : (concattedText = concattedText + ', ' + a);
-        }
-        return concattedText;
+      title: 'No Telepon',
+      index: 'noContact',
+    },
+    {
+      title: 'Type',
+      index: 'type',
+      format: (item, el) => {
+        if (item.type === '1') return 'Transfer';
+        if (item.type === '2') return 'Referral';
+      },
+    },
+    {
+      title: 'Status',
+      index: 'status',
+      format: (item, el) => {
+        if (item.status === '1') return 'Aktif';
+        if (item.status === '2') return 'Tidak Aktif';
       },
     },
     {
@@ -133,18 +144,18 @@ export class ListUserComponent implements OnInit, OnDestroy {
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     public mtVocab: MtVocabHelper,
-    private getUserGQL: GetUserGQL,
+    private getNetworksGQL: GetNetworksGQL,
   ) {}
 
   ngOnInit() {
-    this.users = this.getUserGQL.watch(this.searchGenerator(), {
-      fetchPolicy: 'no-cache',
+    this.networks = this.getNetworksGQL.watch(this.searchGenerator(), {
+      fetchPolicy: 'network-only',
     });
     // console.log('sampe sini');
     this.loading = true;
-    this.usersObs = this.users.valueChanges
+    this.networksObs = this.networks.valueChanges
       .pipe(
-        map(result => result.data.users),
+        map(result => result.data.networks),
         tap(() => (this.loading = false)),
       )
       .subscribe(res => {
@@ -155,26 +166,26 @@ export class ListUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.usersObs.unsubscribe();
+    this.networksObs.unsubscribe();
   }
 
   getData() {
     this.loading = true;
-    this.users
+    this.networks
       .refetch(this.searchGenerator())
       .then(res => {
-        this.data = res.data.users;
+        this.data = res.data.networks;
       })
       .finally(() => {
         this.loading = false;
       });
   }
 
-  searchGenerator(): GetUser.Variables {
+  searchGenerator(): GetNetworks.Variables {
     if (this.q.name || this.q.email) {
-      return <GetUser.Variables>{
-        where: <UserWhereInput>{
-          OR: <UserWhereInput[]>[
+      return <GetNetworks.Variables>{
+        where: <NetworkWhereInput>{
+          OR: <NetworkWhereInput[]>[
             {
               name_contains: this.q.name === '' ? null : this.q.name,
             },
@@ -185,8 +196,8 @@ export class ListUserComponent implements OnInit, OnDestroy {
         },
       };
     }
-    return <GetUser.Variables>{
-      where: <UserWhereInput>{},
+    return <GetNetworks.Variables>{
+      where: <NetworkWhereInput>{},
     };
   }
 
@@ -205,7 +216,7 @@ export class ListUserComponent implements OnInit, OnDestroy {
 
   add(tpl: TemplateRef<{}>, title: string) {
     this.mode = 'create';
-    this.dataSelected = <GetUser.Users>{};
+    this.dataSelected = <GetNetworks.Networks>{};
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,
@@ -216,7 +227,6 @@ export class ListUserComponent implements OnInit, OnDestroy {
   }
 
   edit(tpl: TemplateRef<{}>, title: string) {
-    this.dataSelected.roles_type_virtual = this.dataSelected.roles_type.map(val => val.type.id);
     this.modalInstance = this.modalSrv.create({
       nzTitle: title,
       nzContent: tpl,

@@ -52,7 +52,7 @@ export class MtVocabHelper {
     let initialData = await this.getData(kode);
     if (initialData[0].level === 0) return [kode];
     arrMtvocabs.push(initialData[0]);
-    console.log(arrMtvocabs);
+    // console.log(arrMtvocabs);
     do {
       initialData = await this.getData(initialData[0].kode_induk);
       arrMtvocabs.push(initialData[0]);
@@ -120,6 +120,37 @@ export class MtVocabHelper {
       }
     }
     arr.push(kode);
+    return arr;
+  }
+
+  async getAllTree(kode_list: number) {
+    const arr = [];
+    const a = await this.getMtVocabParentTree(kode_list).toPromise();
+    for (const b of a) {
+      arr.push(b);
+    }
+    for (const c of arr) {
+      const a = await this.getMtVocabChildTree(kode_list, c.key).toPromise();
+
+      for (const d of a) {
+        const e = await this.getMtVocabChildTree(kode_list, d.key).toPromise();
+        if (e.length > 0) {
+          for (const f of a) {
+            if (f.key === d.key) {
+              f.children = e;
+            }
+          }
+        }
+      }
+
+      if (a.length > 0) {
+        for (const g of arr) {
+          if (g.key === c.key) {
+            g.children = a;
+          }
+        }
+      }
+    }
     return arr;
   }
 
@@ -233,7 +264,7 @@ export class MtVocabHelper {
 
   getNetworksEnum(type: string) {
     return this.getNetworksGQL
-      .watch({ where: { type: type } })
+      .watch({ where: { AND: [{ type: type }, { status: '1' }] } }, { fetchPolicy: 'network-only' })
       .valueChanges.pipe(
         map(
           result =>
@@ -341,7 +372,7 @@ export class MtVocabHelper {
               pp = this.flatten(pp);
               pp = this.uniq(pp, pengacara => pengacara.appConsultation.id);
 
-              console.log(pp);
+              // console.log(pp);
               const formatText = pp.map(val => {
                 return val.appConsultation.name;
               });
@@ -374,7 +405,7 @@ export class MtVocabHelper {
               pp = res.consultations.map(val => val.apps);
               pp = this.flatten(pp);
               pp = this.uniq(pp, pengacara => pengacara.appConsultation.id);
-              console.log(pp);
+              // console.log(pp);
               const ppId = pp.map(val => {
                 return val.appConsultation;
               });
@@ -409,7 +440,7 @@ export class MtVocabHelper {
               pp = this.flatten(pp);
               pp = this.uniq(pp, pengacara => pengacara.appConsultation.id);
 
-              console.log(pp);
+              // console.log(pp);
               const ppId = pp.map(val => {
                 return val.appConsultation.id;
               });

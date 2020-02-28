@@ -55,12 +55,24 @@
               data.application?.regDate ? momentF(data.application?.regDate).format('DD/MM/YYYY HH:mm') : null
             }}</sv>
             <sv label="Tahap Kasus">{{ data.application?.tahapteks | async }}</sv>
-            <sv label="Klien">{{ translateClients() }}</sv>
+            <sv label="Klien"
+              ><div *ngFor="let client of data.application?.clients">
+                - <a (click)="openModalClient(client, modalClient)">{{ client.personId.namaLengkap }}</a>
+              </div></sv
+            >
             <sv label="Yang Mewakili">{{ data.application?.wakilId?.namaLengkap }}</sv>
             <sv label="Hubungan Wakil Klien">{{ data.application?.relasiWakilClient }}</sv>
             <sv label="Duduk Perkara"
               ><div *ngIf="data.application?.dudukPerara">
-                <pre style="white-space:pre-wrap;">{{ data.application?.dudukPerara }}</pre>
+                <pre
+                  style="white-space:pre-wrap;  overflow-wrap: break-word;
+                word-wrap: break-word;
+                -webkit-hyphens: auto;
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                hyphens: auto;"
+                  >{{ data.application?.dudukPerara }}</pre
+                >
               </div></sv
             >
           </sv-container>
@@ -83,6 +95,7 @@
             <sv><a nz-button (click)="openModalAnalisa(modalContentAnalisa)">Edit Data Analisa</a></sv>
             <sv label="Korban">{{ translateKorbanPelaku('korban') }}</sv>
             <sv label="Pelaku">{{ translateKorbanPelaku('pelaku') }}</sv>
+            <sv label="Issue Lokal">{{ translateCaseIssues() }}</sv>
             <sv label="Hak Terdampak">{{ translateHakTerdampak() }}</sv>
           </sv-container>
         </nz-card>
@@ -342,7 +355,7 @@
       </ng-template>
       <ng-template sf-template="pelaku" let-me let-ui="ui" let-schema="schema">
         <div>
-          <button type="button" (click)="openModalListPerson('pelaku')" nz-button [nzType]="'primary'">
+          <button type="button" (click)="openModalPelaku()" nz-button [nzType]="'primary'">
             <i nz-icon nzType="plus"></i>
             <span>New</span>
           </button>
@@ -362,6 +375,37 @@
   </ng-template>
   <ng-template #listPerson>
     <app-list-person [parent]="true" (dataPerson)="closeModalAndSaveData($event)"></app-list-person>
+  </ng-template>
+  <ng-template #modalPelaku>
+    <sf
+      #sfPilihPelaku
+      [layout]="'vertical'"
+      [schema]="schemaPilihPelaku"
+      [formData]="dataModalTempLevelTwo"
+      (formSubmit)="savePelaku($event)"
+      [loading]="loading"
+    >
+      <ng-template sf-template="personId" let-me let-ui="ui" let-schema="schemaPilihPelaku">
+        <button
+          type="button"
+          (click)="openModalListPerson('pelaku')"
+          nz-button
+          nzType="dashed"
+          nzSize="default"
+          nzSearch
+        >
+          Search
+        </button>
+        <input
+          *ngIf="me.formProperty.value"
+          nz-input
+          [attr.id]="me.id"
+          [readonly]="me.disabled"
+          [nzSize]="ui.size"
+          [ngModel]="me.formProperty.value.namaLengkap"
+        />
+      </ng-template>
+    </sf>
   </ng-template>
   <ng-template #modalContentRapatPK>
     <sf
@@ -542,6 +586,26 @@
       }}</sv>
     </sv-container>
   </ng-template>
+
+  <ng-template #modalClient>
+    <sv-container size="Large" col="4" layout="vertical">
+      <sv-title>Detail Klien</sv-title>
+      <sv label="Nama Lengkap">{{ dataModalTemp?.personId?.namaLengkap }}</sv>
+      <sv label="SKTM">{{ dataModalTemp?.stmKeterangan }}</sv>
+      <sv label="Alamat ID">{{ dataModalTemp?.personId?.alamatId }}</sv>
+      <sv label="Alamat Domisili">{{ dataModalTemp?.personId?.alamatDomisili }}</sv>
+      <sv label="Posisi Saat Ini">{{ dataModalTemp?.alamatLokasi }}</sv>
+      <sv label="Tanggal Lahir">{{ dataModalTemp?.personId?.tglLahirTeks }}</sv>
+      <sv label="Agama">{{ dataModalTemp?.personId?.agama }}</sv>
+      <sv label="Pendapatan">{{ dataModalTemp?.pendapatanTeks }}</sv>
+      <sv label="SKTM">{{ dataModalTemp?.stmKeterangan }}</sv>
+      <sv label="Pekerjaan">{{ dataModalTemp?.personId?.pekerjaanTeks }}</sv>
+      <sv label="Nomor Telepon">{{ dataModalTemp?.personId?.telepon }}</sv>
+    </sv-container>
+  </ng-template>
+
+  <ng-template #modalPerson> </ng-template>
+
   <!-- schemaAktifitasPendampingan: SFSchema = {
       properties: {
         judulAktifitas: {
